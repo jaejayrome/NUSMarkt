@@ -1,0 +1,19 @@
+.buy_button {
+    position: fixed;
+    top: 100px;
+    left: 390px;
+}
+
+.sell_button {
+    position: fixed;
+    top: 100px;
+    left: 440px;
+}
+
+.trade_button {
+    position: fixed;
+    top: 100px;
+    left: 495px;
+}
+
+
