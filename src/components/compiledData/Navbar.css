@@ -1,0 +1,74 @@
+@font-face {
+    font-family: 'Bondoni FLF';
+    src: url('../../../public/fonts/BodoniFLF-Roman.ttf') format('truetype'); 
+    /* update the url with the correct path to your font file */
+  }
+
+
+.main_button {
+    position: relative;
+    top: 25px;
+    left: 350px;
+    border: none;
+    font-family: 'Bodoni FLF';      
+    background-color: white;   
+    font-size: 23px; 
+    margin: 15px;
+    color:black;
+}
+
+
+/* .main_button.clicked {
+    position: relative;
+    top: 50px;
+    left: 395px;
+    border: none;
+    font-family: 'Bodoni FLF';      
+    background-color: white;   
+    font-size: 23px; 
+    margin: 15px;   
+    font-weight: bolder;
+} */
+
+
+.main_button:hover {
+    color: grey;
+}
+
+/*
+.buy_button {
+    position: relative;
+    top: 50px;
+    left: 395px;
+    border: none;
+    font-family: 'Bodoni FLF';      
+    background-color: white;   
+    font-size: 23px; 
+    margin: 15px;                 
+}
+
+.sell_button {
+    position: relative;
+    border: none;
+    top: 50px;
+    left: 395px;
+    font-family: 'BodoniFLF';
+    background-color: white; 
+    font-size: 23px;
+    margin: 15px;
+}
+
+.trade_button {
+    position: relative;
+    border: none;
+    top: 50px;
+    left: 395px;
+    font-family: 'BodoniFLF';
+    background-color: white; 
+    font-size: 23px;
+    margin: 15px;
+}
+
+*/
+
+

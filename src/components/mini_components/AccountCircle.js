@@ -6,7 +6,6 @@ function AccountCircle() {
     return (
         <div className = "accountCircle">
         <AccountCircleIcon> </AccountCircleIcon>
-           
         </div>
     );
 }
