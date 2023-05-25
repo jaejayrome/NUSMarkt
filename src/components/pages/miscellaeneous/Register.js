@@ -6,22 +6,25 @@ import  TextField   from '@mui/material/TextField';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import  InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
 
 function Register() {
 
     const [registerEmail, setRegisterEmail] = useState("");
     const [registerPassword, setRegisterPassword] = useState("");
-    const [currentUser, setUser] = useState({email: "", password: ""});
-
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [currentUser, setUser] = useState({firstName: "", email: "", password: ""});
 
     const registerEmailHandler = (event) => setRegisterEmail(event.target.value);
-
     const registerPasswordHandler = (event) => setRegisterPassword(event.target.value);
+    const firstNameHandler = (event) => setFirstName(event.target.value);
+    const lastNameHandler = (event) => setLastName(event.target.value);
 
     const userHandler = () => {
         setUser(currentUser)
     }
-    
+
     const register = async () => {
 
         try {
@@ -36,17 +39,47 @@ function Register() {
     return (
         <div> 
             <Navbar />
+            <p style = {{fontSize:"30px"}}> Create Account </p>
 
+            {/*
+            <p> Gender </p>
+
+            <p> Date of Birth </p> */}
+
+            
+            <InputLabel htmlFor = "user_first_name"> First Name </InputLabel>
+            <TextField id="user_first_name" 
+            label="Sok Yang" 
+            variant="outlined"
+            value = {firstName}
+            required 
+            size = "medium"
+            onChange = {firstNameHandler}
+            />
+
+            <InputLabel htmlFor = "user_last_name"> Last Name </InputLabel>
+            <TextField id="user_last_name" 
+            label="Whang" 
+            variant="outlined"
+            value = {lastName}
+            required 
+            size = "medium"
+            onChange = {lastNameHandler}
+            />
+
+            <InputLabel htmlFor = "user_email_add"> Email Address </InputLabel>
             <TextField id="user_email_add" 
-            label="Email Address" 
+            label="example@gmail.com" 
             variant="outlined"
             value = {registerEmail}
             required 
             size = "medium"
             onChange = {registerEmailHandler}
-            inputProps={{placeholder: "Email"}}
+            // inputProps={{placeholder: "Email"}}
             />
 
+
+            <InputLabel htmlFor = "user_password"> Password </InputLabel>
             <TextField id = "user_password"
             onChange = {registerPasswordHandler}
             InputProps = {{
@@ -56,9 +89,8 @@ function Register() {
                 </InputAdornment>
                 )
             }}
-
             value = {registerPassword}
-            label = "Password"
+            label = "password123"
             variant = "outlined"
             required 
             size = "medium"
