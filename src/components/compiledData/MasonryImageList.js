@@ -15,7 +15,7 @@ export default function MasonryImageList(props) {
               src={`${item.src}?w=248&fit=crop&auto=format`}
               srcSet={`${item.src}?w=248&fit=crop&auto=format&dpr=2 2x`}
               alt={item.title}
-              loading="lazy"
+              loading= "lazy"
             />
           </ImageListItem>
         ))}

@@ -1,23 +1,20 @@
-.logo_button{
-  position: fixed;
-  left: 35px;
-  top : -35px;
-  max-width: 25%;
-  max-height: 25%;
-  cursor: pointer;
-}
 
-.body {
-  background-color: black;
-  position: relative;
-  margin-top: 30px;
-  color: white;
-}
-
-.masonry{
+/* .masonry{
   justify-content: center;
   display: flex;
   margin-top: 30px;
   background-color: black;
   padding-top: 30px;
+  width: 100vw;
+  overflow-x: hidden;
+} */
+
+
+.masonry{
+  justify-content: center;
+  display: flex;
+  background-color: black;
+  padding-top: 30px;
+  width: 100vw;
+  overflow: hidden;
 }

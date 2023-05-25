@@ -1,5 +1,5 @@
 .cart_icon {
-    position: fixed;
-    left: 920px;
-    top: 30px;
+  position: absolute; /* Updated */
+  right: 20px; /* Updated */
+  top: 50px; /* Updated */
 }

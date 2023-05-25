@@ -5,16 +5,45 @@
   }
 
 
+  .logo_button{
+    position: relative;
+    left: 50px;
+    top : -20px;
+    width: 175px;
+    height: 175px;
+    overflow-x: hidden;
+  }
+
+
 .main_button {
     position: relative;
-    top: 25px;
-    left: 350px;
+    top: -70px;
+    left: 28vw;
     border: none;
     font-family: 'Bodoni FLF';      
     background-color: white;   
-    font-size: 23px; 
-    margin: 15px;
+    font-size: 33px; 
+    margin-left: 10px;
     color:black;
+    overflow-x: hidden;
+}
+
+
+.main_button:hover {
+    color: lightslategrey;
+}
+
+
+.sign-up {
+  position: absolute; /* Updated */
+  right: 20px; /* Updated */
+  top: 50px; /* Updated */
+  font-size: 18px;
+  margin-right: 50px;
+}
+
+.sign-up:hover {
+    color: lightslategray;
 }
 
 
@@ -31,9 +60,7 @@
 } */
 
 
-.main_button:hover {
-    color: grey;
-}
+
 
 /*
 .buy_button {
