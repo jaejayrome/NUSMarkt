@@ -1,0 +1,43 @@
+@font-face {
+    font-family: 'Bondoni FLF';
+    src: url('../../../../public/fonts/BodoniFLF-Roman.ttf') format('truetype'); 
+    /* update the url with the correct path to your font file */
+  }
+
+.para {
+    font-family: "Bondoni FLF";
+    font-size: 30px;
+    padding-left: 10%;
+    padding-bottom: 10px;
+}
+
+.email {
+    position: relative;
+    left: 41%;
+    top: 100px;
+    font-family: "GM_C";
+}
+
+.password {
+    position: relative;
+    left: 41%;
+    top: 100px;
+}
+
+.login {
+    position: fixed;
+    left: 41%;
+    font-size: 30px;
+    overflow-x: hidden;
+}
+
+.dont_have_an_account {
+    position: relative;
+    top: 100px;
+    left: 41%;
+}
+
+body {
+    overflow-x: hidden;
+}
+

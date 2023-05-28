@@ -13,8 +13,16 @@
 .masonry{
   justify-content: center;
   display: flex;
-  background-color: black;
   padding-top: 30px;
   width: 100vw;
   overflow: hidden;
+  background-color: black;
 }
+
+
+/*
+
+@font-face {
+		font-family: "GM_C";
+		src: url("https://www.gentlemonster.com/us/assets/fonts/GM/GM_C.eot");
+*/

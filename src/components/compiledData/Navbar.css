@@ -30,7 +30,7 @@
 
 
 .main_button:hover {
-    color: lightslategrey;
+    text-decoration: underline;
 }
 
 

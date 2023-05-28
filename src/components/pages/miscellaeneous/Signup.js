@@ -7,8 +7,12 @@ import {useState} from 'react';
 import {auth} from '../../../config/firebase.js';
 import Navbar from '../../compiledData/Navbar.js'
 import Register from './Register.js';
-import {signInWithEmailAndPassword} from 'firebase/auth'
+import {signInWithEmailAndPassword, signOut} from 'firebase/auth'
+import './Signup.css';
+import InputLabel from '@mui/material/InputLabel';
 function Signup() {
+
+    // there's some overflow in the horizontal direction
 
     
     const [loginEmail, setLoginEmail] = useState("");
@@ -27,31 +31,40 @@ function Signup() {
     const login = async () => {
         try {
             const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+            console.log(user)
+            console.log("success!")
         } catch (error) {
             console.log(error.message)
         }
     }
 
-    const logout = () => {
 
+    const logout = async () =>  {
+        await signOut(auth)
     }
 
-    // visibility icon can be a button
     return (
         <div>
 
-
             <Navbar> </Navbar>
 
+            <h3 className='login'> Login </h3>
+
+            <InputLabel htmlFor = "user_email_add"
+            style = {{left: "41%" ,top: "100px"}}
+            > Email Address </InputLabel>
             <TextField id="user_email_add" 
-            label="Email Address" 
             variant="outlined"
             required 
             size = "medium"
             onChange = {logInEmailHandler}
-            inputProps={{placeholder: "Email"}}
+            className = "email" 
+            sx = {{width: 300}}
             />
 
+            <InputLabel htmlFor = "user_password"
+            style = {{marginTop: "30px", left: "41%" ,top: "100px"}}
+            > Password </InputLabel>
             <TextField id = "user_password"
             InputProps = {{
                 endAdornment: (
@@ -61,24 +74,30 @@ function Signup() {
                 )
             }}
 
-            label = "Password"
             variant = "outlined"
             required 
             size = "medium"
             type = "password"
             onChange = {logInPasswordHandler}
+            className = "email"
+            sx = {{width: 300}}
             />
 
-            <Button variant = "contained" type = "submit"  sx = {{backgroundColor: "black"}}>
-            Submit
+            <Button variant = "outlined" type = "submit"  sx = {{top: "170px", left: "20.5%",  borderColor: "black", color: "black", margin: "10px"
+            }} size = "large" onClick = {login}>
+            Login
             </Button>
 
 
-            <h4> Don't have an account?</h4>
+            <h4 className = "email" style = {{marginTop: "80px"}}> Don't have an account? </h4>
             <Link to = "/REGISTER" element = {<Register />}> 
-                <Button variant = "outlined" sx = {{color:"black", borderColor: "black"}}> Create Account </Button>
+                <Button variant = "outlined" sx = {{marginTop: "5px", color:"black", borderColor: "black"}}
+                size = "large"
+                className = "email"> Create Account </Button>
             </Link>
 
+
+            {/* <Button onClick = {logout}> Logout </Button> */}
         </div>
     );
 }
