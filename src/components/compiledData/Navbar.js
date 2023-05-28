@@ -1,6 +1,6 @@
 import "./Navbar.css";
 import {useState} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import CartIcon from '../mini_components/CartIcon';
 import homePageIcon from '../../images/logo.jpg';
 import Button from '@mui/material/Button';
@@ -29,11 +29,11 @@ function Navbar() {
 
         {actionArr.map((action, index)=> {
         return (
-        <Link to = {`${action.title != "BUY" ? action.title: ""}`}>
+        <NavLink activeClassName = "active" to = {`/${action.title != "BUY" ? action.title: ""}`}>
             <button ifClick = {clickHandler} className = "main_button" key = {index}>
             {action.title}
             </button>
-        </Link>)})}
+        </NavLink>)})}
 
         <Link to = "/SIGNUP" className = "sign-up" reloadDocument> 
             <Button variant = "outlined" sx = {{color: "black", borderColor: "black"}}> SIGN IN</Button>

@@ -45,8 +45,9 @@ function Register() {
 
         try {
         const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
-        alert("Successfully signed in!" + " " + registerEmail +  " " + registerPassword)
+        alert("Successfully signed in!")
         } catch (error) {
+            alert("You have not completed the required fields!")
             console.log(error.message);
         }
     }
@@ -183,7 +184,7 @@ function Register() {
                 <TextField id = "user_telegramHandle"
                     onChange = {telegramHandleHandler}
                     value = {telegramHandle}
-                    label = "password123"
+                    label = "@telegramHandle"
                     variant = "outlined"
                     required 
                     size = "medium"

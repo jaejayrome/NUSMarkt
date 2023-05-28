@@ -30,7 +30,7 @@
 
 
 .main_button:hover {
-    text-decoration: underline;
+    color: gray;
 }
 
 
@@ -45,6 +45,11 @@
 .sign-up:hover {
     color: lightslategray;
 }
+
+.active .main_button {
+    font-weight: bold;
+}
+
 
 
 /* .main_button.clicked {

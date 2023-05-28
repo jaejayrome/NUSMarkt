@@ -15,22 +15,12 @@ function Signup() {
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
 
-
-    
-    // const logInEmailHandler = () => {
-    //     return (event) => setLoginEmail(event.target.value);
-    // }
-
-    // const logInPasswordHandler = () => {
-    //     return (event) => setLoginPassword(event.target.value);
-    // }
-
     const login = async () => {
         try {
             const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
             alert ("You have succesfully signed in using \n Email Address: " + loginEmail  + "\n Password:" + loginPassword )
         } catch (error) {
-            alert("u fucked up" + loginEmail + " " + loginPassword  )
+            alert("Invalid email address or password \n Please Try Again.")
         }
     }
 
@@ -79,7 +69,7 @@ function Signup() {
             sx = {{width: 300}}
             />
 
-            <Button variant = "outlined" type = "submit"  sx = {{top: "170px", left: "20.5%",  borderColor: "black", color: "black", margin: "10px"
+            <Button variant = "outlined" type = "submit"  sx = {{top: "170px", left: "22.5%",  borderColor: "black", color: "black", margin: "10px"
             }} size = "large" onClick = {login}>
             Login
             </Button>
