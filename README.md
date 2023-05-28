@@ -1,70 +1,34 @@
-# Getting Started with Create React App
+<h1> NUSMarkt Readme.md </h1> 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h2> Software Architecture </h2> 
+<img width="1001" alt="Screenshot 2023-05-25 at 9 36 29 PM" src="https://github.com/jaejayrome/NUSMarkt/assets/80029422/af8a13d4-f10b-43e0-8ecd-7c4215c66d59">
 
-## Available Scripts
 
-In the project directory, you can run:
+<h2> Updates to Software Architecture: </h2>
 
-### `npm start`
+Front-end: React
+<br />
+External Dependencies: Material-UI Library
+<br />
+Back-end and DBMS: Cloud Firestore
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<h2> Timeline </h2>  
+<h4> Milestone 1: Ideation (29 May 2pm) </h4> 
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Task | Description | Handled By| Complete By
+--- | --- | --- | ---
+Edit README.md | Update the documentation of the README.md file to the latest updates | Jerome Goh | 29 May
+HTML Tutorial | Basic Introduction to learn HTML | Jerome Goh | 15 May
+CSS Tutorial | Basic Introduction to learn CSS (Inline Styling, Classes, Containers and Positoning) | Jerome Goh | 17 May
+Javascript Tutorial | Modern Javascript Tutorial (Array destrucutring, functional programming) |  Jerome Goh | 19 May
+Figma Design | Basic Design of the website done using figma | Whang Sok Yang | 19 May
+Basic React Tutorial | Components, Hooks and .jsx syntax, REACT-DOM understanding | Jerome Goh | 21 May
+React Project Initialisation and Structure | npm start, sorted out the components and downloaded depenendencies | Jerome Goh | 22 May
+React Routing 6 Tutorial | Learnt basic routing, nested routing and outlets with useParams Hooks | Jerome Goh | 23 May
+Basic Design of the website | worked on the navbar.js and the home.js in accordance to the figma | Jerome Goh | 25 May
+Design of the user authentication of the pages (signup.js and register.js) | Components in place to implement firebase authentication | Jerome Goh | 27 May
+Firebase Authentication Tutorial | How to set up and configure the firebase authentication with email and password | Jerome Goh | 27 May
+Implement firebase authentication | used the necessary hooks and auth instance to correctly implement the authentication | Jerome Goh | 28 May
+Software Architecture Design | Drew the schematics of the software architecture diagram | Jerome Goh | 28 May
+Material UI Implementation | Learnt to integrate the custom components and the API into the project | Jerome Goh | 28 May
