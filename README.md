@@ -5,6 +5,7 @@
 | --- | --- | --- |
 | Jerome Goh Zhi Sheng | A0253015U | Information Systems, Y1 |
 | Whang Sok Yang | A0258823W | Business Analytics, Y1 |
+
 ## Aim
 
 We hope to create a website which allows different communities in NUS to list their merchandise and for students to trade their merchandise since there isn’t a platform within NUS that provides this thus far.
