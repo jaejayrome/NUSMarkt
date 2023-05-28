@@ -19,4 +19,14 @@ Back-end and DBMS: Cloud Firestore
 Task | Description | Handled By| Complete By
 --- | --- | --- | ---
 Edit README.md | Update the documentation of the README.md file to the latest updates | Jerome Goh | 29 May
-1 | 2 | 3 | 4
+HTML Tutorial | Basic Introduction to learn HTML | Jerome Goh | 15 May
+CSS Tutorial | Basic Introduction to learn CSS (Inline Styling, Classes, Containers and Positoning) | Jerome Goh | 17 May
+Javascript Tutorial | Modern Javascript Tutorial (Array destrucutring, functional programming) |  Jerome Goh | 19 May
+Figma Design | Basic Design of the website done using figma | Whang Sok Yang | 19 May
+Basic React Tutorial | Components, Hooks and .jsx syntax, REACT-DOM understanding | Jerome Goh | 21 May
+React Project Initialisation and Structure | npm start, sorted out the components and downloaded depenendencies | Jerome Goh | 22 May
+React Routing 6 Tutorial | Learnt basic routing, nested routing and outlets with useParams Hooks | Jerome Goh | 23 May
+Basic Design of the website | worked on the navbar.js and the home.js in accordance to the figma | Jerome Goh | 25 May
+Design of the user authentication of the pages (signup.js and register.js) | Components in place to implement firebase authentication | Jerome Goh | 27 May
+Firebase Authentication Tutorial | How to set up and configure the firebase authentication with email and password | Jerome Goh | 27 May
+Implement firebase authentication | used the necessary hooks and auth instance to correctly implement the authentication | Jerome Goh | 28 May
