@@ -12,6 +12,8 @@ External Dependencies: Material-UI Library
 <br />
 Back-end and DBMS: Cloud Firestore
 
+<h2> NoSQL Firestore Schematics (Subject to further additions) </h2>
+<img width = "1001" alt = "Screenshot 2023-05-28 at 7 01 01 PM" src = "https://github.com/jaejayrome/NUSMarkt/assets/80029422/84be9e02-3c24-49b3-8022-8612ccf74070">
 
 <h2> Timeline </h2>  
 <h4> Milestone 1: Ideation (29 May 2pm) </h4> 
@@ -32,3 +34,6 @@ Firebase Authentication Tutorial | How to set up and configure the firebase auth
 Implement firebase authentication | used the necessary hooks and auth instance to correctly implement the authentication | Jerome Goh | 28 May
 Software Architecture Design | Drew the schematics of the software architecture diagram | Jerome Goh | 28 May
 Material UI Implementation | Learnt to integrate the custom components and the API into the project | Jerome Goh | 28 May
+
+
+
