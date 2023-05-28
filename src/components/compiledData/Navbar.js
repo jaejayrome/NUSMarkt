@@ -24,7 +24,7 @@ function Navbar() {
         <Link to = "/" reloadDocument>
                 <img src = {homePageIcon} alt = "NUS MARKT" className= 'logo_button'/>
         </Link>
-
+        
         <CartIcon />
 
         {actionArr.map((action, index)=> {

@@ -7,7 +7,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import  InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
-import { useEventCallback } from '@mui/material';
 import Grid from '@mui/material/Grid';
 
 
@@ -46,7 +45,7 @@ function Register() {
 
         try {
         const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
-        console.log(user)
+        alert("Successfully signed in!" + " " + registerEmail +  " " + registerPassword)
         } catch (error) {
             console.log(error.message);
         }

@@ -12,29 +12,25 @@ import './Signup.css';
 import InputLabel from '@mui/material/InputLabel';
 function Signup() {
 
-    // there's some overflow in the horizontal direction
-
-    
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
 
 
     
-    const logInEmailHandler = () => {
-        return (event) => setLoginEmail(event.target.value);
-    }
+    // const logInEmailHandler = () => {
+    //     return (event) => setLoginEmail(event.target.value);
+    // }
 
-    const logInPasswordHandler = () => {
-        return (event) => setLoginPassword(event.target.value);
-    }
+    // const logInPasswordHandler = () => {
+    //     return (event) => setLoginPassword(event.target.value);
+    // }
 
     const login = async () => {
         try {
             const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-            console.log(user)
-            console.log("success!")
+            alert ("You have succesfully signed in using \n Email Address: " + loginEmail  + "\n Password:" + loginPassword )
         } catch (error) {
-            console.log(error.message)
+            alert("u fucked up" + loginEmail + " " + loginPassword  )
         }
     }
 
@@ -57,7 +53,7 @@ function Signup() {
             variant="outlined"
             required 
             size = "medium"
-            onChange = {logInEmailHandler}
+            onChange = {event => setLoginEmail(event.target.value)}
             className = "email" 
             sx = {{width: 300}}
             />
@@ -78,7 +74,7 @@ function Signup() {
             required 
             size = "medium"
             type = "password"
-            onChange = {logInPasswordHandler}
+            onChange = {event => setLoginPassword(event.target.value)}
             className = "email"
             sx = {{width: 300}}
             />

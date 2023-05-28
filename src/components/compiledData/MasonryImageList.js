@@ -8,9 +8,9 @@ export default function MasonryImageList(props) {
 
   return (
     <Box sx={{ width: 700, height: 450, overflowY: 'scroll' }}>
-      <ImageList variant="masonry" cols={3} gap={25}>
+      <ImageList variant="masonry" cols={2} gap={25}>
         {itemData.map((item) => (
-          <ImageListItem key={item.title} style = {{width: "200px", height: "200px"}}>
+          <ImageListItem key={item.title} style = {{width: "300px", height: "300px"}}>
             <img
               src={`${item.src}?w=248&fit=crop&auto=format`}
               srcSet={`${item.src}?w=248&fit=crop&auto=format&dpr=2 2x`}
