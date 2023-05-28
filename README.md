@@ -54,22 +54,31 @@ Back-end and DBMS: Cloud Firestore
 <h2> Timeline </h2>  
 <h4> Milestone 1: Ideation (29 May 2pm) </h4> 
 
-Task | Description | Handled By| Complete By
---- | --- | --- | ---
-Edit README.md | Update the documentation of the README.md file to the latest updates | Jerome Goh | 29 May
-HTML Tutorial | Basic Introduction to learn HTML | Jerome Goh | 15 May
-CSS Tutorial | Basic Introduction to learn CSS (Inline Styling, Classes, Containers and Positoning) | Jerome Goh | 17 May
-Javascript Tutorial | Modern Javascript Tutorial (Array destrucutring, functional programming) |  Jerome Goh | 19 May
-Figma Design | Basic Design of the website done using figma | Whang Sok Yang | 19 May
-Basic React Tutorial | Components, Hooks and .jsx syntax, REACT-DOM understanding | Jerome Goh | 21 May
-React Project Initialisation and Structure | npm start, sorted out the components and downloaded depenendencies | Jerome Goh | 22 May
-React Routing 6 Tutorial | Learnt basic routing, nested routing and outlets with useParams Hooks | Jerome Goh | 23 May
-Basic Design of the website | worked on the navbar.js and the home.js in accordance to the figma | Jerome Goh | 25 May
-Design of the user authentication of the pages (signup.js and register.js) | Components in place to implement firebase authentication | Jerome Goh | 27 May
-Firebase Authentication Tutorial | How to set up and configure the firebase authentication with email and password | Jerome Goh | 27 May
-Implement firebase authentication | used the necessary hooks and auth instance to correctly implement the authentication | Jerome Goh | 28 May
-Software Architecture Design | Drew the schematics of the software architecture diagram | Jerome Goh | 28 May
-Material UI Implementation | Learnt to integrate the custom components and the API into the project | Jerome Goh | 28 May
+| Task | Description | Handled By | Complete By |
+| --- | --- | --- | --- |
+| Edit README.md | Update the documentation of the README.md file to the latest updates | Jerome Goh | 29 May |
+| HTML Tutorial | Basic Introduction to learn HTML | Jerome Goh | 15 May |
+| CSS Tutorial | Basic Introduction to learn CSS (Inline Styling, Classes, Containers and Positioning) | Jerome Goh | 17 May |
+| Javascript Tutorial | Modern Javascript Tutorial (Array destructuring, functional programming) | Jerome Goh | 19 May |
+| Basic React Tutorial | Components, Hooks and .jsx syntax, REACT-DOM understanding | Jerome Goh | 21 May |
+| React Project Initialisation and Structure | npm start, sorted out the components and downloaded dependencies | Jerome Goh | 22 May |
+| React Routing 6 Tutorial | Learnt basic routing, nested routing and outlets with useParams Hooks | Jerome Goh | 23 May |
+| Basic Design of the website | Worked on the navbar.js and the home.js in accordance to the figma | Jerome Goh | 25 May |
+| Design of the user authentication of the pages (signup.js and register.js) | Components in place to implement firebase authentication | Jerome Goh | 27 May |
+| Firebase Authentication Tutorial | How to set up and configure the firebase authentication with email and password | Jerome Goh | 27 May |
+| Implement firebase authentication | Used the necessary hooks and auth instance to correctly implement the authentication | Jerome Goh | 28 May|
+| Software Architecture Design | Drew the schematics of the software architecture diagram | Jerome Goh | 28 May |
+| Material UI Implementation | Learnt to integrate the custom components and the API into the project | Jerome Goh | 28 May |
+| Poster creation for lift off | Created Poster for LiftOff | Whang Sok Yang| 15 May |
+| Video creation for lift off | Created Video for liftOff | Whang Sok Yang | 15 May |
+| Learning of Figma basics | Needed to design website | Whang Sok Yang| 20 May |
+| Website design using Figma | Created the design of the website | Whang Sok Yang | 22 May |
+| Designing logo for NUSMarkt | Logo on navbar of website | Whang Sok Yang | 23 May |
+| Collection of merchandise images for development of website | Needed to include images to be listed on the home page | Whang Sok Yang| 24 May |
+| Learning of HTML basics | Imperative to engage in web dev | Whang Sok Yang | 27 May |
+| Learning of CSS basics | Imperative to engage in web dev | Whang Sok Yang | 27 May |
+| Poster creation for Milestone 1 | Redesigned the poster | Whang Sok Yang | 29 May |
+
 
 
 ## Tech Stack
