@@ -31,3 +31,4 @@ Design of the user authentication of the pages (signup.js and register.js) | Com
 Firebase Authentication Tutorial | How to set up and configure the firebase authentication with email and password | Jerome Goh | 27 May
 Implement firebase authentication | used the necessary hooks and auth instance to correctly implement the authentication | Jerome Goh | 28 May
 Software Architecture Design | Drew the schematics of the software architecture diagram | Jerome Goh | 28 May
+Material UI Implementation | Learnt to integrate the custom components and the API into the project | Jerome Goh | 28 May
