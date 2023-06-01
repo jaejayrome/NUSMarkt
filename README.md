@@ -102,4 +102,10 @@ Back-end and DBMS: Cloud Firestore
 - Took BT2102 (MySQL)
 
 
+## Peer Review 
+NUSMarkt Website can be accessed via this link: 
+<br>
+https://nusmarkt-41131.web.app/
+
+
 
