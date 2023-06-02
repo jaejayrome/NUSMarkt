@@ -6,8 +6,6 @@ import homePageIcon from '../../images/logo.jpg';
 import Button from '@mui/material/Button';
 
 function Navbar() {
-
-    // if button is clicked, the font should bold
     const [isClicked, setClick] = useState("BUY");
 
     const actionArr = [

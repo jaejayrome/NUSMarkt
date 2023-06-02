@@ -22,3 +22,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 src/App.test.js
+
+# hiding of all the sensitive information

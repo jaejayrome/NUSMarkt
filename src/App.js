@@ -5,6 +5,7 @@ import Trade_Page from './components/pages/trade/Trade_Page.js'
 import Signup from './components/pages/miscellaeneous/Signup.js';
 import Register from './components/pages/miscellaeneous/Register.js';
 import Account from './components/pages/miscellaeneous/Account.jsx'
+import ListingPage from './components/mini_components/ListingPage.js'
 
 function App() {
   return (
@@ -12,11 +13,13 @@ function App() {
     // need to nest register under sign up
     <div>
       <Routes>
-        <Route path = "/" element = {<Home />} />
+        <Route path = "/" element = {<Home />} >
+        </Route>
+        <Route path = "/LISTING/:listingID" element ={<ListingPage />}/>
         <Route path = "/SELL" element = {<Sell_Page />}/>
         <Route path = "/TRADE" element = {<Trade_Page />}/>
         <Route path = "/SIGNUP" element = {<Signup />}>
-          <Route path = "/SIGNUP/:accountUsername" element = {<Account/>}></Route>
+          <Route path = ":accountUsername" element = {<Account/>}></Route>
         </Route>
         <Route path = "/REGISTER" element = {<Register />}/>
       </Routes>
