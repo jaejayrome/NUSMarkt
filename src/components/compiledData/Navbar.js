@@ -19,7 +19,7 @@ function Navbar() {
 
     return (
         <div> 
-        <Link to = "/" reloadDocument>
+        <Link to = "/BUY" reloadDocument>
                 <img src = {homePageIcon} alt = "NUS MARKT" className= 'logo_button'/>
         </Link>
         
@@ -27,7 +27,7 @@ function Navbar() {
 
         {actionArr.map((action, index)=> {
         return (
-        <NavLink activeClassName = "active" to = {`/${action.title != "BUY" ? action.title: ""}`}>
+        <NavLink activeClassName = "active" to = {`/ ${action.title}`}>
             <button ifClick = {clickHandler} className = "main_button" key = {index}>
             {action.title}
             </button>
