@@ -27,7 +27,7 @@ function Navbar() {
 
         {actionArr.map((action, index)=> {
         return (
-        <NavLink activeClassName = "active" to = {`/ ${action.title}`}>
+        <NavLink activeClassName = "active" to = {`/${action.title}`}>
             <button ifClick = {clickHandler} className = "main_button" key = {index}>
             {action.title}
             </button>
