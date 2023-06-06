@@ -43,6 +43,7 @@ function Register() {
     // registering the user, changing the state of the auth instance
     // updating the user details to firestore
 
+    // one problem now is when i sign in it leads to an empty BUY page
     // one problem is when i sign out i want it to lead to home page
     const register = async () => {
         try {
@@ -59,7 +60,7 @@ function Register() {
             telegramHandle: telegramHandle
           }
         await addDoc(newUserRef, newUser)
-        await navigate(`/BUY/${userName}`)
+        await navigate(`/BUY/${user.user.uid}`)
         // just to debug and check whether the credentials are correct
         alert(JSON.stringify(newUser));
         } catch (error) {
