@@ -1,6 +1,7 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../../compiledData/Navbar.js';
-import {createUserWithEmailAndPassword} from 'firebase/auth';
+import {createUserWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
 import {collection, addDoc} from "firebase/firestore"
 import {auth, db} from '../../../config/firebase.js';
 import  TextField   from '@mui/material/TextField';
@@ -22,9 +23,10 @@ function Register() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [userName, setUserName] = useState("");
-    const [firstRePassword, setRePassword] = useState("")
-    const [phoneNumber, setPhoneNumber] = useState("")
-    const [telegramHandle, setTelegramHandle] = useState("")
+    const [firstRePassword, setRePassword] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [telegramHandle, setTelegramHandle] = useState("");
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const registerEmailHandler = (event) => setRegisterEmail(event.target.value);
     const registerPasswordHandler = (event) => setRegisterPassword(event.target.value);
@@ -35,6 +37,13 @@ function Register() {
     const  phoneNumberHandler= (event) => setPhoneNumber(event.target.value);
     const telegramHandleHandler = (event) => setTelegramHandle(event.target.value);
 
+
+    const navigate = useNavigate()
+
+    // registering the user, changing the state of the auth instance
+    // updating the user details to firestore
+
+    // one problem is when i sign out i want it to lead to home page
     const register = async () => {
         try {
         const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
@@ -50,6 +59,7 @@ function Register() {
             telegramHandle: telegramHandle
           }
         await addDoc(newUserRef, newUser)
+        await navigate(`/BUY/${userName}`)
         // just to debug and check whether the credentials are correct
         alert(JSON.stringify(newUser));
         } catch (error) {
@@ -57,6 +67,16 @@ function Register() {
             console.log(error.message);
         }
     }
+
+    // updates the DOM accordingly
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setIsLoggedIn(user != null)
+        })
+
+        return () => unsubscribe()
+    }, [])
+    
 
     const checkWhetherPasswordAreTheSame = () => {
         return firstRePassword == registerPassword;
