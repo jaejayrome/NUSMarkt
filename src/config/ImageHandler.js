@@ -13,9 +13,7 @@ useEffect(() => {
     .catch((error) => {
       alert(error)
     })}
-
     downloadListingImages(props.filePath)
-
     });
 
 

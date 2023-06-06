@@ -1,7 +1,8 @@
 import {useState} from 'react';
 import Navbar from '../../compiledData/Navbar.js';
-import {createUserWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
-import {auth} from '../../../config/firebase.js';
+import {createUserWithEmailAndPassword} from 'firebase/auth';
+import {collection, addDoc} from "firebase/firestore"
+import {auth, db} from '../../../config/firebase.js';
 import  TextField   from '@mui/material/TextField';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import  InputAdornment from '@mui/material/InputAdornment';
@@ -9,11 +10,11 @@ import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import Grid from '@mui/material/Grid';
 
+// pass the user state down to the page component that contains the routes 
+// missing functionalities
+// checking whether the passwords and the re-enter password are equal 
 
 function Register() {
-
-    // current user
-    const user = auth.currentUser;
 
     // all the use states 
     const [registerEmail, setRegisterEmail] = useState("");
@@ -24,9 +25,7 @@ function Register() {
     const [firstRePassword, setRePassword] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
     const [telegramHandle, setTelegramHandle] = useState("")
-    const [currentUser, setUser] = useState({firstName: "", email: "", password: ""});
 
-    // all the handers
     const registerEmailHandler = (event) => setRegisterEmail(event.target.value);
     const registerPasswordHandler = (event) => setRegisterPassword(event.target.value);
     const firstNameHandler = (event) => setFirstName(event.target.value);
@@ -36,33 +35,35 @@ function Register() {
     const  phoneNumberHandler= (event) => setPhoneNumber(event.target.value);
     const telegramHandleHandler = (event) => setTelegramHandle(event.target.value);
 
-    // need to set another function that checks whether the password and the re-enter password is the same 
-    // const userHandler = () => {
-    //     setUser(currentUser)
-    // }
-
     const register = async () => {
-
         try {
         const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
-        alert("Successfully signed in!")
+        const newUserRef = collection(db, "users")
+        // whenever a user has registered, it's metadata would be sent to the users collleciton
+        const newUser = {
+            registerEmail: registerEmail,
+            registerPassword: registerPassword,
+            firstName: firstName,
+            lastName: lastName,
+            userName: userName,
+            phoneNumber: phoneNumber,
+            telegramHandle: telegramHandle
+          }
+        await addDoc(newUserRef, newUser)
+        // just to debug and check whether the credentials are correct
+        alert(JSON.stringify(newUser));
         } catch (error) {
             alert("You have not completed the required fields!")
             console.log(error.message);
         }
     }
 
-    onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser);
-    });
-
     const checkWhetherPasswordAreTheSame = () => {
         return firstRePassword == registerPassword;
     }
 
+
     const firstPropName = <InputLabel htmlFor = "user_first_name"> First Name </InputLabel>
-
-
 
     return (
         <div> 

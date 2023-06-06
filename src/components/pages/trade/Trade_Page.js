@@ -1,5 +1,6 @@
 import homePageIcon from '../../../images/logo.jpg';
 import Navbar from '../../compiledData/Navbar.js';
+import No_Signin from '../miscellaeneous/No_Signin';
 
 function Trade_Page() {
     return (
@@ -14,6 +15,8 @@ function Trade_Page() {
             }}/>
 
             <Navbar> </Navbar>
+
+            <No_Signin />
         </div>
     )
 }

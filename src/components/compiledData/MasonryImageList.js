@@ -10,7 +10,7 @@ return (
       {props.listings.map((listing) => (
         <ImageListItem key={listing.id} style = {{width: "400px", height: "400px", marginLeft: "25px"}}>
           {
-            <Card sx= {{alignContent: "center", justifyContent: "center", alighItems: "center"}}>
+            <Card variant = "outlined" sx= {{alignContent: "center", justifyContent: "center", alighItems: "center"}}>
 
               {listing && listing.listingPrice && listing.listingTitle && listing.filePath &&
               (<Link to={{pathname: `/BUY/${listing.id}`, state: {listing}}}>
@@ -19,11 +19,8 @@ return (
 
               <CardContent>
                 <Typography variant="body2" color="black">
-                  {/* {!listing.listingTitle ? "Does Not Exist": "Exist"}
-                  {!listing.listingPrice ? "Does Not Exist": "Exist"} */}
-
                   {listing.listingTitle ? `${listing.listingTitle}` : "Title Not Available"}
-                  {listing.listingPrice ? ` ${listing.listingPrice}` : " Price Not Available"}
+                  {listing.listingPrice ? ` $${listing.listingPrice}` : " Price Not Available"}
                 </Typography>
               </CardContent>
             </Card>

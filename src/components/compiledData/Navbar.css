@@ -35,11 +35,11 @@
 
 
 .sign-up {
-  position: absolute; /* Updated */
-  right: 20px; /* Updated */
-  top: 50px; /* Updated */
+  position: absolute; 
+  right: 7%;
+  top: 50px; 
   font-size: 18px;
-  margin-right: 50px;
+  
 }
 
 .sign-up:hover {
@@ -50,57 +50,10 @@
     font-weight: bold;
 }
 
-
-
-/* .main_button.clicked {
-    position: relative;
-    top: 50px;
-    left: 395px;
-    border: none;
-    font-family: 'Bodoni FLF';      
-    background-color: white;   
-    font-size: 23px; 
-    margin: 15px;   
-    font-weight: bolder;
-} */
-
-
-
-
-/*
-.buy_button {
-    position: relative;
-    top: 50px;
-    left: 395px;
-    border: none;
-    font-family: 'Bodoni FLF';      
-    background-color: white;   
-    font-size: 23px; 
-    margin: 15px;                 
+.cart{
+  position: absolute; 
+  right: 2%; 
+  top: 50px; 
+  font-size: 18px;
 }
-
-.sell_button {
-    position: relative;
-    border: none;
-    top: 50px;
-    left: 395px;
-    font-family: 'BodoniFLF';
-    background-color: white; 
-    font-size: 23px;
-    margin: 15px;
-}
-
-.trade_button {
-    position: relative;
-    border: none;
-    top: 50px;
-    left: 395px;
-    font-family: 'BodoniFLF';
-    background-color: white; 
-    font-size: 23px;
-    margin: 15px;
-}
-
-*/
-
 

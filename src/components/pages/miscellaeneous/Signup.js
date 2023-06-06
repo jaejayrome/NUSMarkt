@@ -3,17 +3,28 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import  InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
 import {Link} from 'react-router-dom';
-import {useState} from 'react'; 
+import {useEffect, useState} from 'react'; 
 import {auth} from '../../../config/firebase.js';
 import Navbar from '../../compiledData/Navbar.js'
 import Register from './Register.js';
-import {signInWithEmailAndPassword, signOut} from 'firebase/auth'
+import {signInWithEmailAndPassword, signOut, onAuthStateChanged} from 'firebase/auth'
 import './Signup.css';
 import InputLabel from '@mui/material/InputLabel';
+
+// missing the current features: signout 
+// auth.currentUser gives us the currentUser
+// onAuthStateChanged triggers whatever is inside it whenever the auth variable changes:
+// this means that the user authentication status has changed
+
+// firebase would only store certain metadata about the user
+// but then we want to store more data about the user 
+
 function Signup() {
 
+    // const history = useHistory();
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
+    const [user, setUser] = useState({loggedIn: false, email: "", password: ""})
 
     const login = async () => {
         try {
@@ -24,10 +35,12 @@ function Signup() {
         }
     }
 
-
-    const logout = async () =>  {
-        await signOut(auth)
-    }
+    // onAuthStateChanged(auth, (currentUser) => {
+    //     if (currentUser) {
+    //         setUser({...currentUser, loggedIn: true});
+    //         history.push("/BUY")
+    //     }
+    // })
 
     return (
         <div>
@@ -81,9 +94,6 @@ function Signup() {
                 size = "large"
                 className = "email"> Create Account </Button>
             </Link>
-
-
-            {/* <Button onClick = {logout}> Logout </Button> */}
         </div>
     );
 }

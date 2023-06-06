@@ -23,7 +23,7 @@ function Navbar() {
                 <img src = {homePageIcon} alt = "NUS MARKT" className= 'logo_button'/>
         </Link>
         
-        <CartIcon />
+        
 
         {actionArr.map((action, index)=> {
         return (
@@ -34,8 +34,12 @@ function Navbar() {
         </NavLink>)})}
 
         <Link to = "/SIGNUP" className = "sign-up" reloadDocument> 
-            <Button variant = "outlined" sx = {{color: "black", borderColor: "black"}}> SIGN IN</Button>
+            <Button size = "large" variant = "text" sx = {{color: "black", borderColor: "black"}}> SIGN IN </Button>
         </Link>
+
+        <Link to = "/BUY/CART" className = "cart">
+            <Button size = "large" variant = "text" sx = {{color: "black", borderColor: "black"}}> CART </Button>
+        </Link> 
         </div>
     )
 }

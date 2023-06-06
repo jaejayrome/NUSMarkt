@@ -14,7 +14,7 @@ function Home() {
 
     // pointer to the "listing collection" in the NOSQL db
     const listingCollectionsRef = collection(db, "listing")
-
+    
     useEffect(() => {
         // getListings would read the array of listing instance
         const getListings = async () => {

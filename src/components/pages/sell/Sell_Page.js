@@ -1,5 +1,6 @@
 import homePageIcon from '../../../images/logo.jpg';
 import Navbar from '../../compiledData/Navbar.js';
+import No_Signin from '../miscellaeneous/No_Signin.js';
 
 function Sell_Page() {
     return (
@@ -14,6 +15,8 @@ function Sell_Page() {
             }}/>
 
             <Navbar />
+
+            <No_Signin/>
 
         </div>
     )
