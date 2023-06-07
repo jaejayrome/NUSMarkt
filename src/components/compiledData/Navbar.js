@@ -6,7 +6,8 @@ import Button from '@mui/material/Button';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../config/firebase.js"
 
-
+// pass a state through the link to the sub pages trade and sell
+// the state wherein the user has been logged in or not 
 // need to account for the difference in the navbar when the user is logged in or logged out 
 
 // added in the functionality where the 

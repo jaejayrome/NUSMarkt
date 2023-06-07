@@ -9,6 +9,7 @@
     font-size: 30px;
     padding-left: 10%;
     padding-bottom: 10px;
+    overflow-y: hidden;
 }
 
 .email {
@@ -16,12 +17,14 @@
     left: 41%;
     top: 100px;
     font-family: "GM_C";
+    overflow-y: hidden;
 }
 
 .password {
     position: relative;
     left: 41%;
     top: 100px;
+    overflow-y: hidden;
 }
 
 .login {
@@ -29,15 +32,18 @@
     left: 41%;
     font-size: 30px;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .dont_have_an_account {
     position: relative;
     top: 100px;
     left: 41%;
+    overflow-y: hidden;
 }
 
 body {
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 

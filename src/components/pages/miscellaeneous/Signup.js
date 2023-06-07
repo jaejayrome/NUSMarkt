@@ -78,7 +78,7 @@ function Signup() {
             sx = {{width: 300}}
             />
 
-            <Button variant = "outlined" type = "submit"  sx = {{top: "170px", left: "22.5%",  borderColor: "black", color: "black", margin: "10px"
+            <Button variant = "outlined" type = "submit"  sx = {{top: "170px", left: "20.8%",  borderColor: "black", color: "black", margin: "10px"
             }} size = "large" onClick = {login}>
             Login
             </Button>

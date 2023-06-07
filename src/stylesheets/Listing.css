@@ -1,0 +1,46 @@
+/* .indiv_listing {
+    position: relative; 
+    left: 50%;
+    width: fit-content;
+    margin: auto;
+
+}
+/* .listing-container {
+    flex-direction: column;
+    display: flex;
+} */
+
+/* .imageHandler {
+    align-self: flex-start;
+    margin-left: 2%;
+    margin-bottom: 5%;
+    top: 0%;
+    width: 100%;
+}  */
+
+
+.listing-container {
+    display: flex;
+  }
+  
+  .imageHandler {
+    flex: 1;
+    margin-left:  2%;
+  }
+  
+  .indiv_listing {
+    flex: 1;
+  }
+
+  body {
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
+  
+  
+  
+  
+  
+  
+  
+  

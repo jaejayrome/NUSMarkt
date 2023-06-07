@@ -19,7 +19,7 @@ useEffect(() => {
 
 return (
 <div>
-   <img src={imageURL} alt={props.alt} style = {{width: "350px", height: "350px", marginLeft: "25px"}}/>
+   <img src={imageURL} alt={props.alt} style = {{width: props.width, height: props.height, marginLeft: props.marginLeft, margin: props.margin}}/>
 </div>)
 
 }

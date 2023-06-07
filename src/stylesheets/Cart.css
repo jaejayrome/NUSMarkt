@@ -1,0 +1,30 @@
+@font-face {
+    font-family: 'Bondoni FLF';
+    src: url('../../public/fonts/BodoniFLF-Roman.ttf') format('truetype'); 
+    /* update the url with the correct path to your font file */
+  }
+
+.bag_icon {
+    position: relative;
+    left: 48%;
+    margin-top: 5%;
+}
+
+.cart_missing_font {
+    position: relative;
+    left: 38%;
+    font-family: 'Bodoni FLF';
+    justify-items: center;
+}
+
+.cart_bottom_font {
+    position: relative;
+    left: 38%;
+    font-family: 'monospace';
+    justify-items: center;
+    font-size: 30px;
+    margin-top: 1%;
+}
+
+
+

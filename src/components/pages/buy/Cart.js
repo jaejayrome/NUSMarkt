@@ -4,7 +4,6 @@ export default function Cart() {
     return (
         <div>
             <Navbar />
-
             <CartItem />
         </div>
     )

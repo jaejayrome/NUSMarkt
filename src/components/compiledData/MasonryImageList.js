@@ -14,7 +14,7 @@ return (
 
               {listing && listing.listingPrice && listing.listingTitle && listing.filePath &&
               (<Link to={{pathname: `/BUY/${listing.id}`, state: {listing}}}>
-                <ImageHandler alt = {listing.listingTitle} filePath = {listing.filePath}/>
+                <ImageHandler margin = "0%" width = "350px" height = "350px" marginLeft = "25px" alt = {listing.listingTitle} filePath = {listing.filePath}/>
               </Link>)}
 
               <CardContent>
