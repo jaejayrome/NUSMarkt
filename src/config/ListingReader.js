@@ -8,6 +8,8 @@ import ImageHandler from './ImageHandler.js';
 import "../stylesheets/Listing.css";
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import { styled } from '@mui/system';
+import { Button } from '@mui/material';
+import CheckroomRoundedIcon from '@mui/icons-material/CheckroomRounded';
 
 
 export default function ListingReader({ listingID }) {
@@ -80,8 +82,24 @@ export default function ListingReader({ listingID }) {
               </div>
             </div>
 
+            <div style = {{fontFamily: 'monospace', fontSize: "20px", display: "flex"}}>
+            <div style={{flex: 4}}>
             Unsure Of Your Sizing?
-           
+            </div>
+
+            <div style={{flex: 6}}>
+            <Button variant = "outlined" size = "medium" startIcon = {<CheckroomRoundedIcon />} sx = {{borderColor: "black", backgroundColor: 'white', color: "black", textTransform: "none"}}> SizeMeUp </Button>
+            </div>
+           </div> 
+
+           <div style = {{fontSize: "20px",fontFamily: "monospace", textDecoration: "underline"}}>
+           Size Guide:
+           </div>
+
+           <div style = {{fontSize: "20px", fontFamily: 'monospace', textDecoration: "underline"}}> 
+            Quantity:
+          </div>
+
           </div> 
         </div>
       )}
