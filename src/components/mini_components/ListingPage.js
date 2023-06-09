@@ -3,6 +3,7 @@ import Navbar from '../compiledData/Navbar.js';
 import {useParams} from 'react-router-dom';
 import ListingReader from '../../config/ListingReader';
 
+// this component is the individual listings of each clothing
 export default function ListingPage() {
 
     const {listingID} = useParams();

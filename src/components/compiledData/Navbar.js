@@ -11,7 +11,7 @@ import { auth } from "../../config/firebase.js"
 // need to account for the difference in the navbar when the user is logged in or logged out 
 
 // added in the functionality where the 
-function Navbar() {
+function Navbar(props) {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     // delays the evaluation by wrapping it around a "supplier"

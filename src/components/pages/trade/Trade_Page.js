@@ -16,7 +16,7 @@ function Trade_Page() {
 
             <Navbar> </Navbar>
 
-            <No_Signin />
+            <No_Signin action = "2"/>
         </div>
     )
 }

@@ -1,0 +1,15 @@
+.sell_bottom_font {
+    position: relative;
+    left: 41%;
+    font-family: 'monospace';
+    justify-items: center;
+    font-size: 30px;
+    margin-top: 1%;
+}
+
+.sell_missing_font {
+    position: relative;
+    left: 38%;
+    font-family: 'Bodoni FLF';
+    justify-items: center;
+}

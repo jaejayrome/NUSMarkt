@@ -1,23 +1,22 @@
-// this component would return the button that would lead the user to the sign in button
-import { Button } from "@mui/material"
-import { Link } from "react-router-dom";
+import DangerousSharpIcon from '@mui/icons-material/DangerousSharp';
+import "../../../stylesheets/Cart.css"
+import "../../../stylesheets/No_Signin.css"
 
-export default function No_Signin (){
+export default function No_Signin (props){
+    const action1 = 'selling'
+    const action2 = 'trading'
 
-    const warning = "You are not logged in right now." 
-    const warning2 = "Sign in to continue."
     return (
-        <div>
-            <div style={{fontSize: "35px",position: "fixed", left: "40%", top: "30%"}}>
-                {warning}
+        <div className='total_movement'> 
+            <div className = 'bag_icon'> 
+                <DangerousSharpIcon sx={{ fontSize: 75}}/>
             </div>
-            <div style={{fontSize: "35px", position: "fixed", left: "40%", top: "40%"}}>
-                {warning2}
+            <div className='sell_missing_font' style = {{fontWeight: "bold", fontSize: "45px"}}> 
+                No Listing found
+            </div> 
+            <div className = "sell_bottom_font">
+            Sign in to start {props.action == 1 ? action1 : action2}
             </div>
-
-        <Link to = "/SIGNUP" style = {{position: "fixed", left: "40%", top: "50%"}}> 
-            <Button size = "large" variant = "text" sx = {{fontSize: "25px" ,color: "black", borderColor: "black"}}> SIGN IN </Button>
-        </Link>
         </div>
     )
 }

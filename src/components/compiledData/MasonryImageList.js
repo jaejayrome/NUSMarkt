@@ -1,4 +1,4 @@
-import {Card, CardContent, Typography, ImageList, ImageListItem, Box} from '@mui/material';
+import {Card, CardContent, Typography, ImageList, ImageListItem, Box, Hidden} from '@mui/material';
 import {Link} from 'react-router-dom';
 import ImageHandler from '../../config/ImageHandler.js'
 
@@ -8,20 +8,27 @@ return (
   <Box sx={{ width: 1600, height: 1000, overflowY: 'scroll', alignItems: 'center', justifyItems: 'center'}}>
     <ImageList cols={3} gap={75}>
       {props.listings.map((listing) => (
-        <ImageListItem key={listing.id} style = {{width: "400px", height: "400px", marginLeft: "25px"}}>
+        <ImageListItem key={listing.id} style = {{width: "400px", height: "410px", marginLeft: "25px"}}>
           {
-            <Card variant = "outlined" sx= {{alignContent: "center", justifyContent: "center", alighItems: "center"}}>
+            <Card elevation = "20" variant = "filled" sx= {{alignContent: "center", justifyContent: "center", alighItems: "center"}}>
 
               {listing && listing.listingPrice && listing.listingTitle && listing.filePath &&
               (<Link to={{pathname: `/BUY/${listing.id}`, state: {listing}}}>
-                <ImageHandler margin = "0%" width = "350px" height = "350px" marginLeft = "25px" alt = {listing.listingTitle} filePath = {listing.filePath}/>
+                <ImageHandler margin = "0%" width = "100%" height = "350px" marginLeft = "25px" alt = {listing.listingTitle} filePath = {listing.filePath}/>
               </Link>)}
 
-              <CardContent>
-                <Typography variant="body2" color="black">
+              <CardContent  sx = {{overflowY: "hidden"}}>
+                {/* <Typography variant="monospace" color="black" align = "center" gutterBottom ="true"> */}
+
+                <div style = {{fontFamily: 'monospace', fontSize: '16px'}}>
                   {listing.listingTitle ? `${listing.listingTitle}` : "Title Not Available"}
+                </div>
+                  
+                {/* </Typography> */}
+
+                <div style = {{textAlign: "right", fontSize: "15px", fontFamily: 'monospace'}}>
                   {listing.listingPrice ? ` $${listing.listingPrice}` : " Price Not Available"}
-                </Typography>
+                </div>
               </CardContent>
             </Card>
           }
