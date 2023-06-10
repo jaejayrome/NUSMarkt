@@ -10,6 +10,8 @@ import Register from './Register.js';
 import {signInWithEmailAndPassword} from 'firebase/auth'
 import './Signup.css';
 import InputLabel from '@mui/material/InputLabel';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // missing the current features: signout 
 // auth.currentUser gives us the currentUser
@@ -28,13 +30,18 @@ function Signup() {
     const [loginPassword, setLoginPassword] = useState("");
     const navigate = useNavigate();
 
+    const onLogin = () => {
+        toast("You have successfully signed in")
+    }
+
     const login = async () => {
         try {
             const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
             await navigate(`/BUY/${user.user.uid}`)
-            alert ("You have succesfully signed in using \n Email Address: " + loginEmail  + "\n Password:" + loginPassword )
+            toast("You have successfully signed in")
+            // alert ("You have succesfully signed in using \n Email Address: " + loginEmail  + "\n Password:" + loginPassword )
         } catch (error) {
-            alert("Invalid email address or password \n Please Try Again.")
+            // alert("Invalid email address or password \n Please Try Again.")
         }
     }
 
@@ -82,7 +89,7 @@ function Signup() {
             }} size = "large" onClick = {login}>
             Login
             </Button>
-
+        
 
             <h4 className = "email" style = {{marginTop: "80px"}}> Don't have an account? </h4>
             <Link to = "/REGISTER" element = {<Register />}> 

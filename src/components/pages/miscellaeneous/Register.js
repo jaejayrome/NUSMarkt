@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../compiledData/Navbar.js';
-import {createUserWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
+import {createUserWithEmailAndPassword, onAuthStateChanged, updateProfile} from 'firebase/auth';
 import {collection, addDoc} from "firebase/firestore"
 import {auth, db} from '../../../config/firebase.js';
 import  TextField   from '@mui/material/TextField';
@@ -10,6 +10,7 @@ import  InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import Grid from '@mui/material/Grid';
+// import {Toast} from 
 
 // pass the user state down to the page component that contains the routes 
 // missing functionalities
@@ -61,6 +62,9 @@ function Register() {
           }
         await addDoc(newUserRef, newUser)
         await navigate(`/BUY/${user.user.uid}`)
+        await updateProfile(auth.currentUser, {
+            displayName: userName
+        })
         // just to debug and check whether the credentials are correct
         alert(JSON.stringify(newUser));
         } catch (error) {

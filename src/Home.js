@@ -4,6 +4,8 @@ import MasonryImageList from './components/compiledData/MasonryImageList';
 import {useState, useEffect} from 'react';
 import {db} from './config/firebase.js';
 import {collection, getDocs} from "@firebase/firestore";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // ListingContext is a global context that wraps the state listing
 // ListingContext.Provider provides this context to it's wrapper tags
@@ -31,7 +33,7 @@ function Home() {
         <div className = 'masonry'> 
         <MasonryImageList listings = {listings}/>
         </div>
-
+        <ToastContainer /> 
     </div>
     
     );

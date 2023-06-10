@@ -82,15 +82,15 @@ export default function ListingReader({ listingID }) {
               </div>
             </div>
 
-            <div style = {{fontFamily: 'monospace', fontSize: "20px", display: "flex"}}>
-            <div style={{flex: 4}}>
-            Unsure Of Your Sizing?
-            </div>
+          <div style = {{fontFamily: 'monospace', fontSize: "20px", display: "flex"}}>
+              <div style={{flex: 4}}>
+              Unsure Of Your Sizing?
+              </div>
 
-            <div style={{flex: 6}}>
-            <Button variant = "outlined" size = "medium" startIcon = {<CheckroomRoundedIcon />} sx = {{borderColor: "black", backgroundColor: 'white', color: "black", textTransform: "none"}}> SizeMeUp </Button>
-            </div>
-           </div> 
+              <div style={{flex: 6}}>
+              <Button variant = "outlined" size = "medium" startIcon = {<CheckroomRoundedIcon />} sx = {{borderColor: "black", backgroundColor: 'white', color: "black", textTransform: "none"}}> SizeMeUp </Button>
+              </div>
+          </div> 
 
            <div style = {{fontSize: "20px",fontFamily: "monospace", textDecoration: "underline"}}>
            Size Guide:
@@ -98,7 +98,7 @@ export default function ListingReader({ listingID }) {
 
            <div style = {{fontSize: "20px", fontFamily: 'monospace', textDecoration: "underline"}}> 
             Quantity:
-          </div>
+           </div>
 
           </div> 
         </div>
