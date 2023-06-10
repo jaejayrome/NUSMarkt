@@ -1,4 +1,4 @@
-// import { collection, addDoc } from '@firebase/firestore'
+import { collection, addDoc } from '@firebase/firestore'
 import {db, auth} from '../../../config/firebase.js'
 import {useState} from 'react'
 import { getStorage, ref, uploadBytes} from "firebase/storage";
@@ -76,8 +76,14 @@ export default function Sell_addListing() {
         sizesAvailable: selectedSizes, 
         filePath: listingTitle,
     }
-    // creating new image document in firestore
 
+    // onClickHandler when user adds listing 
+    const addListingHandler = async () => {
+        // need to add in the portion where it would upload the image
+
+        const listingDocumentRef = collection(db, "listing")
+        await addDoc(listingDocumentRef, newListing)
+    }
 
     return (
         <div>
@@ -126,14 +132,14 @@ export default function Sell_addListing() {
                     />
 
                     <div>
-                    Sizing:
+                    Select Sizes
                     </div>
-                    <SizeButtonGroup onSelectedSizes =  {handleSelectedSizes}/>
-
-                    <Button> Add Listing </Button>
-
-
-
+                    <SizeButtonGroup selectedSizes={selectedSizes}
+                    onSelectedSizes={handleSelectedSizes}/>
+                    Selected Sizes: {selectedSizes}
+                    <div>
+                    <Button onClick = {addListingHandler}> Add Listing </Button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -8,25 +8,26 @@ import { useState } from 'react';
 
 export default function SizeButtonGroup(props) {
 
-    const [selectedSizes, setSelectedSizes] = useState([]);
-
     const handleSizeToggle = (size) => {
-        setSelectedSizes((prevSelectedSizes) => {
-          if (prevSelectedSizes.includes(size)) {
-            return prevSelectedSizes.filter((prevSize) => prevSize !== size);
-          } else {
-            return [...prevSelectedSizes, size];
-          }
-        });
-        
-        props.onSelectedSizes(selectedSizes)
+        const isSelected = props.selectedSizes.includes(size);
+        let updatedSizes = [];
+
+        if (isSelected) {
+        // only keeps those that are different from the given size 
+        updatedSizes = props.selectedSizes.filter((selectedSize) => selectedSize !== size);
+        } else {
+        // else this means that the size hasn't been selected before
+        updatedSizes = [...props.selectedSizes, size];
+        }
+
+        props.onSelectedSizes(updatedSizes);
       };
 
     const sizeArr = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL']
 
     return (
         <div>
-            {sizeArr.map((sizing) => (<SizeButton selected = {selectedSizes.includes(sizing)} key = {sizing} size = {sizing} onSizeToggle = {handleSizeToggle}/>))}
+            {sizeArr.map((sizing) => (<SizeButton key = {sizing} size = {sizing} onSizeToggle = {handleSizeToggle} isSelected={props.selectedSizes.includes(sizing)}/>))}
         </div>
     )
 } 
