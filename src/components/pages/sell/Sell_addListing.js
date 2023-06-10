@@ -46,7 +46,7 @@ export default function Sell_addListing() {
 
     // haven't implement the size guide and the quantity
     // this should update the 'users' collection
-    // const listedBy = auth.currentUser.displayName;
+    const listedBy = auth.currentUser.displayName;
 
     // creating a reference to the storage
     const storage = getStorage()
@@ -75,6 +75,7 @@ export default function Sell_addListing() {
         productDescription: productDescription, 
         sizesAvailable: selectedSizes, 
         filePath: listingTitle,
+        listedBy: listedBy
     }
 
     // onClickHandler when user adds listing 
@@ -137,6 +138,11 @@ export default function Sell_addListing() {
                     <SizeButtonGroup selectedSizes={selectedSizes}
                     onSelectedSizes={handleSelectedSizes}/>
                     Selected Sizes: {selectedSizes}
+
+
+                    <div> 
+                        Size Guide: DropDownTable based on selected sizes
+                    </div>
                     <div>
                     <Button onClick = {addListingHandler}> Add Listing </Button>
                     </div>

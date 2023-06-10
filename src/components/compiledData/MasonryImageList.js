@@ -1,4 +1,4 @@
-import {Card, CardContent, Typography, ImageList, ImageListItem, Box, Hidden} from '@mui/material';
+import {Card, CardContent, ImageList, ImageListItem, Box, Hidden} from '@mui/material';
 import {Link} from 'react-router-dom';
 import ImageHandler from '../../config/ImageHandler.js'
 
@@ -18,13 +18,9 @@ return (
               </Link>)}
 
               <CardContent  sx = {{overflowY: "hidden"}}>
-                {/* <Typography variant="monospace" color="black" align = "center" gutterBottom ="true"> */}
-
                 <div style = {{fontFamily: 'monospace', fontSize: '16px'}}>
                   {listing.listingTitle ? `${listing.listingTitle}` : "Title Not Available"}
                 </div>
-                  
-                {/* </Typography> */}
 
                 <div style = {{textAlign: "right", fontSize: "15px", fontFamily: 'monospace'}}>
                   {listing.listingPrice ? ` $${listing.listingPrice}` : " Price Not Available"}
