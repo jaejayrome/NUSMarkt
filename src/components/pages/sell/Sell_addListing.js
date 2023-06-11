@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { Button, InputLabel, TextField } from '@mui/material';
 import Navbar from '../../compiledData/Navbar.js';
 import SizeButtonGroup from '../../mini_components/SizeButtonGroup.js';
-import AddTaskSharpIcon from '@mui/icons-material/AddTaskSharp';
 import {auth} from '../../../config/firebase.js'
 import SizingGuide from '../../mini_components/SizingGuide.js';
+import TransitionModal from '../../mini_components/TransitionModal.js';
 
 // this component is for the user to add any listings up to sell
 // need to create a modal that lets u upload images to the datbase
@@ -109,18 +109,19 @@ export default function Sell_addListing() {
                     </div>
                     <SizeButtonGroup selectedSizes={selectedSizes}
                     onSelectedSizes={handleSelectedSizes}/>
-                    Selected Sizes: {selectedSizes}
-
-                    <div>
-                    <Button startIcon = {<AddTaskSharpIcon/>} sx = {{borderColor: 'black', color: 'black'}}variant = "outlined" onClick = {navigationHandler}> Next Step</Button>
-                    </div>
+                    
                 </div>
+                {selectedSizes.length != 0 ?
+                    <div style={{flex: 1}}>
+                        Configure Sizing Guide 
+                        <SizingGuide selectedSizes = {selectedSizes}/>
+                    </div> : <div style = {{flex: 1}}> </div>
+                }
 
-                <div style={{flex: 1}}>
-                    Select Your Sizes
-                    <SizingGuide selectedSizes = {selectedSizes}/>
-                </div>
+            </div>
 
+            <div style = {{marginTop: "3%" ,position: 'relative', left: "42%"}}>
+            <TransitionModal navigation = {navigationHandler}/>
             </div>
 
             

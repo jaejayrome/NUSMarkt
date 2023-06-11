@@ -4,6 +4,7 @@ import { Box, Button } from '@mui/material';
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
 import Navbar from '../../compiledData/Navbar.js';
 import { useLocation, useNavigate } from 'react-router-dom';
+import TransitionModal from '../../mini_components/TransitionModal.js';
 
 // Component have to handle the uploading of the image to the datbase 
 export default function Sell_addListing2() {
@@ -117,7 +118,7 @@ export default function Sell_addListing2() {
                 </div>
 
                 <div style={{flex: 5}}>
-                <Button sx = {{borderColor: 'black', color: 'black'}}variant = "outlined" onClick = {navigationHandler}> Next Step</Button>
+                  <TransitionModal navigation = {navigationHandler}/>
                 </div>
             </div>
 
