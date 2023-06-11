@@ -7,10 +7,15 @@ export default function SizingGuideRow(props) {
     const [inputMeasurementArr, setInputMeasurementArr] = useState([])
 
     const arrHandler = (size, inputMeasurement) => {
-       const newKVPair = {size: size, inputMeasurement: inputMeasurement}
-       const newArr = [...inputMeasurementArr, newKVPair]
-       setInputMeasurementArr(newArr)
-       props.callback(props.dimension, newArr)
+
+       const updatedMeasurementArr = [...inputMeasurementArr]
+       const existingIndex = updatedMeasurementArr.findIndex((item) => item.size === size)
+       
+       existingIndex !== -1 ? updatedMeasurementArr[existingIndex] = {size: size, inputMeasurement: inputMeasurement}
+        : updatedMeasurementArr.push({size: size, inputMeasurement: inputMeasurement})
+       
+       setInputMeasurementArr(updatedMeasurementArr)
+       props.callback(props.dimension, updatedMeasurementArr)
       };
       
     return (
