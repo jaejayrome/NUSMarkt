@@ -1,31 +1,37 @@
-import { collection, addDoc } from '@firebase/firestore'
-import {db, auth} from '../../../config/firebase.js'
+
 import {useState} from 'react'
-import { getStorage, ref, uploadBytes} from "firebase/storage";
-import { Box, Button, InputLabel, TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Button, InputLabel, TextField } from '@mui/material';
 import Navbar from '../../compiledData/Navbar.js';
 import SizeButtonGroup from '../../mini_components/SizeButtonGroup.js';
+import AddTaskSharpIcon from '@mui/icons-material/AddTaskSharp';
+import {auth} from '../../../config/firebase.js'
+import SizingGuide from '../../mini_components/SizingGuide.js';
 
 // this component is for the user to add any listings up to sell
 // need to create a modal that lets u upload images to the datbase
 
+// confirm the details of the listing before proceeding
 
 // things to do 
 // 1. add the image locally 
 // 2. add the image onto the firestore
-// 3. link the current user logged in with that of the new listing doc
-// 4. update the listing collection
+// 3. link the current user logged in with that of the new listing doc (done)
+// 4. update the listing collection (done)
 
 // 5. think of how to implement size guide 
-// 6. think of implementing what sizes are available
+// 6. think of implementing what sizes are available (done)
 
-// use of toggle switch
-// XXS XS S M L XL XXL
+// after we add the listing it should bring me to a refreshed page 
+// this page would show the current listings that the users has 
+
+
 export default function Sell_addListing() {
     const [listingTitle, setListingTitle] = useState("")
     const [listingPrice, setListingPrice] = useState("")
     const [productDescription, setProductDescription] = useState('')
     const [selectedSizes, setSelectedSizes] = useState([]);
+    
 
     // state handlers
     const listingTitleHandler = (event) => {
@@ -38,35 +44,13 @@ export default function Sell_addListing() {
         setProductDescription(event.target.value)
     }
 
-
     // callback function
     const handleSelectedSizes = (sizes) => {
         setSelectedSizes(sizes);
-      };
-
-    // haven't implement the size guide and the quantity
-    // this should update the 'users' collection
-    const listedBy = auth.currentUser.displayName;
-
-    // creating a reference to the storage
-    const storage = getStorage()
-
-    // creating a filePathReference to the database 
-    const listingImagesRef = ref(storage, `images/${listingTitle}.jpg`);
-
-    // upload image file locally
-    const [selectedImage, setSelectedImage] = useState(null);
-
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        setSelectedImage(URL.createObjectURL(file));
     };
 
-    // // uploading of the image to firestore
-    // uploadBytes(storageRef, file).then((snapshot) => {
-    //     console.log('Uploaded a blob or file!');
-    //   });
-
+    // retrieves the currentUser username 
+    const listedBy = auth.currentUser.displayName;
 
     // new Listing object
     const newListing = {
@@ -78,37 +62,22 @@ export default function Sell_addListing() {
         listedBy: listedBy
     }
 
-    // onClickHandler when user adds listing 
-    const addListingHandler = async () => {
-        // need to add in the portion where it would upload the image
+    const navigate = useNavigate()
 
-        const listingDocumentRef = collection(db, "listing")
-        await addDoc(listingDocumentRef, newListing)
+    const navigationHandler = () => {
+        navigate('STEP2', {state: newListing})
     }
 
+
+    
     return (
         <div>
             <Navbar />
-            <div style = {{display: "flex"}}>
-                <div style = {{flex: 1, marginLeft: "2%"}}> 
-                    <Box  sx = {{display: "flex",
-                                flexDirection: "column", justifyContent: 'center', 
-                                alignItems: 'center',border: '1px dashed black',
-                                backgroundColor: "#E5E4E2", width: "90%", height: "100%" , 
-                                '&:hover': {
-                                backgroundColor: '#D3D3D3',
-                                opacity: [0.9, 0.8, 0.7]}
-                    }}>
-                    <Button variant = "outlined" sx = {{fontWeight: 'bold', borderColor: 'black', color: 'black', textTransform: "none", '&:hover': {
-                                backgroundColor: '#D3D3D3',
-                                borderColor: 'black'
-                                }}}> Upload Image Here </Button>
-                    </Box>
-                </div>
 
-                <div style = {{flex: 1.5}}>
+            <div style = {{display: "flex", flexDirection: 'row'}}> 
+                <div style = {{flex: 1, marginLeft: "10%"}}>
                     <div style = {{fontFamily: 'serif', fontWeight: 'bolder', fontSize: "30px", marginBottom: "5%"}}> 
-                    Listing Details
+                    Step 1: Fill in the Listing Details
                     </div>
 
                     <InputLabel htmlFor = "listingTitle"> Product Name </InputLabel>
@@ -116,6 +85,7 @@ export default function Sell_addListing() {
                     variant = "outlined"
                     value = {listingTitle}
                     onChange = {listingTitleHandler}
+                    required
                     />
 
                     <InputLabel htmlFor = "listingPrice"> Product Price </InputLabel>
@@ -123,6 +93,7 @@ export default function Sell_addListing() {
                     variant = "outlined"
                     value = {listingPrice}
                     onChange = {listingPriceHandler}
+                    required
                     />
 
                     <InputLabel htmlFor = "productDescription"> Product Description </InputLabel>
@@ -130,6 +101,7 @@ export default function Sell_addListing() {
                     variant = "outlined"
                     value = {productDescription}
                     onChange = {productDescriptionHandler}
+                    required
                     />
 
                     <div>
@@ -139,15 +111,19 @@ export default function Sell_addListing() {
                     onSelectedSizes={handleSelectedSizes}/>
                     Selected Sizes: {selectedSizes}
 
-
-                    <div> 
-                        Size Guide: DropDownTable based on selected sizes
-                    </div>
                     <div>
-                    <Button onClick = {addListingHandler}> Add Listing </Button>
+                    <Button startIcon = {<AddTaskSharpIcon/>} sx = {{borderColor: 'black', color: 'black'}}variant = "outlined" onClick = {navigationHandler}> Next Step</Button>
                     </div>
                 </div>
+
+                <div style={{flex: 1}}>
+                    Select Your Sizes
+                    <SizingGuide selectedSizes = {selectedSizes}/>
+                </div>
+
             </div>
+
+            
         </div>
     )
 }
