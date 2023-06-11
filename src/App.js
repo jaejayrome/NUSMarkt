@@ -8,6 +8,7 @@ import ListingPage from './components/mini_components/ListingPage.js'
 import Cart from './components/pages/buy/Cart.js'
 import ToastContain from './components/mini_components/ToastContain.js';
 import Sell_addListing from './components/pages/sell/Sell_addListing.js';
+// import Sell_addListing1 from './components/pages/sell/Sell_addListing1.js';
 import Sell_addListing2 from './components/pages/sell/Sell_addListing2.js';
 import Sell_addListing3 from './components/pages/sell/Sell_addListing3.js';
 
@@ -30,6 +31,7 @@ function App() {
           <Route index element={<Sell_Page/>} />
           <Route path = "ADD_LISTING" element = {<Outlet />}>
             <Route index element={<Sell_addListing/>} />
+            {/* <Route path = "STEP1" element = {<Sell_addListing1/>}/> */}
             <Route path = "STEP2" element = {<Sell_addListing2/>}/>
             <Route path = "STEP3" element = {<Sell_addListing3/>}/>
           </Route>

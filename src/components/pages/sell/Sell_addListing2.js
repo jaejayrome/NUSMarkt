@@ -19,10 +19,12 @@ export default function Sell_addListing2() {
     listingTitle: location.state.listingTitle, 
     listingPrice: location.state.listingPrice, 
     productDescription: location.state.productDescription, 
-    sizesAvailable: location.state.selectedSizes, 
+    sizesAvailable: location.state.sizesAvailable, 
     filePath: location.state.listingTitle,
-    listedBy: location.state.listedBy
+    listedBy: location.state.listedBy,
+    sizingGuide: location.state.sizingGuide
 }
+
 
   const navigationHandler = () => {
     navigate('/SELL/ADD_LISTING/STEP3', {state: newListing})
@@ -51,7 +53,7 @@ export default function Sell_addListing2() {
           const storage = getStorage()
 
           // creating a filePathReference to the a temporary folder
-          const listingImagesRef = ref(storage, `images/temp/${listingTitle}.jpg`);
+          const listingImagesRef = ref(storage, `images/${listingTitle}.jpg`);
           const snapshot = await uploadBytes(listingImagesRef, file);
           
           // Get the URL of the uploaded file
@@ -71,23 +73,38 @@ export default function Sell_addListing2() {
     return (
         <div>
             <Navbar />
+            <div style = {{ fontFamily: 'serif', fontWeight: 'bolder', fontSize: "30px", marginBottom: "5%"}}> 
+              Step 2: Upload Your Image
+            </div>
 
-            <div style = {{display: 'flex', flexDirection: "column", height: "90vh"}}>
+              <label htmlFor= 'upload-image'> 
+                              {!selectedImage ? <Button startIcon = {<AddPhotoAlternateOutlinedIcon/>} variant = "outlined" 
+                              sx = {{fontWeight: 'bold', borderColor: 'black', color: 'black', 
+                                      textTransform: "none", 
+                                      '&:hover': {
+                                      backgroundColor: '#D3D3D3',
+                                      borderColor: 'black'
+                                      }}}
+                              onClick = {imageRefHandler}> Upload Image </Button> : 
+                              <Button startIcon = {<AddPhotoAlternateOutlinedIcon/>} variant = "outlined" 
+                              sx = {{fontWeight: 'bold', borderColor: 'black', color: 'black', 
+                                      textTransform: "none", 
+                                      '&:hover': {
+                                      backgroundColor: '#D3D3D3',
+                                      borderColor: 'black'
+                                      }}}
+                              onClick = {imageRefHandler}> Choose Another Image </Button>}
+                </label>
 
-              <div style = {{flex: 1, fontFamily: 'serif', fontWeight: 'bolder', fontSize: "30px", marginBottom: "5%"}}> 
-                Step 2: Upload Your Image
-              </div>
-
-              <div style = {{flex: 20}}>
                 <Box  sx = {{display: "flex",
                                     flexDirection: "column", justifyContent: 'center', 
                                     alignItems: 'center',border: '1px dashed black',
-                                    backgroundColor: "#E5E4E2", width: "50%", height: "80%" , 
+                                    backgroundColor: "#E5E4E2", width: "100%", height: "100%" , 
                                     '&:hover': {
                                     backgroundColor: '#D3D3D3',
                                     opacity: [0.9, 0.8, 0.7]},
-                                    flex: 1
-                        }}>
+                                    }}>
+                            
                             <input
                                 accept="image/*"
                                 id="upload-image"
@@ -96,33 +113,16 @@ export default function Sell_addListing2() {
                                 style={{ display: 'none' }}
                                 onChange={handleImageUpload} />
 
-                            {!selectedImage ? <Button startIcon = {<AddPhotoAlternateOutlinedIcon/>} variant = "outlined" 
-                            sx = {{fontWeight: 'bold', borderColor: 'black', color: 'black', 
-                                    textTransform: "none", 
-                                    '&:hover': {
-                                    backgroundColor: '#D3D3D3',
-                                    borderColor: 'black'
-                                    }}}
-                            onClick = {imageRefHandler}> Choose Image </Button> : 
-                            <Button startIcon = {<AddPhotoAlternateOutlinedIcon/>} variant = "outlined" 
-                            sx = {{fontWeight: 'bold', borderColor: 'black', color: 'black', 
-                                    textTransform: "none", 
-                                    '&:hover': {
-                                    backgroundColor: '#D3D3D3',
-                                    borderColor: 'black'
-                                    }}}
-                            onClick = {imageRefHandler}> Choose Another Image </Button>}
-
-                            {selectedImage ? <img src = {imageURL} alt = "Image Upload Fail" />: "No Image Selected"}
-                        </Box>
-                </div>
-
-                <div style={{flex: 5}}>
+                            {selectedImage && (
+                                  <div>
+                                    <img
+                                      src={imageURL}
+                                      alt="Image Upload Fail"
+                                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                    />
+                                  </div>)}
+                  </Box>
                   <TransitionModal navigation = {navigationHandler}/>
-                </div>
-            </div>
-
-            
         </div>
     )
 

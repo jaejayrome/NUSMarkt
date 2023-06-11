@@ -26,12 +26,51 @@ import TransitionModal from '../../mini_components/TransitionModal.js';
 // this page would show the current listings that the users has 
 
 
+// need to make the sizing guide the textfield be disabled once 
+
 export default function Sell_addListing() {
     const [listingTitle, setListingTitle] = useState("")
     const [listingPrice, setListingPrice] = useState("")
     const [productDescription, setProductDescription] = useState('')
     const [selectedSizes, setSelectedSizes] = useState([]);
+    const [sizingGuide, setSizingGuide] = useState([]);
+    const [cSizingGuide, setCSizingGuide] = useState([]);
+
+    const [isSizeGuideConfirmed, setIsSizeGuideConfirmed] = useState(false);
+    const [isSizingGuideDisabled, setIsSizingGuideDisabled] = useState(false);
+
+
+    const preBuiltSizes = ["Chest Width", 'Shoulder Width', "Chest Length"]
+
+    const handleSizingGuide = (sizingGuide) => {
+        // const filteredSizingGuide = sizingGuide.reduce((acc, obj) => {
+        //   const existingEntry = acc.find(
+        //     (entry) =>
+        //       entry.dimension === obj.dimension &&
+        //       entry.inputMeasurementArr.some(
+        //         (existingObj) => existingObj.size === obj.inputMeasurementArr[0].size
+        //       )
+        //   );
+      
+        //   if (!existingEntry) {
+        //     acc.push(obj);
+        //   }
+      
+        //   return acc;
+        // }, []);
+      
+        setSizingGuide(sizingGuide);
+    };
+
+    const confirmSizeGuide = (sizingGuide) => {
+        setCSizingGuide(sizingGuide)
+    }
     
+    const handleConfirmSizeGuide = () => {
+    confirmSizeGuide(sizingGuide);
+    setIsSizeGuideConfirmed(true);
+    // setIsSizingGuideDisabled(true);
+    };
 
     // state handlers
     const listingTitleHandler = (event) => {
@@ -49,9 +88,12 @@ export default function Sell_addListing() {
         setSelectedSizes(sizes);
     };
 
+    
+    
+
     // retrieves the currentUser username 
     const listedBy = auth.currentUser.displayName;
-
+    
     // new Listing object
     const newListing = {
         listingTitle: listingTitle, 
@@ -59,7 +101,8 @@ export default function Sell_addListing() {
         productDescription: productDescription, 
         sizesAvailable: selectedSizes, 
         filePath: listingTitle,
-        listedBy: listedBy
+        listedBy: listedBy,
+        sizingGuide: cSizingGuide
     }
 
     const navigate = useNavigate()
@@ -68,6 +111,7 @@ export default function Sell_addListing() {
         navigate('STEP2', {state: newListing})
     }
 
+    
 
     
     return (
@@ -114,10 +158,11 @@ export default function Sell_addListing() {
                 {selectedSizes.length != 0 ?
                     <div style={{flex: 1}}>
                         Configure Sizing Guide 
-                        <SizingGuide selectedSizes = {selectedSizes}/>
+                        <SizingGuide disabled={isSizeGuideConfirmed} dimensions = {preBuiltSizes} callback = {handleSizingGuide} selectedSizes = {selectedSizes}/>
+
+                        <Button disabled= {isSizeGuideConfirmed} variant = "outlined" onClick = {handleConfirmSizeGuide}> Confirm Size Guide </Button>
                     </div> : <div style = {{flex: 1}}> </div>
                 }
-
             </div>
 
             <div style = {{marginTop: "3%" ,position: 'relative', left: "42%"}}>

@@ -1,9 +1,23 @@
 import { Table, TableHead, TableRow, TableCell, TableBody, TextField } from '@mui/material';
+import SizingGuideRow from './SizingGuideRow.js';
+import { useState } from 'react';
 
 export default function SizingGuide(props) {
+    const [tableArr, setTableArr] = useState([])
 
+    const tableHandler = (name, inputMeasurementArr) => {
 
-    const preBuiltSizes = ["Chest Width", 'Shoulder Width', "Chest Length"]
+      const updatedArr = [...tableArr]
+      const existingIndex = updatedArr.findIndex((obj) => obj.name === name);
+
+      existingIndex !== -1 ? updatedArr[existingIndex] = { name: name, inputMeasurementArr: inputMeasurementArr } : 
+        updatedArr.push({ name: name, inputMeasurementArr: inputMeasurementArr })
+      
+      setTableArr(updatedArr)
+      props.callback(updatedArr);
+    };
+    
+
 
     return (
     <div>
@@ -19,13 +33,8 @@ export default function SizingGuide(props) {
         </TableRow>
       </TableHead>
       <TableBody>
-        {preBuiltSizes.map((dimension) => {
-            return <TableRow key = {dimension}> 
-                <TableCell> {dimension} </TableCell>
-                {props.selectedSizes.map((size) => {
-                    return <TableCell key = {size}> {<TextField required/>} </TableCell>
-                })} 
-            </TableRow>
+        {props.dimensions.map((dimension) => {
+            return <SizingGuideRow disabled = {props.disabled} callback = {tableHandler} selectedSizes = {props.selectedSizes} dimension = {dimension}/>
         })}
       </TableBody>
     </Table>

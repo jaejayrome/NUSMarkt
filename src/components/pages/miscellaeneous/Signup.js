@@ -30,18 +30,18 @@ function Signup() {
     const [loginPassword, setLoginPassword] = useState("");
     const navigate = useNavigate();
 
-    const onLogin = () => {
-        toast("You have successfully signed in")
-    }
+    // const onLogin = () => {
+    //     toast("You have successfully signed in")
+    // }
 
     const login = async () => {
         try {
             const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-            await navigate(`/BUY/${user.user.uid}`)
+            await navigate(`/BUY/`)
             toast("You have successfully signed in")
-            // alert ("You have succesfully signed in using \n Email Address: " + loginEmail  + "\n Password:" + loginPassword )
+            
         } catch (error) {
-            // alert("Invalid email address or password \n Please Try Again.")
+            console.log(error)
         }
     }
 
