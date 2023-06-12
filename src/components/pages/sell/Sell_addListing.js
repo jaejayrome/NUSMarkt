@@ -9,24 +9,6 @@ import SizingGuide from '../../mini_components/SizingGuide.js';
 import TransitionModal from '../../mini_components/TransitionModal.js';
 
 // this component is for the user to add any listings up to sell
-// need to create a modal that lets u upload images to the datbase
-
-// confirm the details of the listing before proceeding
-
-// things to do 
-// 1. add the image locally 
-// 2. add the image onto the firestore
-// 3. link the current user logged in with that of the new listing doc (done)
-// 4. update the listing collection (done)
-
-// 5. think of how to implement size guide 
-// 6. think of implementing what sizes are available (done)
-
-// after we add the listing it should bring me to a refreshed page 
-// this page would show the current listings that the users has 
-
-
-// need to make the sizing guide the textfield be disabled once 
 
 export default function Sell_addListing() {
     const [listingTitle, setListingTitle] = useState("")
@@ -37,28 +19,11 @@ export default function Sell_addListing() {
     const [cSizingGuide, setCSizingGuide] = useState([]);
 
     const [isSizeGuideConfirmed, setIsSizeGuideConfirmed] = useState(false);
-    const [isSizingGuideDisabled, setIsSizingGuideDisabled] = useState(false);
 
 
     const preBuiltSizes = ["Chest Width", 'Shoulder Width', "Chest Length"]
 
     const handleSizingGuide = (sizingGuide) => {
-        // const filteredSizingGuide = sizingGuide.reduce((acc, obj) => {
-        //   const existingEntry = acc.find(
-        //     (entry) =>
-        //       entry.dimension === obj.dimension &&
-        //       entry.inputMeasurementArr.some(
-        //         (existingObj) => existingObj.size === obj.inputMeasurementArr[0].size
-        //       )
-        //   );
-      
-        //   if (!existingEntry) {
-        //     acc.push(obj);
-        //   }
-      
-        //   return acc;
-        // }, []);
-      
         setSizingGuide(sizingGuide);
     };
 
@@ -67,9 +32,8 @@ export default function Sell_addListing() {
     }
     
     const handleConfirmSizeGuide = () => {
-    confirmSizeGuide(sizingGuide);
-    setIsSizeGuideConfirmed(true);
-    // setIsSizingGuideDisabled(true);
+        confirmSizeGuide(sizingGuide);
+        setIsSizeGuideConfirmed(true);
     };
 
     // state handlers
@@ -87,10 +51,7 @@ export default function Sell_addListing() {
     const handleSelectedSizes = (sizes) => {
         setSelectedSizes(sizes);
     };
-
     
-    
-
     // retrieves the currentUser username 
     const listedBy = auth.currentUser.displayName;
 
@@ -112,14 +73,12 @@ export default function Sell_addListing() {
     }
 
     
-
-    
     return (
         <div>
             <Navbar />
 
-            <div style = {{display: "flex", flexDirection: 'row'}}> 
-                <div style = {{flex: 1, marginLeft: "10%"}}>
+            <div style = {{display: "flex", flexDirection: 'row', alignItems: "center"}}> 
+                <div style = {{flex: 1, marginLeft: "10%", display: "flex", flexDirection: 'column'}}>
                     <div style = {{fontFamily: 'serif', fontWeight: 'bolder', fontSize: "30px", marginBottom: "5%"}}> 
                     Step 1: Fill in the Listing Details
                     </div>
@@ -129,6 +88,7 @@ export default function Sell_addListing() {
                     variant = "outlined"
                     value = {listingTitle}
                     onChange = {listingTitleHandler}
+                    sx = {{width: 500, mb: '1%'}}
                     required
                     />
 
@@ -137,6 +97,7 @@ export default function Sell_addListing() {
                     variant = "outlined"
                     value = {listingPrice}
                     onChange = {listingPriceHandler}
+                    sx = {{width: 500, mb: '1%'}}
                     required
                     />
 
@@ -145,10 +106,11 @@ export default function Sell_addListing() {
                     variant = "outlined"
                     value = {productDescription}
                     onChange = {productDescriptionHandler}
+                    sx = {{width: 500, mb: '1%'}}
                     required
                     />
 
-                    <div>
+                    <div style={{marginBottom: '1%'}}> 
                     Select Sizes
                     </div>
                     <SizeButtonGroup selectedSizes={selectedSizes}
@@ -156,11 +118,11 @@ export default function Sell_addListing() {
                     
                 </div>
                 {selectedSizes.length != 0 ?
-                    <div style={{flex: 1}}>
+                    <div style={{flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                         Configure Sizing Guide 
                         <SizingGuide disabled={isSizeGuideConfirmed} dimensions = {preBuiltSizes} callback = {handleSizingGuide} selectedSizes = {selectedSizes}/>
 
-                        <Button sx = {{color: "black", borderColor: "black"}} disabled= {isSizeGuideConfirmed} variant = "outlined" onClick = {handleConfirmSizeGuide}> Confirm Size Guide </Button>
+                        <Button sx = {{color: "black", borderColor: "black", mt : '2%'}} disabled= {isSizeGuideConfirmed} variant = "outlined" onClick = {handleConfirmSizeGuide}> Confirm Size Guide </Button>
                     </div> : <div style = {{flex: 1}}> </div>
                 }
             </div>

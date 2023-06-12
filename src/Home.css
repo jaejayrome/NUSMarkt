@@ -1,8 +1,18 @@
-.masonry{
+/* .masonry{
   justify-content: center;
   display: flex;
   padding-top: 30px;
   width: 100vw;
-  overflow: hidden;
   background-color: white;
+  overflow-y: auto;
+} */
+
+.masonry {
+  justify-content: center;
+  display: flex;
+  padding-top: 30px;
+  width: 100vw;
+  background-color: white;
+  height: calc(100vh - 40vh); /* Add a fixed height to the container */
+  overflow-y: auto; /* Use 'auto' instead of 'scroll' */
 }
