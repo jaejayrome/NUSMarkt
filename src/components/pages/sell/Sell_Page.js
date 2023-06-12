@@ -8,6 +8,7 @@ import Sell_User from './Sell_User';
 
 // the start of the sell pipeline, one would have to change the sell page whenever a user has logged in 
 // or use navbar to send back the state up to the parent to be able to view it
+
 function Sell_Page() {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);

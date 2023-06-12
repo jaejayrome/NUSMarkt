@@ -93,7 +93,7 @@ export default function Sell_addListing() {
 
     // retrieves the currentUser username 
     const listedBy = auth.currentUser.displayName;
-    
+
     // new Listing object
     const newListing = {
         listingTitle: listingTitle, 
@@ -160,7 +160,7 @@ export default function Sell_addListing() {
                         Configure Sizing Guide 
                         <SizingGuide disabled={isSizeGuideConfirmed} dimensions = {preBuiltSizes} callback = {handleSizingGuide} selectedSizes = {selectedSizes}/>
 
-                        <Button disabled= {isSizeGuideConfirmed} variant = "outlined" onClick = {handleConfirmSizeGuide}> Confirm Size Guide </Button>
+                        <Button sx = {{color: "black", borderColor: "black"}} disabled= {isSizeGuideConfirmed} variant = "outlined" onClick = {handleConfirmSizeGuide}> Confirm Size Guide </Button>
                     </div> : <div style = {{flex: 1}}> </div>
                 }
             </div>

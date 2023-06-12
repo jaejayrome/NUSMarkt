@@ -10,32 +10,23 @@ import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import { styled } from '@mui/system';
 import { Button } from '@mui/material';
 import CheckroomRoundedIcon from '@mui/icons-material/CheckroomRounded';
+import SizingGuideTable from '../components/mini_components/SizingGuideTable.js';
 
-
+// things learnt we cannot retrieve the data before rendering the component in case if it is null 
 export default function ListingReader({ listingID }) {
   const [listingData, setListingData] = useState(null);
 
   const LargeAccountCircleSharpIcon = styled(AccountCircleSharpIcon)`
-  font-size: 60px;
-`;
-
-  // // iterate through sizes
-  // const iterateSizes = (listingArr) => {
-  //   listingArr.forEach(x => <SizeBox />)
-  // }
-
-  // want this side-effect to render whenever the listingID changes
-  // listingData returns the individual listing from the database
+  font-size: 60px;`;
 
   useEffect(() => {
     const fetchlisting = async () => {
       try {
         const listingRef = doc(db, 'listing', listingID);
         const listingSnapshot = await getDoc(listingRef);
-
         if (listingSnapshot.exists()) {
           const data = listingSnapshot.data();
-          setListingData(data);
+          setListingData({...data, uid: listingSnapshot.id});
         } else {
           // listing does not exist
           console.log('listing does not exist');
@@ -96,9 +87,10 @@ export default function ListingReader({ listingID }) {
            Size Guide:
            </div>
 
-           <div style = {{fontSize: "20px", fontFamily: 'monospace', textDecoration: "underline"}}> 
-            Quantity:
-           </div>
+           {listingData.sizingGuide && (
+            <SizingGuideTable inputMeasurements = {listingData.sizingGuide} selectedSizes = {listingData.sizesAvailable} dimensions = {listingData.sizingGuide.map((element) => element.name)} />
+           )}
+           
 
           </div> 
         </div>
