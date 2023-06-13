@@ -6,7 +6,7 @@ export default function MasonryImageList(props) {
 // One Issue: need to hard code the filepath in order to download the images
 return (
   <Box sx={{ width: 1600, alignItems: 'center', justifyItems: 'center'}}>
-    <ImageList cols={3} gap={75}>
+    <ImageList cols={3} gap={40}>
       {props.listings.map((listing) => (
         <ImageListItem key={listing.id} style = {{width: "400px", height: "410px", marginLeft: "25px"}}>
           {
