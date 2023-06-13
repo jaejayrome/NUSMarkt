@@ -11,8 +11,11 @@ import { styled } from '@mui/system';
 import { Button } from '@mui/material';
 import CheckroomRoundedIcon from '@mui/icons-material/CheckroomRounded';
 import SizingGuideTable from '../components/mini_components/SizingGuideTable.js';
+import AddShoppingCartSharpIcon from '@mui/icons-material/AddShoppingCartSharp';
 
 // things learnt we cannot retrieve the data before rendering the component in case if it is null 
+// create a transition modal that would allow the user to add to cart? 
+// alternative is to create  an add button thtat would allow us to increment the quantity but when it is 0 we disable the button
 export default function ListingReader({ listingID }) {
   const [listingData, setListingData] = useState(null);
 
@@ -65,12 +68,17 @@ export default function ListingReader({ listingID }) {
               <LargeAccountCircleSharpIcon  sx = {{marginRight: "3%"}}/>
               </div>
 
-              <div style= {{flex: "8", fontSize: "15px", fontFamily: "monospace"}}>
+              <div style= {{flex: "4", fontSize: "15px", fontFamily: "monospace"}}>
                 Listed By: 
                 <div style = {{fontSize: "18px"}}> 
                   {listingData.listedBy}
                 </div>
               </div>
+
+              <div style= {{flex: "4"}}>
+                <Button startIcon = {<AddShoppingCartSharpIcon/>} sx = {{borderColor: 'black', color: 'black'}} variant = 'outlined'> Add To Cart </Button>
+              </div>
+              
             </div>
 
           <div style = {{fontFamily: 'monospace', fontSize: "20px", display: "flex"}}>
