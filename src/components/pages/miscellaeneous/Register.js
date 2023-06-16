@@ -10,7 +10,8 @@ import  InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import Grid from '@mui/material/Grid';
-// import {Toast} from 
+import {toast} from 'react-toastify';
+
 
 // pass the user state down to the page component that contains the routes 
 // missing functionalities
@@ -52,6 +53,7 @@ function Register() {
         const newUserRef = collection(db, "users")
         // whenever a user has registered, it's metadata would be sent to the users collleciton
         const newUser = {
+            uid: user.user.uid, 
             registerEmail: registerEmail,
             registerPassword: registerPassword,
             firstName: firstName,
@@ -61,12 +63,12 @@ function Register() {
             telegramHandle: telegramHandle
           }
         await addDoc(newUserRef, newUser)
-        await navigate(`/BUY/${user.user.uid}`)
+        await navigate(`/BUY`)
         await updateProfile(auth.currentUser, {
             displayName: userName
         })
-        // just to debug and check whether the credentials are correct
-        alert(JSON.stringify(newUser));
+
+        toast("You have successfully signed up")
         } catch (error) {
             alert("You have not completed the required fields!")
             console.log(error.message);
@@ -219,6 +221,7 @@ function Register() {
                 </Grid>
             
             </Grid>
+
 
             <Button variant = "outlined" 
             disableRipple

@@ -5,10 +5,9 @@ import Trade_Page from './components/pages/trade/Trade_Page.js'
 import Signup from './components/pages/miscellaeneous/Signup.js';
 import Register from './components/pages/miscellaeneous/Register.js';
 import ListingPage from './components/mini_components/ListingPage.js'
-import Cart from './components/pages/buy/Cart.js'
+import Cart from './components/pages/buy/Cart/Cart.js'
 import ToastContain from './components/mini_components/ToastContain.js';
 import Sell_addListing from './components/pages/sell/Sell_addListing.js';
-// import Sell_addListing1 from './components/pages/sell/Sell_addListing1.js';
 import Sell_addListing2 from './components/pages/sell/Sell_addListing2.js';
 import Sell_addListing3 from './components/pages/sell/Sell_addListing3.js';
 

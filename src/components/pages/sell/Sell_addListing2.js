@@ -63,7 +63,7 @@ export default function Sell_addListing2() {
 
       <div style = {{display: 'flex', justifyContent: "center"}}>
 
-      <div style={{ flex: 1.5, textAlign: "center", marginBottom: "1rem", marginTop: "12rem  "}}>
+      <div style={{ flex: 1.5, textAlign: "center", marginBottom: "1rem", marginTop: "12rem"}}>
         {!selectedImage ? (
           <Button
             startIcon={<AddPhotoAlternateOutlinedIcon />}
@@ -85,6 +85,7 @@ export default function Sell_addListing2() {
         ) : (
           <Button
             startIcon={<AddPhotoAlternateOutlinedIcon />}
+            onClick={imageRefHandler}
             variant="outlined"
             sx={{
               fontWeight: "bold",

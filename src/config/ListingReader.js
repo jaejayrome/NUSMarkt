@@ -2,8 +2,8 @@
 // this component aims to return everything that needs to be displayed within an individual listing
 
 import { useEffect, useState } from 'react';
-import { db } from './firebase.js';
-import { doc, getDoc } from '@firebase/firestore';
+import { auth, db } from './firebase.js';
+import { collection, query, where, getDoc, doc, getDocs, updateDoc, arrayUnion} from '@firebase/firestore';
 import ImageHandler from './ImageHandler.js';
 import "../stylesheets/Listing.css";
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
@@ -11,7 +11,7 @@ import { styled } from '@mui/system';
 import { Button } from '@mui/material';
 import CheckroomRoundedIcon from '@mui/icons-material/CheckroomRounded';
 import SizingGuideTable from '../components/mini_components/SizingGuideTable.js';
-import AddShoppingCartSharpIcon from '@mui/icons-material/AddShoppingCartSharp';
+import CartTransitionModal from '../components/mini_components/CartTransitionModal.js';
 
 // things learnt we cannot retrieve the data before rendering the component in case if it is null 
 // create a transition modal that would allow the user to add to cart? 
@@ -42,6 +42,28 @@ export default function ListingReader({ listingID }) {
     fetchlisting();
   }, [listingID]);
 
+
+  const userID = auth.currentUser.uid;
+
+  // const addToCartHandler = async (userID, Item) => {
+  //   try {
+
+  //     const q = query(collection(db, "users"), where("uid", "==", userID));
+
+  //     const querySnapshot = await getDocs(q);
+  //     querySnapshot.forEach((doc) => {
+  //       const documentRef =  doc.ref;
+  //       updateDoc(documentRef, {
+  //         cart: arrayUnion(Item)
+  //       })
+
+  //     });
+
+  //   }  catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
   // Render your component using the fetched listingData
   return (
     <div>
@@ -69,16 +91,15 @@ export default function ListingReader({ listingID }) {
               </div>
 
               <div style= {{flex: "4", fontSize: "15px", fontFamily: "monospace"}}>
-                Listed By: 
+                Listed By:
                 <div style = {{fontSize: "18px"}}> 
                   {listingData.listedBy}
                 </div>
               </div>
 
-              <div style= {{flex: "4"}}>
-                <Button startIcon = {<AddShoppingCartSharpIcon/>} sx = {{borderColor: 'black', color: 'black'}} variant = 'outlined'> Add To Cart </Button>
+              <div style= {{flex: "4"}}> 
               </div>
-              
+              <CartTransitionModal uid = {userID} listingRef = {doc(collection(db, "listing"), listingID)}/>
             </div>
 
           <div style = {{fontFamily: 'monospace', fontSize: "20px", display: "flex"}}>
@@ -98,8 +119,6 @@ export default function ListingReader({ listingID }) {
            {listingData.sizingGuide && (
             <SizingGuideTable inputMeasurements = {listingData.sizingGuide} selectedSizes = {listingData.sizesAvailable} dimensions = {listingData.sizingGuide.map((element) => element.name)} />
            )}
-           
-
           </div> 
         </div>
       )}

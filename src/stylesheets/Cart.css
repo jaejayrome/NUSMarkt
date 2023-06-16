@@ -11,8 +11,8 @@
 }
 
 .cart_missing_font {
-    position: relative;
-    left: 38%;
+    /* position: relative;
+    left: 38%; */
     font-family: 'Bodoni FLF';
     justify-items: center;
 }

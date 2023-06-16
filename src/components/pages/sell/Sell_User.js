@@ -13,7 +13,7 @@ export default function Sell_User() {
             <div className = 'bag_icon'> 
                 <SentimentVeryDissatisfiedTwoToneIcon sx={{ fontSize: 75}} />
             </div>
-            <div className='cart_missing_font' style = {{fontWeight: "bold", fontSize: "45px"}}>
+            <div style = {{fontWeight: "bold", fontSize: "45px", display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             No Listing Found
             </div>
             <div className = "sell_user_bottom_font">

@@ -26,7 +26,7 @@ export default function TransitionModal(props) {
   
   return (
     <div>
-    <Button onClick={handleOpen} startIcon = {<AddTaskSharpIcon/>} sx = {{borderColor: 'black', color: 'black'}}variant = "outlined" > Next Step</Button>
+    <Button onClick={handleOpen} startIcon = {<AddTaskSharpIcon/>} sx = {{borderColor: 'black', color: 'black'}}variant = "outlined" > Next Step </Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
