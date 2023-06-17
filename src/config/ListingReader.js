@@ -23,7 +23,24 @@ export default function ListingReader({ listingID }) {
   font-size: 60px;`;
 
   useEffect(() => {
-    const fetchlisting = async () => {
+    // Add an event listener for authentication state changes
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        fetchListing(user.uid);
+      } else {
+        // User is not logged in
+        // Handle the case when there is no user authenticated
+        console.log('No user authenticated');
+      }
+    });
+
+    // Cleanup the event listener on component unmount
+    return () => unsubscribe();
+  }, []);
+
+
+
+    const fetchListing = async () => {
       try {
         const listingRef = doc(db, 'listing', listingID);
         const listingSnapshot = await getDoc(listingRef);
@@ -39,11 +56,8 @@ export default function ListingReader({ listingID }) {
       }
     };
 
-    fetchlisting();
-  }, [listingID]);
 
-
-  const userID = auth.currentUser.uid;
+  const userID = auth.currentUser?.uid;
 
   // const addToCartHandler = async (userID, Item) => {
   //   try {
