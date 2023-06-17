@@ -1,5 +1,5 @@
 import { collection, addDoc } from '@firebase/firestore'
-import {db} from '../../../config/firebase.js'
+import db from '../../../config/firebase.js'
 import Navbar from '../../compiledData/Navbar.js';
 import { useLocation } from 'react-router-dom';
 import { Button, Box } from '@mui/material';

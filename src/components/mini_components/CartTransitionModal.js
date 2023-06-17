@@ -8,8 +8,9 @@ import { useState } from 'react';
 import AddShoppingCartSharpIcon from '@mui/icons-material/AddShoppingCartSharp';
 import { Link } from 'react-router-dom';
 import { collection, query, where, getDocs, updateDoc, arrayUnion} from '@firebase/firestore';
-import {db} from "../../config/firebase.js"
+import db from "../../config/firebase.js"
 import {Select, MenuItem, FormControl} from "@mui/material"
+import {toast} from 'react-toastify';
 
 export default function CartTransitionModal(props) {
 
@@ -54,14 +55,12 @@ export default function CartTransitionModal(props) {
 
       });
 
+      toast(`You have successfully added the item to cart!`)
+
     }  catch (error) {
       console.log(error)
     }
   }
-
-//   const incrementHandler= () => {
-//     setCount(count + 1)
-//   }
   
   return (
     <div>

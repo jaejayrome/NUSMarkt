@@ -26,7 +26,8 @@ export default function CartItemRow(props) {
 
 
     const calculateItemTotal = (price, quantity) => {
-        return price * quantity
+        const subTotal = price * quantity
+        return subTotal.toFixed(2)
     }
 
     return (

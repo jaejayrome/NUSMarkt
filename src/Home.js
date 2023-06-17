@@ -2,7 +2,7 @@ import './Home.css';
 import Navbar from './components/compiledData/Navbar.js'
 import MasonryImageList from './components/compiledData/MasonryImageList';
 import {useState, useEffect} from 'react';
-import {db} from './config/firebase.js';
+import db from './config/firebase.js';
 import {collection, getDocs} from "@firebase/firestore";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

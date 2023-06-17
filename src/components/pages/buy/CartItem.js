@@ -1,10 +1,11 @@
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import "../../../stylesheets/Cart.css"
-import {db, auth} from "../../../config/firebase.js"
+import db from "../../../config/firebase.js"
+import {auth} from "../../../config/firebase.js"
 import { useState, useEffect } from 'react';
 import CartItemRow from "./Cart/CartItemRow.js"
 import { query, collection, where, getDocs } from 'firebase/firestore';
-import { Table, TableBody, TableRow, TableCell, TableHead } from '@mui/material';
+import { Table, TableBody, TableRow, TableCell, TableHead, Button } from '@mui/material';
 import { onAuthStateChanged } from 'firebase/auth';
 
 export default function CartItem(props) {
@@ -13,9 +14,6 @@ export default function CartItem(props) {
     const [uid, setUid] = useState(null);
 
 
-    // some issue with this code 
-
-    // i cannot remove this then when i refresh there would be an error
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
           if(user) {
@@ -53,11 +51,16 @@ export default function CartItem(props) {
             </div> 
             <div style = {{marginTop:  "1%",fontFamily: 'monospace', fontSize: "30px", display: "flex", display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             {props.isLogged ? 
-            cart != null ? <Table> <TableHead> <TableRow> {headings.map((head) => <TableCell> {head} </TableCell>)} </TableRow></TableHead>
+            cart != null ?
+            <div>
+            <Table> <TableHead> <TableRow> {headings.map((head) => <TableCell> {head} </TableCell>)} </TableRow></TableHead>
             <TableBody>
             {cart.map( (item) => <CartItemRow item = {item}/>)}
             </TableBody>
-            </Table>: "Add Items to you Cart"
+            </Table>
+            <Button > Checkout </Button>
+            </div>
+            : "Add Items to you Cart"
             : "Sign in to add items to your Cart"}
             </div>
         </div>

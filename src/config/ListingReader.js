@@ -2,7 +2,8 @@
 // this component aims to return everything that needs to be displayed within an individual listing
 
 import { useEffect, useState } from 'react';
-import { auth, db } from './firebase.js';
+import db from './firebase.js'
+import { auth } from './firebase.js';
 import { collection, query, where, getDoc, doc, getDocs, updateDoc, arrayUnion} from '@firebase/firestore';
 import ImageHandler from './ImageHandler.js';
 import "../stylesheets/Listing.css";
