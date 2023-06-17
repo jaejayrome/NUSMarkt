@@ -28,7 +28,7 @@ export default function Trade_User() {
             Enter the marketplace where you can view trade requests from other users!
           </div>
 
-          <Link to = "TRADE/MARKETPLACE"> 
+          <Link to = "/TRADE/MARKETPLACE"> 
           <Button startIcon = {<ExitToAppIcon/>} sx = {{color: "black",textTransform: "none"}}> Enter </Button>
           </Link>
         </Box>
@@ -50,7 +50,7 @@ export default function Trade_User() {
           <div> <ChangeCircleIcon /> </div>
           <div>Trade Request</div>
           <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}>Add your own configured trade request!</div>
-          <Link> 
+          <Link to = "/TRADE/REQUEST">  
           <Button startIcon = {<ExitToAppIcon/>} sx = {{color: "black",textTransform: "none"}}> Enter </Button>
           </Link> 
         </Box>
@@ -71,7 +71,7 @@ export default function Trade_User() {
           <div> <MarkunreadIcon /></div>
           <div>Trade Inbox</div>
           <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}>See if you have received any enticing trade offers!</div>
-          <Link> 
+          <Link to = "/TRADE/INBOX">   
           <Button startIcon = {<ExitToAppIcon/>} sx = {{color: "black",textTransform: "none"}}> Enter </Button>
           </Link> 
         </Box>

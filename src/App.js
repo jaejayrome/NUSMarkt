@@ -10,12 +10,12 @@ import ToastContain from './components/mini_components/ToastContain.js';
 import Sell_addListing from './components/pages/sell/Sell_addListing.js';
 import Sell_addListing2 from './components/pages/sell/Sell_addListing2.js';
 import Sell_addListing3 from './components/pages/sell/Sell_addListing3.js';
+import Trade_Marketplace from './components/pages/trade/Trade_Marketplace.js';
+import Trade_Request from './components/pages/trade/Trade_Request.js';
+import Trade_Inbox from './components/pages/trade/Trade_Inbox.js';
 
 function App() {
   return (
-
-    // buy the routing doesn't matter 
-    // need to nest register under sign up
     <div>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -30,13 +30,18 @@ function App() {
           <Route index element={<Sell_Page/>} />
           <Route path = "ADD_LISTING" element = {<Outlet />}>
             <Route index element={<Sell_addListing/>} />
-            {/* <Route path = "STEP1" element = {<Sell_addListing1/>}/> */}
             <Route path = "STEP2" element = {<Sell_addListing2/>}/>
             <Route path = "STEP3" element = {<Sell_addListing3/>}/>
           </Route>
         </Route>
 
-        <Route path = "/TRADE" element = {<Trade_Page />}/>
+        <Route path = "/TRADE" element = {<Outlet />}>
+          <Route index element = {<Trade_Page/>}/> 
+          <Route path = "MARKETPLACE" element = {<Trade_Marketplace/>}/>
+          <Route path = "REQUEST" element = {<Trade_Request/>}/>
+          <Route path = "INBOX" element = {<Trade_Inbox/>}/>
+        </Route>
+
         
         
         <Route path = "/SIGNUP" element = {<Signup />} />
