@@ -1,20 +1,24 @@
-import { collection, addDoc } from '@firebase/firestore'
+import { query, where, getDocs,  collection, addDoc, updateDoc, setDocumentRef, arrayUnion} from '@firebase/firestore'
 import db from '../../../config/firebase.js'
+import {auth} from '../../../config/firebase.js'
 import Navbar from '../../compiledData/Navbar.js';
 import { useLocation } from 'react-router-dom';
 import { Button, Box } from '@mui/material';
 import { styled } from '@mui/system';
+import { useState } from 'react';
 import "../../../stylesheets/Listing.css"
 import ImageHandler from '../../../config/ImageHandler.js';
 import UploadIcon from '@mui/icons-material/Upload';
 import CheckroomRoundedIcon from '@mui/icons-material/CheckroomRounded';
 import SizingGuideTable from '../../mini_components/SizingGuideTable.js';
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
+import {toast} from 'react-toastify'
 
 export default function Sell_addListing3() {
 
     const location = useLocation()
 
+    // const [listingDocumentRef, setListingDocumentRef] = useState(null);
     const LargeAccountCircleSharpIcon = styled(AccountCircleSharpIcon)`
     font-size: 30px;`;
 
@@ -34,15 +38,25 @@ export default function Sell_addListing3() {
         // need to add in the portion where it would upload the image
         
         try {
-        const listingDocumentRef = collection(db, "listing")
-        await addDoc(listingDocumentRef, newListing)
+        const listingDocumentRef = await addDoc(collection(db, "listing"), newListing);
+
+
+        const q = query(collection(db, "users"), where("uid", "==", auth.currentUser.uid));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+        const documentRef =  doc.ref;
+        updateDoc(documentRef, {
+            Sell_ListingArr: arrayUnion(listingDocumentRef)
+        })
+        toast("Your Listing has been successfully updated!")
+
+      });
         } catch(error) {
             console.log(error)
             console.log(newListing)
         }
     }
 
-    // need to add in the listing image
 
 
     return (

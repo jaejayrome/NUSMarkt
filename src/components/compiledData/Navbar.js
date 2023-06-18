@@ -5,6 +5,7 @@ import homePageIcon from '../../images/logo.jpg';
 import Button from '@mui/material/Button';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../config/firebase.js"
+import {toast} from 'react-toastify';
 
 // pass a state through the link to the sub pages trade and sell
 // the state wherein the user has been logged in or not 
@@ -15,7 +16,11 @@ function Navbar(props) {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     // delays the evaluation by wrapping it around a "supplier"
-    const signout = () => {auth.signOut()};
+    const signout =  () => {
+        // toast("You have successfully signed out")
+        auth.signOut()
+        
+    };
 
     // don't understand why the useEffect hook would unmount have to unmount 
     // when do we know what we should include at the second argument of the useEffect hook

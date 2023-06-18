@@ -13,6 +13,8 @@ import Sell_addListing3 from './components/pages/sell/Sell_addListing3.js';
 import Trade_Marketplace from './components/pages/trade/Trade_Marketplace.js';
 import Trade_Request from './components/pages/trade/Trade_Request.js';
 import Trade_Inbox from './components/pages/trade/Trade_Inbox.js';
+import Sell_Listings from './components/pages/sell/Sell_Listings.js';
+import Sell_Analytics from './components/pages/sell/Sell_Analytics.js';
 
 function App() {
   return (
@@ -33,6 +35,11 @@ function App() {
             <Route path = "STEP2" element = {<Sell_addListing2/>}/>
             <Route path = "STEP3" element = {<Sell_addListing3/>}/>
           </Route>
+          <Route path = "LISTINGS" element = {<Sell_Listings/>}/>
+          <Route path = "ANALYTICS" element = {<Sell_Analytics/>}/>
+
+
+
         </Route>
 
         <Route path = "/TRADE" element = {<Outlet />}>
@@ -42,8 +49,6 @@ function App() {
           <Route path = "INBOX" element = {<Trade_Inbox/>}/>
         </Route>
 
-        
-        
         <Route path = "/SIGNUP" element = {<Signup />} />
         
         <Route path = "/REGISTER" element = {<Register />}/>
@@ -54,7 +59,6 @@ function App() {
   )
 }
 
-// once i have signed up i would lead it to the login page using the useNavigateHook
 
 export default App;
 
