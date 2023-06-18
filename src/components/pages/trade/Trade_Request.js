@@ -4,7 +4,7 @@ import { useState } from "react";
 import SizeButtonGroup from '../../mini_components/SizeButtonGroup.js';
 import { auth } from "../../../config/firebase";
 import db from "../../../config/firebase";
-import { collection, arrayUnion, updateDoc, query, getDocs, where } from "@firebase/firestore";
+import { collection, arrayUnion, updateDoc, query, getDocs, where, addDoc} from "@firebase/firestore";
 import {toast} from 'react-toastify';
 
 export default function Trade_Request() {
@@ -34,24 +34,31 @@ export default function Trade_Request() {
 
     const userID = auth.currentUser.uid;
 
+    // updates the tradeListing database
+    // updates the user database 
+
+    
     const submitHandler = async () => {
         try {
             
             const q = query(collection(db, "users"), where("uid", "==", userID));
             const querySnapshot = await getDocs(q);
-            querySnapshot.forEach((user) => {
+            querySnapshot.forEach(async (user) => {
             const userRef = user.ref
 
+            const tradeListingCollectionsRef = collection(db, "tradeListing")
+            const tradeListing = await addDoc(tradeListingCollectionsRef, {...newListing, listedBy: user.data().userName})
 
-            if (user.data().userName) {
-                updateDoc(userRef, {Trade_ListingArr: arrayUnion({ ...newListing, listedBy: user.data().userName }) });
-              }
+            updateDoc(userRef, {Trade_ListingArr: arrayUnion(tradeListing.path) });
+            
         })
         toast("You have successfuly uploaded a trade listing!")
         } catch(error) {
             console.log(error)
         }
     }
+
+
 
 
     // this to create a trade listing
