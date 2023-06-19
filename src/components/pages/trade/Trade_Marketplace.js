@@ -2,6 +2,9 @@ import Navbar from "../../compiledData/Navbar";
 import { useEffect, useState } from "react";
 import db from "../../../config/firebase.js"
 import { collection, getDocs } from "@firebase/firestore";
+import Trade_IndivListing from "./Trade_IndivListing.js"
+import { Box } from "@mui/material"
+import {Divider} from '@mui/material';
 
 export default function Trade_Marketplace() {
     const [listings, setListing] = useState([]);
@@ -11,7 +14,7 @@ export default function Trade_Marketplace() {
         // getListings would read the array of listing instance
         const getListings = async () => {
             const data = await getDocs(tradeListingCollectionsRef)
-            setListing(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
+            setListing(data.docs.map((doc) => ({...doc.data(), id: doc.id, reference: doc.ref})))
         }
         getListings();
     }, [])
@@ -20,16 +23,18 @@ export default function Trade_Marketplace() {
         <div> 
             <Navbar />
 
+            <div style = {{fontSize: "20px"}}> 
+            Welcome To The Marketplace!
+            </div>
             {listings.length != 0 && (
-                <div> 
+
+                <Box sx = {{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}> 
                     {listings.map((listing) => 
-                    <div>
-                     {listing.listingTitle}
-                     </div>
+                    <Trade_IndivListing listing = {listing}/>
                     )
                     
                     }
-                </div>
+                </Box>
             )}
 
         </div>

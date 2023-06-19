@@ -48,8 +48,8 @@ export default function Trade_User() {
           }}
         >
           <div> <ChangeCircleIcon /> </div>
-          <div>Trade Request</div>
-          <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}>Add your own configured trade request!</div>
+          <div>Trade Listing</div>
+          <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}>View & Add Your Current Trade Listings</div>
           <Link to = "/TRADE/REQUEST">  
           <Button startIcon = {<ExitToAppIcon/>} sx = {{color: "black",textTransform: "none"}}> Enter </Button>
           </Link> 

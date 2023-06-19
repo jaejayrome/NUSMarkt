@@ -40,7 +40,7 @@ export default function Trade_Request() {
     
     const submitHandler = async () => {
         try {
-            
+            // this is correect because i myself is trying to upload this 
             const q = query(collection(db, "users"), where("uid", "==", userID));
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach(async (user) => {
@@ -49,7 +49,7 @@ export default function Trade_Request() {
             const tradeListingCollectionsRef = collection(db, "tradeListing")
             const tradeListing = await addDoc(tradeListingCollectionsRef, {...newListing, listedBy: user.data().userName})
 
-            updateDoc(userRef, {Trade_ListingArr: arrayUnion(tradeListing.path) });
+            updateDoc(userRef, {Trade_ListingArr: arrayUnion(tradeListing) });
             
         })
         toast("You have successfuly uploaded a trade listing!")
