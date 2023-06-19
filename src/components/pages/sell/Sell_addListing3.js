@@ -2,7 +2,7 @@ import { query, where, getDocs,  collection, addDoc, updateDoc, setDocumentRef, 
 import db from '../../../config/firebase.js'
 import {auth} from '../../../config/firebase.js'
 import Navbar from '../../compiledData/Navbar.js';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Box } from '@mui/material';
 import { styled } from '@mui/system';
 import { useState } from 'react';
@@ -21,6 +21,8 @@ export default function Sell_addListing3() {
     // const [listingDocumentRef, setListingDocumentRef] = useState(null);
     const LargeAccountCircleSharpIcon = styled(AccountCircleSharpIcon)`
     font-size: 30px;`;
+
+    const navigate = useNavigate()
 
 
     const newListing = {
@@ -48,8 +50,8 @@ export default function Sell_addListing3() {
         updateDoc(documentRef, {
             Sell_ListingArr: arrayUnion(listingDocumentRef)
         })
+        navigate('/SELL/LISTINGS')
         toast("Your Listing has been successfully updated!")
-
       });
         } catch(error) {
             console.log(error)
