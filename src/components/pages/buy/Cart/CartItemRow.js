@@ -1,10 +1,15 @@
-import { getDoc } from "firebase/firestore"
+import { getDoc, query, collection, getDocs, where, updateDoc, arrayRemove} from "firebase/firestore"
 import { useState, useEffect } from "react"
-import { TableRow, TableCell, Tab } from "@mui/material"
+import { Button, TableRow, TableCell, Tab } from "@mui/material"
+import DeleteIcon from '@mui/icons-material/Delete';
+import { auth } from "../../../../config/firebase";
+import db from "../../../../config/firebase";
+
 
 export default function CartItemRow(props) {
 
     const [listing, setListing] = useState(null)
+    const userID = auth.currentUser.uid;
 
     useEffect(() => {
 
@@ -24,6 +29,20 @@ export default function CartItemRow(props) {
        
     }, [props.item]) 
 
+    const deleteButtonClick = () => {
+        // delete cart object from the user 
+
+        const fetchUser = async () => {
+        const q = query(collection(db, "users"), where("uid", "==", userID));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(async (user) => {
+            await updateDoc(user.ref, {cart: arrayRemove(props.item)})
+        })
+        }
+
+        fetchUser()
+    }
+
 
     const calculateItemTotal = (price, quantity) => {
         const subTotal = price * quantity
@@ -38,8 +57,9 @@ export default function CartItemRow(props) {
                 <TableCell> {listing.listingTitle} </TableCell>
                 <TableCell> {listing.listingPrice} </TableCell>
                 <TableCell> {props.item.quantity} </TableCell>
-                <TableCell> {props.item.size} </TableCell>
                 <TableCell> {calculateItemTotal(listing.listingPrice, props.item.quantity)} </TableCell>
+                <TableCell> {props.item.size} </TableCell>
+                <TableCell> <Button startIcon = {<DeleteIcon />} onClick = {deleteButtonClick}/></TableCell>
             </TableRow>
         </div>
       )}

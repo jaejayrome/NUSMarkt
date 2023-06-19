@@ -8,6 +8,7 @@ import { collection, arrayUnion, updateDoc, query, getDocs, where, addDoc} from 
 import {toast} from 'react-toastify';
 
 export default function Trade_Request() {
+    // yet to include the trade listings that u have made so far 
 
     const [selectedSizes, setSelectedSizes] = useState([]);
     const [listingTitle, setListingTitle] = useState("");

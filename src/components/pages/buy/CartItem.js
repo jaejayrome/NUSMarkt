@@ -41,7 +41,7 @@ export default function CartItem(props) {
     })
     
 
-    const headings = ["Product Name", "Price", "Quantity", 'Size', 'Subtotal']
+    const headings = ["Product Name", "Price", "Quantity", 'Size', 'Subtotal', ' ']
 
     return (
         <div className='total_movement'> 
