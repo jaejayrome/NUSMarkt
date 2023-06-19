@@ -41,13 +41,13 @@ export default function CartItem(props) {
     })
     
 
-    const headings = ["Product Name", "Price", "Quantity"]
+    const headings = ["Product Name", "Price", "Quantity", 'Size', 'Subtotal']
 
     return (
         <div className='total_movement'> 
             <div className='cart_missing_font' style = {{ display: "flex", display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',fontWeight: "bold", fontSize: "45px"}}> 
             
-                {cart != null? "Shopping Cart" : <ShoppingBagOutlinedIcon sx={{ fontSize: 75}}/>}
+            {cart != null? "Shopping Cart" : <ShoppingBagOutlinedIcon sx={{ fontSize: 75}}/>}
             </div> 
             <div style = {{marginTop:  "1%",fontFamily: 'monospace', fontSize: "30px", display: "flex", display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             {props.isLogged ? 

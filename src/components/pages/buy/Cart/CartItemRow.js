@@ -38,6 +38,7 @@ export default function CartItemRow(props) {
                 <TableCell> {listing.listingTitle} </TableCell>
                 <TableCell> {listing.listingPrice} </TableCell>
                 <TableCell> {props.item.quantity} </TableCell>
+                <TableCell> {props.item.size} </TableCell>
                 <TableCell> {calculateItemTotal(listing.listingPrice, props.item.quantity)} </TableCell>
             </TableRow>
         </div>
