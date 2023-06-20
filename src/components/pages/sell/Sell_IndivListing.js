@@ -3,11 +3,50 @@ import { getDoc } from "@firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../../config/firebase.js";
 import ImageHandler from "../../../config/ImageHandler.js";
+import { styled } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function Sell_IndivListing(props) {
 
     const [listing, setListing] = useState(null)
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [expanded, setExpanded] = useState(false);
+
+    const ExpandMore = styled((props) => {
+        const { expand, ...other } = props;
+        return <IconButton {...other} />;
+      })(({ theme, expand }) => ({
+        transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+          duration: theme.transitions.duration.shortest,
+        }),
+      }));
+
+      
+
+    const handleExpandClick = () => {
+        setExpanded(!expanded);
+    };
+
+    // delete the 
+    const deleteHandler = () => {
+        const toDelete = async () => {
+
+        }
+    }
+
 
     useEffect(() => {
         const fetchListing = async () => {
@@ -35,19 +74,71 @@ export default function Sell_IndivListing(props) {
         return () => unsubscribe();
     }, [])
 
-    return (
-        <div> 
-            {listing && (
-                <div> 
-                Listing Title: 
-                {listing.listingTitle}
+    
 
-                <div> 
-                Listing Price: 
-                {listing.listingPrice}
-                </div>
-                </div>
-            )}
-        </div>
+    return (
+    <Card>
+    
+      {listing && (
+        <div>
+      <CardHeader
+        avatar={
+          <Avatar sx={{ bgcolor: "black" }} aria-label="recipe">
+          </Avatar>
+        }
+        action={
+          <IconButton onClick = {deleteHandler} aria-label="settings">
+            <DeleteIcon />
+          </IconButton>
+
+        }
+       
+        title= {listing.listingTitle}
+        subheader= "Listed By: You"
+      />
+      
+      <div style = {{display: "flex", alignItems: "center", justifyContent: "center"}}>
+      <ImageHandler width = "500px" height = "500px" filePath = {listing.filePath} alt = {listing.title}/>
+      </div>
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <IconButton aria-label="add to favorites">
+          <FavoriteIcon />
+        </IconButton>
+        <IconButton aria-label="share">
+          <ShareIcon />
+        </IconButton>
+        <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </ExpandMore>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Typography paragraph>Method:</Typography>
+          <Typography paragraph>
+           
+          </Typography>
+          <Typography paragraph>
+
+          </Typography>
+            
+          <Typography paragraph>
+          
+          </Typography>
+          <Typography>
+          </Typography>
+        </CardContent>
+      </Collapse>
+      </div>)}
+    </Card>
+  
     )
 }
