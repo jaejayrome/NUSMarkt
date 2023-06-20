@@ -1,7 +1,7 @@
 // this component reads individuial listings from the DB
 // this component aims to return everything that needs to be displayed within an individual listing
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import db from './firebase.js'
 import { auth } from './firebase.js';
 import { collection, query, where, getDoc, doc, getDocs, updateDoc, arrayUnion} from '@firebase/firestore';
@@ -9,25 +9,73 @@ import ImageHandler from './ImageHandler.js';
 import "../stylesheets/Listing.css";
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import { styled } from '@mui/system';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import CheckroomRoundedIcon from '@mui/icons-material/CheckroomRounded';
 import SizingGuideTable from '../components/mini_components/SizingGuideTable.js';
 import CartTransitionModal from '../components/mini_components/CartTransitionModal.js';
+import Divider from '@mui/material/Divider';
+import AddReviewDrawer from '../components/mini_components/AddReviewDrawer.js';
+import ListingMessage from './ListingMessage.js';
 
 // things learnt we cannot retrieve the data before rendering the component in case if it is null 
 // create a transition modal that would allow the user to add to cart? 
 // alternative is to create  an add button thtat would allow us to increment the quantity but when it is 0 we disable the button
 export default function ListingReader({ listingID }) {
   const [listingData, setListingData] = useState(null);
+  const [listingMessages, setListingMessages] = useState([])
+
+  const ScrollableCardContainer = styled('div')`
+  max-height: 500px; 
+  overflow-y: auto;`;
 
   const LargeAccountCircleSharpIcon = styled(AccountCircleSharpIcon)`
   font-size: 60px;`;
+
+  const fetchListing = useCallback(async () => {
+    try {
+      const listingRef = doc(db, 'listing', listingID);
+      const listingSnapshot = await getDoc(listingRef);
+      if (listingSnapshot.exists()) {
+        const data = listingSnapshot.data();
+        setListingData({...data, uid: listingSnapshot.id});
+      } else {
+        // listing does not exist
+        console.log('listing does not exist');
+      }
+    } catch (error) {
+      console.log('Error fetching listing:', error);
+    }
+  }, [listingID] )
+
+
+  const fetchMessages = async () => {
+    try {
+      //loop through the listing
+      const listingRef = doc(db, 'listing', listingID)
+      const listingSnapshot = await getDoc(listingRef);
+      if (listingSnapshot.exists()) {
+        const listingMessages = listingSnapshot.data().messagesArr
+        if (listingMessages.length > 0){
+        setListingMessages(listingMessages)
+        } else{
+          console.log("no messages im this listing")
+        }
+      } else {
+        // listing does not exist
+        console.log('listing does not exist');
+      }
+    } catch (error) {
+      console.log('listing does not exists')
+    }
+  }
 
   useEffect(() => {
     // Add an event listener for authentication state changes
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
         fetchListing(user.uid);
+        fetchMessages();
+        
       } else {
         // User is not logged in
         // Handle the case when there is no user authenticated
@@ -37,52 +85,21 @@ export default function ListingReader({ listingID }) {
 
     // Cleanup the event listener on component unmount
     return () => unsubscribe();
-  }, []);
+  }, [fetchListing]);
 
 
 
-    const fetchListing = async () => {
-      try {
-        const listingRef = doc(db, 'listing', listingID);
-        const listingSnapshot = await getDoc(listingRef);
-        if (listingSnapshot.exists()) {
-          const data = listingSnapshot.data();
-          setListingData({...data, uid: listingSnapshot.id});
-        } else {
-          // listing does not exist
-          console.log('listing does not exist');
-        }
-      } catch (error) {
-        console.log('Error fetching listing:', error);
-      }
-    };
+  
+
+
 
 
   const userID = auth.currentUser?.uid;
 
-  // const addToCartHandler = async (userID, Item) => {
-  //   try {
-
-  //     const q = query(collection(db, "users"), where("uid", "==", userID));
-
-  //     const querySnapshot = await getDocs(q);
-  //     querySnapshot.forEach((doc) => {
-  //       const documentRef =  doc.ref;
-  //       updateDoc(documentRef, {
-  //         cart: arrayUnion(Item)
-  //       })
-
-  //     });
-
-  //   }  catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
-  // Render your component using the fetched listingData
   return (
-    <div>
+    <ScrollableCardContainer>
       {listingData && (
+        <div> 
         <div className = 'listing-container'>
 
           <div className='imageHandler'> 
@@ -136,7 +153,28 @@ export default function ListingReader({ listingID }) {
            )}
           </div> 
         </div>
+
+        <Divider sx = {{border: "1px dashed black"}}/>
+
+        <div style = {{fontWeight: "bold",font: "monospace", fontSize: "22px", marginLeft: "5%"}}>
+          Already Purchased & Received Item? 
+          <AddReviewDrawer callback = {fetchListing} listingRef = {listingID}/>
+          <div> 
+            Reviews
+          </div>
+        </div>
+
+        <div> 
+          {listingMessages.length > 0 && (
+            <div>{listingMessages.map((indivMessageRef) => {
+              return (<ListingMessage messageInstance = {indivMessageRef} />)
+            })}
+            </div>
+          )}
+        </div>
+
+        </div>
       )}
-    </div>
+    </ScrollableCardContainer>
   );
 }

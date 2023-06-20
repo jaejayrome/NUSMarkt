@@ -6,6 +6,7 @@ import { auth } from "../../../config/firebase";
 import db from "../../../config/firebase";
 import { collection, arrayUnion, updateDoc, query, getDocs, where, addDoc} from "@firebase/firestore";
 import {toast} from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 export default function Trade_Request() {
     // yet to include the trade listings that u have made so far 
@@ -14,6 +15,7 @@ export default function Trade_Request() {
     const [listingTitle, setListingTitle] = useState("");
     const [listingDescription, setListingDescription] = useState("")
 
+    const navigate = useNavigate()
     // callback function
     const handleSelectedSizes = (sizes) => {
         setSelectedSizes(sizes);
@@ -54,6 +56,8 @@ export default function Trade_Request() {
             
         })
         toast("You have successfuly uploaded a trade listing!")
+        navigate("/TRADE/MARKETPLACE")
+        
         } catch(error) {
             console.log(error)
         }
