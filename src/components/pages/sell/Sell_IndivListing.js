@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getDoc } from "@firebase/firestore";
+import { deleteDoc, arrayRemove, collection, getDoc, updateDoc, getDocs, query, where } from "@firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../../config/firebase.js";
 import ImageHandler from "../../../config/ImageHandler.js";
@@ -15,13 +15,17 @@ import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteTransitionModal from "../../mini_components/DeleteTransitionModal.js";
+import db from "../../../config/firebase.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Sell_IndivListing(props) {
 
     const [listing, setListing] = useState(null)
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [expanded, setExpanded] = useState(false);
+    
+    const userID = auth.currentUser.uid;
 
     const ExpandMore = styled((props) => {
         const { expand, ...other } = props;
@@ -34,21 +38,19 @@ export default function Sell_IndivListing(props) {
         }),
       }));
 
-      
+      // const navigate = useNavigate()\
 
+
+      
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
-    // delete the 
-    const deleteHandler = () => {
-        const toDelete = async () => {
-
-        }
-    }
+    // delete the listing and it's reference from the users collection
+    
 
 
-    useEffect(() => {
+      useEffect(() => {
         const fetchListing = async () => {
             console.log(props.itemRef)
             try {
@@ -57,7 +59,6 @@ export default function Sell_IndivListing(props) {
                 setListing({...listing.data()})
                 console.log(listing.data().listingTitle)
             } else {
-                alert ('listing does not exist')
             }
             
             } catch(error) {
@@ -68,11 +69,15 @@ export default function Sell_IndivListing(props) {
         fetchListing()
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setIsLoggedIn(user !== null);
-          });
+            
+        });
+
+
       
       
         return () => unsubscribe();
-    }, [])
+
+    }, [props.item])
 
     
 
@@ -87,9 +92,7 @@ export default function Sell_IndivListing(props) {
           </Avatar>
         }
         action={
-          <IconButton onClick = {deleteHandler} aria-label="settings">
-            <DeleteIcon />
-          </IconButton>
+          <DeleteTransitionModal onDelete = {props.onDelete}itemRef = {props.itemRef}/> 
 
         }
        
@@ -141,4 +144,5 @@ export default function Sell_IndivListing(props) {
     </Card>
   
     )
+
 }

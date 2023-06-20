@@ -1,10 +1,10 @@
 import Navbar from "../../compiledData/Navbar";
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../../config/firebase.js";
 import db from "../../../config/firebase.js";
 import { styled } from '@mui/material/styles';
-import {collection, query, getDocs, where} from "firebase/firestore";
+import { deleteDoc, arrayRemove, collection, getDoc, updateDoc, getDocs, query, where } from "@firebase/firestore";
 import Sell_IndivListing from "./Sell_IndivListing";
 import {Box, ImageListItem, ImageList} from '@mui/material';
 
@@ -14,11 +14,16 @@ export default function Sell_Listings() {
   const [arr, setArr] = useState([]);
   const userID = auth.currentUser?.uid;
 
+  const handleDeletion = () => {
+
+  }
+
   const fetchUser = async () => {
     const q = query(collection(db, "users"), where("uid", "==", userID));
     const querySnapshot = await getDocs(q);
    
         querySnapshot.forEach((user) => {
+          // DATA is the array of listings for the particular user
             const data = user.data().Sell_ListingArr
             setArr(data)
         })
@@ -37,6 +42,7 @@ export default function Sell_Listings() {
     if (auth.currentUser) {
       fetchUser();
     }
+    
 
     return () => unsubscribe();
   }, []);
@@ -54,10 +60,9 @@ export default function Sell_Listings() {
       <Box sx= {{flexGrow: 1}}> 
       <ImageList>
       {arr.map((item) => {
-        console.log(item)
         return (
         <ImageListItem key = {item}>
-        <Sell_IndivListing itemRef = {item}/>
+        <Sell_IndivListing onDelete = {handleDeletion} itemRef = {item}/>
         </ImageListItem> 
         )
       })}
