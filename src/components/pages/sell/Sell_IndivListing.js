@@ -92,7 +92,6 @@ export default function Sell_IndivListing(props) {
         }
         action={
           <DeleteTransitionModal onDelete = {props.onDelete}itemRef = {props.itemRef}/> 
-
         }
        
         title= {listing.listingTitle}

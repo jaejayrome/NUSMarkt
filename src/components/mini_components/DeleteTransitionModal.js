@@ -1,10 +1,10 @@
 import {Button, Modal, Box, Backdrop, Fade, IconButton, Typography, Select, FormControl, MenuItem} from '@mui/material'
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { deleteDoc, arrayRemove, collection, getDoc, updateDoc, getDocs, query, where } from "@firebase/firestore";
+import { deleteDoc, arrayRemove, collection, getDoc,doc, deleteField, updateDoc, getDocs, query, where } from "@firebase/firestore";
 import db from "../../config/firebase.js";
 import { auth } from '../../config/firebase.js';
-
+import {toast} from 'react-toastify'
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function DeleteTransitionModal(props) {
@@ -30,14 +30,28 @@ export default function DeleteTransitionModal(props) {
       const deleteHandler =  () => {
         const toDelete = async () => {
         try {
+         
+          
+
          // delete the actual listing
          deleteDoc(props.itemRef)
+
+          // deleting the refernce in all potential sellers 
+         const allUsers = await getDocs(collection(db, "users"))
+          allUsers.forEach(async (user) => {
+            const cart = user.data().cart;
+            const updatedCart = cart.filter((item) => item.listingRef.path !== props.itemRef.path);
+            await updateDoc(user.ref, { cart: updatedCart });
+          })
+
+         // delete the refernce of the seller
          const q = query(collection(db, "users"), where("uid", "==", userID));
          const querySnapshot = await getDocs(q);
          querySnapshot.forEach(async (user) => {
          await updateDoc(user.ref, {Sell_ListingArr: arrayRemove(props.itemRef)})
+        
          props.onDelete();
-         console.log("deleted already")
+         toast("successfully deleted")
          })
          
          } catch(error) {
