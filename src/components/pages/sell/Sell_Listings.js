@@ -15,7 +15,7 @@ export default function Sell_Listings() {
   const userID = auth.currentUser?.uid;
 
   const handleDeletion = () => {
-
+    fetchUser()
   }
 
   const fetchUser = async () => {

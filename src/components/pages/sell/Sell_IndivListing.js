@@ -16,8 +16,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteTransitionModal from "../../mini_components/DeleteTransitionModal.js";
-import db from "../../../config/firebase.js";
-import { useNavigate } from "react-router-dom";
+
 
 export default function Sell_IndivListing(props) {
 
