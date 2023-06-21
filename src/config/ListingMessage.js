@@ -1,7 +1,9 @@
 import { getDoc } from "@firebase/firestore"
 import { useEffect, useState } from "react"
-
-
+import { Box, Card, Avatar, CardContent, CardHeader, CardActions} from "@mui/material"
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import DeleteReviewTransitionModal from "../components/mini_components/DeleteReviewTransitionModal";
 
 export default function ListingMessage(props) {
     const [message, setMessage] = useState(null)
@@ -24,13 +26,29 @@ export default function ListingMessage(props) {
       
 
     return (
-        <div>
-            {message &&(
-            <div> {message.content}
-            {message.listedBy}
-            {message.reviewStatus}
+        <Card>
+            {message &&( 
+         <div>
+            <CardHeader 
+            avatar={
+                <Avatar sx={{bgcolor: "black" }} aria-label="recipe">
+                </Avatar>}
+                 title = {message.listedBy}
+                 subheader = "commented"
+            action={
+            <DeleteReviewTransitionModal listingRef = {props.listingRef} messageRef = {messageRef} onDelete = {props.onDelete}itemRef = {props.itemRef}/> 
+            }
+            /> 
+           <CardContent>
+
+            {message.content}
+        <CardActions disableSpacing> 
+            {message.reviewStatus == 'POSITIVE' ? <ThumbUpOffAltIcon /> :<ThumbDownOffAltIcon />}
+        </CardActions>
+          
+            </CardContent>
             </div>)
             }
-        </div>
+        </Card>
     )
 }

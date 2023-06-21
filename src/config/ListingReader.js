@@ -24,6 +24,8 @@ export default function ListingReader({ listingID }) {
   const [listingData, setListingData] = useState(null);
   const [listingMessages, setListingMessages] = useState([])
 
+  const listingRef = doc(db, 'listing', listingID)
+
   const ScrollableCardContainer = styled('div')`
   max-height: 500px; 
   overflow-y: auto;`;
@@ -71,7 +73,6 @@ export default function ListingReader({ listingID }) {
   }
 
   useEffect(() => {
-    // Add an event listener for authentication state changes
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
         fetchListing(user.uid);
@@ -89,11 +90,6 @@ export default function ListingReader({ listingID }) {
     // Cleanup the event listener on component unmount
     return () => unsubscribe();
   }, [fetchListing]);
-
-
-
-  
-
 
 
 
@@ -157,7 +153,7 @@ export default function ListingReader({ listingID }) {
           </div> 
         </div>
 
-        <Divider sx = {{border: "1px dashed black"}}/>
+        {/* <Divider sx = {{border: "1px dashed black"}}/> */}
 
         <div style = {{fontWeight: "bold",font: "monospace", fontSize: "22px", marginLeft: "5%"}}>
           Already Purchased & Received Item? 
@@ -170,7 +166,7 @@ export default function ListingReader({ listingID }) {
         <div> 
           {listingMessages.length > 0 && (
             <div>{listingMessages.map((indivMessageRef) => {
-              return (<ListingMessage messageInstance = {indivMessageRef} />)
+              return (<ListingMessage listingRef = {listingRef} messageInstance = {indivMessageRef} />)
             })}
             </div>
           )}

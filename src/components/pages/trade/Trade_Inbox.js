@@ -27,12 +27,6 @@ export default function Trade_Inbox() {
       querySnapshot.forEach(async (tradeRequest) => {
         // delete the trade request
         const allTradeList =  await getDocs(collection(db, "tradeListing"));
-
-        // allTradeList.forEach((tradeListing) => {
-        //   await updateDoc(tradeListing.ref, )
-        // })
-
-        // delete the trade request in the tradeListing 
         await deleteDoc(tradeRequest.ref)
       })
     }
