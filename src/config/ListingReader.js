@@ -48,6 +48,7 @@ export default function ListingReader({ listingID }) {
   }, [listingID] )
 
 
+
   const fetchMessages = async () => {
     try {
       //loop through the listing
@@ -75,6 +76,8 @@ export default function ListingReader({ listingID }) {
       if (user) {
         fetchListing(user.uid);
         fetchMessages();
+          
+
         
       } else {
         // User is not logged in
