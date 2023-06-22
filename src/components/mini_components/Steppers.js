@@ -1,6 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
+import { TextField } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -66,14 +67,12 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   },
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage:
-        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
+      backgroundImage: 'linear-gradient(to right, black, white)',
     },
   },
   [`&.${stepConnectorClasses.completed}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage:
-        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
+      backgroundImage: 'linear-gradient(to right, black, white)',
     },
   },
   [`& .${stepConnectorClasses.line}`]: {
@@ -84,6 +83,8 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     borderRadius: 1,
   },
 }));
+
+
 
 const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
@@ -96,15 +97,14 @@ const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   ...(ownerState.active && {
-    backgroundImage:
-      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+    backgroundImage: 'linear-gradient(to bottom, black, white)',
     boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
   }),
   ...(ownerState.completed && {
-    backgroundImage:
-      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+    backgroundImage: 'linear-gradient(to bottom, black, white)',
   }),
 }));
+
 
 function ColorlibStepIcon(props) {
   const { active, completed, className } = props;
@@ -140,15 +140,26 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node,
 };
 
-const steps = ['Key in your logo', 'Choose Your Ideal Colour', 'Pick Your Favourite Design'];
+const steps = ['Enter Your Logo Name', 'Enter Your Preferred Colour', 'Pick Your Favourite Design'];
+
+const StyledStepLabel = styled(StepLabel)(({ theme }) => ({
+  '& .MuiStepLabel-label': {
+    fontFamily: 'Bodoni, serif',
+  },
+}));
 
 export default function Steppers(props) {
   return (
     <Stack sx={{ width: '100%' }} spacing={4}>
       <Stepper alternativeLabel activeStep={props.stage} connector={<ColorlibConnector />}>
-        {steps.map((label) => (
+        {steps.map((label, index) => (
           <Step key={label}>
-            <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+            <StyledStepLabel
+              StepIconComponent={ColorlibStepIcon}
+          
+            >
+              {label}
+            </StyledStepLabel>
           </Step>
         ))}
       </Stepper>
