@@ -15,6 +15,7 @@ import Trade_Request from './components/pages/trade/Trade_Request.js';
 import Trade_Inbox from './components/pages/trade/Trade_Inbox.js';
 import Sell_Listings from './components/pages/sell/Sell_Listings.js';
 import Sell_Analytics from './components/pages/sell/Sell_Analytics.js';
+import Payment from './components/pages/payments/index.js';
 
 function App() {
   return (
@@ -37,9 +38,6 @@ function App() {
           </Route>
           <Route path = "LISTINGS" element = {<Sell_Listings/>}/>
           <Route path = "ANALYTICS" element = {<Sell_Analytics/>}/>
-
-
-
         </Route>
 
         <Route path = "/TRADE" element = {<Outlet />}>
@@ -52,6 +50,8 @@ function App() {
         <Route path = "/SIGNUP" element = {<Signup />} />
         
         <Route path = "/REGISTER" element = {<Register />}/>
+
+        <Route path = "/PAYMENT" element = {<Payment/>}/>
         
       </Routes>
       <ToastContain />

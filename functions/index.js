@@ -1,3 +1,38 @@
+const functions = require("firebase-functions");
+const express = require("express");
+const cors = require("cors");
+const stripe = require("stripe")("sk_test_51NIWCvJV7xrxUeZRZvx2dfu8ohN3Vq8iiK3M9sIDiHkr84S15yaUksYAr0YdqBmNIUMW8EMKsBp499oR9bOCn3Vi00w7Ng62fI");
+
+const app = express();
+app.use(cors({ origin: true }));
+app.use(express.json());
+
+app.post("/payments/create", async (req, res) => {
+  try {
+    const { amount, shipping } = req.body;
+    const paymentIntent = await stripe.paymentIntents.create({
+      shipping,
+      amount,
+      currency: "usd",
+    });
+    res.status(200).send({ clientSecret: paymentIntent.client_secret });
+  } catch (err) {
+    res.status(500).json({
+      statusCode: 500,
+      message: err.message,
+    });
+  }
+});
+
+app.get("*", (req, res) => {
+  res.status(404).send("404, Not Found.");
+});
+
+exports.api = functions.https.onRequest(app);
+
+
+
+
 // import {getDoc, collection} from "@firebase/firestore";
 // import db from "../src/config/firebase.js";
 // import functions from "firebase-functions";
@@ -82,23 +117,67 @@
 //   }
 // }
 
-// create express server 
-const functions = require ("firebase-functions")
-const express = require('express')
-const cors = require('cors')
+// const secretKey = require("secretKey")
+// const functions = require("firebase-functions");
+// const express = require("express");
+// const cors = require("cors");
+// const stripe =
+// require("stripe")();
 
-const app = express()
+// const app = express();
 
-app.use(cors({
-  origin: true
-}))
+// app.get('/secret', async (req, res) => {
+//   const intent =  await stripe.paymentIntents.create({
+//     amount: 1099,
+//     currency: 'sgd',
+//     // Verify your integration in this guide by including this parameter
+//     metadata: {integration_check: 'accept_a_payment'},
+//   });
+//   res.json({client_secret: intent.client_secret});
+// });
 
-app.get('*', (req, res) => {
-  res
-    .status(404)
-    .send('404, Not Found.')
-})
+// app.listen(3000, () => {
+//   console.log('Running on port 3000');
+// });
 
-app.use(express.json())
 
-exports.api = functions.https.onRequest(app);
+// const paymentIntent = await stripe.paymentIntents.create({
+//   amount: 1099,
+//   currency: 'sgd',
+//   // Verify your integration in this guide by including this parameter
+//   metadata: {integration_check: 'accept_a_payment'},
+// });
+
+// app.use(cors({
+//   origin: true,
+// }));
+// app.use(express.json());
+
+// app.post("/payments/create", async (req, res) => {
+//   try {
+//     const {amount, shipping} = req.body;
+//     const paymentIntent = await stripe.paymentIntents.create({
+//       shipping,
+//       amount,
+//       currency: "usd",
+//     });
+//     res
+//         .status(200)
+//         .send(paymentIntent.client_secret);
+//   } catch (err) {
+//     res
+//         .status(500)
+//         .json({
+//           statusCode: 500,
+//           message: err.message,
+//         });
+//   }
+// });
+
+// app.get("*", (req, res) => {
+//   res
+//       .status(404)
+//       .send("404, Not Found.");
+// });
+
+// exports.api = functions.https.onRequest(app);

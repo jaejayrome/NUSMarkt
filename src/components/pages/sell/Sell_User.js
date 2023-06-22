@@ -29,9 +29,10 @@ export default function Sell_User() {
           }}
         >
           <div> <ShowChartIcon size = "large"/></div>
-          <div> Merchant Account Analytics </div>
+          <div> Pre-Order Grind </div>
           <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}>
-            View Your Storefront Infographics & Revenue
+            Have troubles implementing the design? 
+            Use our image generator and upload a pre-order!
           </div>
 
           <Link to = "/SELL/ANALYTICS"> 
