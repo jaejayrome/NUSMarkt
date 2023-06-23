@@ -6,11 +6,14 @@ import db from "../../config/firebase.js"
 import { toast } from "react-toastify";
 import { auth } from "../../config/firebase.js";
 import { useNavigate } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function AddReviewDrawer(props) {
     const [isOpen, setIsOpen] = useState(false);
     const [reviewStatus, setReviewStatus] = useState("")
     const [messageContent, setContent] = useState("");
+    const [loading, setLoading] = useState(true)
+    const [click, setClick] = useState(false)
     const navigate = useNavigate()
 
     // api call 
@@ -31,32 +34,36 @@ export default function AddReviewDrawer(props) {
         // for this listing i would upload to the message database 
         try {          
             const checkModelLoading = async () => {
+                setClick(true)
                 const response = await query({ "inputs": messageContent });
-                // if (response.error === "Model siebert/sentiment-roberta-large-english is currently loading") {
-                //   setTimeout(checkModelLoading, 1000); 
-                // } 
-                
-                  console.log(JSON.stringify(response))
-                //   const positiveScore = response[0][0].score;
-                //   const negativeScore = response[0][1].score;
-          
-                //   const reviewStatus = positiveScore > negativeScore ? "POSITIVE" : "NEGATIVE";
-                  const updateReviewStatus = response[0][0].label
-                  setReviewStatus(updateReviewStatus);
-          
-                  const messageCollectionRef = collection(db, "message");
-                  const addedMessage = await addDoc(messageCollectionRef, { content: messageContent, listedBy: auth.currentUser.displayName, reviewStatus: updateReviewStatus });
-          
-                  const listingRef = doc(db, 'listing', props.listingRef);
-                  const listing = await getDoc(listingRef);
-          
-                  if (listing.exists()) {
-                    await updateDoc(listing.ref, { messagesArr: arrayUnion(addedMessage) });
-                    await props.callback();
+                if (response.error === "Model siebert/sentiment-roberta-large-english is currently loading") {
+                    setTimeout(checkModelLoading, 10000); 
+                  } else {
+                    setLoading(false);
+                    console.log(JSON.stringify(response));
+                  
+                    const updateReviewStatus = response[0][0].label;
+                    setReviewStatus(updateReviewStatus);
+                  
+                    const messageCollectionRef = collection(db, "message");
+                    const addedMessage = await addDoc(messageCollectionRef, {
+                      content: messageContent,
+                      listedBy: auth.currentUser.displayName,
+                      reviewStatus: updateReviewStatus,
+                    });
+                  
+                    const listingRef = doc(db, "listing", props.listingRef);
+                    const listing = await getDoc(listingRef);
+                  
+                    if (listing.exists()) {
+                      await updateDoc(listing.ref, { messagesArr: arrayUnion(addedMessage) });
+                      await props.callback();
+                    }
+                  
+                    toast("Successfully submitted the review!");
+                    navigate("/BUY");
                   }
-          
-                  toast("Successfully submitted the review!");
-                  navigate("/BUY");
+                  
                 }
           
               await checkModelLoading();
@@ -89,7 +96,14 @@ export default function AddReviewDrawer(props) {
             <div style = {{flexDirection: "column",display: "flex", justifyContent: "center", alignItems: "center"}}> 
                <TextField onChange = {messageContentHandler} label = "Leave Your Review " sx  = {{width: "50%"}} multiline = {true}> Add a comment </TextField>
     
-                <Button onClick = {uploadReview} sx = {{font: "black", textTransform: "none"}}> Leave Review </Button>
+                <Button disabled = {click} onClick = {uploadReview} sx = {{font: "black", textTransform: "none"}}> Leave Review </Button>
+
+                {click && loading && (
+                    <div style = {{fontSize: "20px"}}>
+                        Uploading Comment...
+                        <CircularProgress color="inherit" />
+                    </div>
+                )}
             </div>
 
 
