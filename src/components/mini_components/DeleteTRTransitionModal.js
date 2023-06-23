@@ -1,14 +1,39 @@
+
+import DeleteIcon from "@mui/icons-material/Delete"
 import {Button, Modal, Box, Backdrop, Fade, IconButton, Typography, Select, FormControl, MenuItem} from '@mui/material'
+import { useState } from "react";
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import { deleteDoc, arrayRemove, collection, getDoc,doc, deleteField, updateDoc, getDocs, query, where } from "@firebase/firestore";
+import { query, where, collection, getDocs, getDoc, arrayRemove, deleteDoc, updateDoc } from "@firebase/firestore";
 import db from "../../config/firebase.js";
-import { auth } from '../../config/firebase.js';
-import {toast} from 'react-toastify'
-import DeleteIcon from '@mui/icons-material/Delete';
+// import { auth } from "../../config/firebase.js";
 
 
-export default function DeleteTLTransitionModal(props) {
+export default function DeleteTRTransitionModal(props) {
+
+    const deleteHandler = async  () => {
+        //deleting the actual request
+
+        try{
+        await deleteDoc(props.refer)
+        // loop through all the listings
+        const listings = await getDocs(collection(db, "tradeListing"))
+        listings.forEach(async (listing) => {
+            const tradeReqArr = listing.data().tradeRequestArr;
+      
+            // Filter out the specific trade request reference
+            const updatedTradeReqArr = tradeReqArr.filter((tradeReqRef) => {
+              // Compare the trade request references for equality
+              return tradeReqRef.path !== props.refer.path;
+            });
+      
+            // Update the trade listing with the modified tradeRequestArr
+            await updateDoc(listing.ref, { tradeRequestArr: updatedTradeReqArr });
+          });
+        } catch(error) {
+            console.log(error)
+        }
+           
+    }
 
 
     const [open, setOpen] = useState(false);
@@ -27,42 +52,13 @@ export default function DeleteTLTransitionModal(props) {
         p: 4,
       };
 
-
-      const deleteHandler = async () => {
-        try {
-          console.log("hello world");
-    
-          const tradeListingRef = props.tradeListing.tradeListingRef
-          const toDeleteArr = props.tradeListing.tradeRequests
-          
-          // deleeting the actual listings
-          await deleteDoc(tradeListingRef)
-      
-          // delete the actual trade listing
-          const allTradeRequest = await getDocs(collection(db, "tradeRequest"));
-          allTradeRequest.forEach(async (tr) => {
-            toDeleteArr.forEach(async (trL) => {
-                if (trL.path === tr.path) {
-                    await deleteDoc(tr.ref)
-                }
-            })
-          });
-      
-          console.log("success");
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      
-      
-      
-
     return (
-        <div>
-            <IconButton onClick = {handleOpen} sx = {{position: "relative", right: "-45%", borderColor: 'black', color: 'black'}} >
-            <DeleteIcon />
+        <div style={{ position: "absolute", top: 0, right: 0 }}> 
+             <IconButton onClick={handleOpen}>
+                            <DeleteIcon />
             </IconButton>
-                <Modal
+
+            <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
                     open={open}
@@ -78,12 +74,12 @@ export default function DeleteTLTransitionModal(props) {
                     <Fade in={open}>
                     <Box sx={style}>
                         <Typography sx = {{fontWeight: 'bold'}}id="transition-modal-title" variant="h6" component="h2">
-                        Delete Trade Listing
+                        Delete Trade Request
                         </Typography>
 
                         <div style = {{}}> 
                         <Typography id="transition-modal-description" sx={{flex: 1, mt: 2 }}>
-                        This processs cannot be reverted once it is confirmed. 
+                        Ensure that you have made a decision on whether to trade with the user before deleting
                         </Typography>
 
                         <Typography sx={{ flex: 1, mt: 2 }}>
@@ -100,6 +96,6 @@ export default function DeleteTLTransitionModal(props) {
                     </Box>
                     </Fade>
                 </Modal>
-        </div> 
+        </div>
     )
-} 
+}

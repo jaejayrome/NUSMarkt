@@ -3,11 +3,11 @@ import Navbar from "../../compiledData/Navbar";
 import { auth } from "../../../config/firebase";
 import db from "../../../config/firebase";
 import { query, where, collection, getDocs, getDoc, arrayRemove, deleteDoc, updateDoc } from "@firebase/firestore";
-import { CardActions, Button, Divider, Card, Typography, IconButton, Box, CardContent, ImageList, CardHeader} from "@mui/material";
+import { CardActions, Button, Divider, Card, Typography, IconButton, Box, CardContent, ImageList, CardHeader, Avatar} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete"
 import TradeRequestListingModal from "../../mini_components/TradeRequestListingDrawer.js";
 import DeleteTLTransitionModal from "../../mini_components/DeleteTLTransitionModal";
-
+import LockIcon from '@mui/icons-material/Lock';
 // trade inbox would also allow user to remove their trade request 
 // removing trade listing should be done where trade listing
 
@@ -15,6 +15,17 @@ export default function Trade_Inbox() {
   const [reqPerListing, setReq] = useState([]);
   const [someoneWant, setSomeoneWant] = useState(false);
   const [sentTradeRequestArr, setSentTradeRequestArr] = useState([]);
+
+  const StyledLockIcon = () => {
+    return (
+      <Box sx={{borderTop: "2px solid black", pt: "10%", display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: "column"}}>
+        <LockIcon sx={{ fontSize: '72px' }} />
+        <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+          Feature Locked
+        </Typography>
+      </Box>
+    );
+  };
 
   const userName = auth.currentUser.displayName;
 
@@ -38,7 +49,8 @@ export default function Trade_Inbox() {
 
   useEffect(() => {
     const getRequests = async () => {
-      const q = query(collection(db, "tradeListing"), where("listedBy", "==", userName));
+      const q = query(collection(db, 
+        "tradeListing"), where("listedBy", "==", userName));
       const querySnapshot = await getDocs(q);
 
       const tradeListings = [];
@@ -64,22 +76,9 @@ export default function Trade_Inbox() {
       setSomeoneWant(tradeListings.length > 0);
     };
 
-    const getSentRequests = async () => {
-      const q = query(collection(db, "tradeRequest"), where("madeBy", "==", userName));
-      const querySnapshot = await getDocs(q);
-      const tradeRequestArr = [];
-
-      if (!querySnapshot.empty) {
-        querySnapshot.forEach((tradeRequest) => {
-          tradeRequestArr.push(tradeRequest.data());
-        });
-      }
-
-      setSentTradeRequestArr(tradeRequestArr);
-    };
+    
 
     getRequests();
-    getSentRequests();
   }, []);
 
   return (
@@ -87,35 +86,14 @@ export default function Trade_Inbox() {
       <Navbar />
 
       <div style = {{flexDirection: "row", display: "flex"}}> 
-      {/* <div style={{ flex: 1, marginBottom: "4%", fontSize: "20px", border: "2px solid black" }}>Sent Requests:
-      {sentTradeRequestArr.length === 0 ? (
-        "You have not uploaded any trade listings"
-      ) : (
-        <div style={{display: "flex", flexDirection: "column", alignItems:"center", justifyContent: "center"}}>
-          {sentTradeRequestArr.map((tradeRequest) => (
-            <div style = {{marginBottom: "5%"}}>
-              Request Title: {tradeRequest.requestTitle}
-              <div> 
-              Sent By: you
-
-              <IconButton onClick = {deleteHandler}>
-               <DeleteIcon />
-               </IconButton>
-
-
-              </div> 
-            </div>
-          ))}
-        </div>
-      )}
-      </div>  */}
+   
 
   
 
       
 <div style={{ flex: 1, fontSize: "20px", textAlign: "center", maxHeight: "70vh", overflow: "auto"}}>
   <div style={{ fontWeight: "bolder", fontSize: "40px", marginBottom: "5%" }}>
-    Received Requests:
+    Incoming Requests:
     <div style={{ fontWeight: "normal", fontSize: "25px" }}>
       View individual trade requests for each of your trade listings
     </div>
@@ -125,13 +103,9 @@ export default function Trade_Inbox() {
       {reqPerListing.length > 0 ? (
         reqPerListing.map((listing) => (
           <div key={listing.tradeListingTitle} style={{ width: "50%", margin: "2%" }}>
-            <Card style={{ padding: "-2%" }} elevation="5">
-              <CardHeader action={
-          <DeleteTLTransitionModal tradeListing = {listing} /> 
-        }>
-
+            <Card style={{pt: 1 }} elevation="5">
+              <CardHeader>
               </CardHeader>
-
               <CardContent>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                   Requests Received ({listing.tradeRequests.length})
@@ -143,9 +117,12 @@ export default function Trade_Inbox() {
                   {listing.tradeRequests && listing.tradeRequests.length > 0 ? (
                     listing.tradeRequests.map((tradeRequest) => (
                       <Card elevation="10" sx={{ width: "80%", margin: "2%" }}>
-                        <CardContent sx={{ fontSize: "15px" }}>
-                          <div>Request #{listing.tradeRequests.indexOf(tradeRequest) + 1} - {tradeRequest.requestTitle}</div>
-                          <div>From: {tradeRequest.madeBy}</div>
+                        <CardContent sx={{ pt: 1, fontSize: "15px", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
+                          <div style={{alignItems: "center", marginBottom: "2%"}}>Request #{listing.tradeRequests.indexOf(tradeRequest) + 1} - {tradeRequest.requestTitle}</div>
+                          <div style={{ display: "flex", alignItems: "center" }}>
+                          <Avatar size="small" />
+                          <div style={{ marginLeft: "5px" }}>{tradeRequest.madeBy}</div>
+                        </div>
                         </CardContent>
                         <CardActions
                           sx={{
@@ -162,16 +139,21 @@ export default function Trade_Inbox() {
                     <div>No trade requests for this listing</div>
                   )}
                 </div>
+
+                <DeleteTLTransitionModal tradeListing = {listing} /> 
               </CardContent>
             </Card>
           </div>
         ))
       ) : (
-        <div>No requests for any of your listings</div>
+        <div> No requests for any of your listings</div>
       )}
     </div>
   ) : (
-    "You have not received any requests for any of your listings"
+    <div style = {{fontSize: "20px"}}> 
+    <StyledLockIcon />
+    You have not received any requests for any of your listings
+     </div>
   )}
 </div>
 

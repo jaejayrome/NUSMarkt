@@ -16,6 +16,8 @@ import Trade_Inbox from './components/pages/trade/Trade_Inbox.js';
 import Sell_Listings from './components/pages/sell/Sell_Listings.js';
 import Sell_Analytics from './components/pages/sell/Sell_Analytics.js';
 import Payment from './components/pages/payments/index.js';
+import Trade_Intermediate from './components/pages/trade/Trade_Intermediate.js';
+import Trade_Outgoing from './components/pages/trade/Trade_Outgoing.js';
 
 function App() {
   return (
@@ -42,9 +44,11 @@ function App() {
 
         <Route path = "/TRADE" element = {<Outlet />}>
           <Route index element = {<Trade_Page/>}/> 
+          <Route path = "INTERMEDIATE" element = {<Trade_Intermediate/>} />
           <Route path = "MARKETPLACE" element = {<Trade_Marketplace/>}/>
           <Route path = "REQUEST" element = {<Trade_Request/>}/>
           <Route path = "INBOX" element = {<Trade_Inbox/>}/>
+          <Route path = "OUTGOING" element = {<Trade_Outgoing/>}/>
         </Route>
 
         <Route path = "/SIGNUP" element = {<Signup />} />

@@ -1,5 +1,4 @@
 import Navbar from "../../compiledData/Navbar";
-import { generateImage } from "../../../controllers/aiConfig";
 import { Button, TextField, InputLabel } from "@mui/material";
 import { useState } from "react";
 import Steppers from "../../mini_components/Steppers";

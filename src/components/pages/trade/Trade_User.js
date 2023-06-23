@@ -71,7 +71,7 @@ export default function Trade_User() {
           <div> <MarkunreadIcon /></div>
           <div>Trade Inbox</div>
           <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}>See if you have received any enticing trade offers!</div>
-          <Link to = "/TRADE/INBOX">   
+          <Link to = "/TRADE/INTERMEDIATE">   
           <Button startIcon = {<ExitToAppIcon/>} sx = {{color: "black",textTransform: "none"}}> Enter </Button>
           </Link> 
         </Box>

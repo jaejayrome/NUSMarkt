@@ -54,7 +54,7 @@ export default function TradeRequestDrawer(props) {
 
       toast("You have successfully sent a trade request!")
 
-      navigate("/TRADE/INBOX")
+      navigate("/TRADE/OUTGOING")
       } catch(error) {
         console.log(error)
       }
