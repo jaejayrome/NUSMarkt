@@ -3,8 +3,10 @@ import Navbar from "../../compiledData/Navbar";
 import { auth } from "../../../config/firebase";
 import db from "../../../config/firebase";
 import { query, where, collection, getDocs, getDoc, arrayRemove, deleteDoc, updateDoc } from "@firebase/firestore";
-import { Divider, IconButton } from "@mui/material";
+import { CardActions, Button, Divider, Card, Typography, IconButton, Box, CardContent, ImageList, CardHeader} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete"
+import TradeRequestListingModal from "../../mini_components/TradeRequestListingDrawer.js";
+import DeleteTLTransitionModal from "../../mini_components/DeleteTLTransitionModal";
 
 // trade inbox would also allow user to remove their trade request 
 // removing trade listing should be done where trade listing
@@ -42,7 +44,7 @@ export default function Trade_Inbox() {
       const tradeListings = [];
 
       for (const tradeListing of querySnapshot.docs) {
-        const tradeListingData = tradeListing.data();
+        const tradeListingData = {...tradeListing.data(), ref: tradeListing.ref};
         if (tradeListingData && tradeListingData.tradeRequestArr && tradeListingData.tradeRequestArr.length > 0) {
           const tradeRequests = [];
           for (const tradeRequestRef of tradeListingData.tradeRequestArr) {
@@ -52,6 +54,7 @@ export default function Trade_Inbox() {
           }
           tradeListings.push({
             tradeListingTitle: tradeListingData.listingTitle,
+            tradeListingRef : tradeListingData.ref,
             tradeRequests: tradeRequests,
           });
         }
@@ -84,7 +87,7 @@ export default function Trade_Inbox() {
       <Navbar />
 
       <div style = {{flexDirection: "row", display: "flex"}}> 
-      <div style={{ flex: 1, marginBottom: "4%", fontSize: "20px", border: "2px solid black" }}>Sent Requests:
+      {/* <div style={{ flex: 1, marginBottom: "4%", fontSize: "20px", border: "2px solid black" }}>Sent Requests:
       {sentTradeRequestArr.length === 0 ? (
         "You have not uploaded any trade listings"
       ) : (
@@ -105,40 +108,74 @@ export default function Trade_Inbox() {
           ))}
         </div>
       )}
-      </div> 
+      </div>  */}
 
   
 
       
-      <div style={{flex: 1, marginTop: "4%", fontSize: "20px" }}>
-        Received Requests:
-        {someoneWant ? (
-          <div>
-            {reqPerListing.length > 0 ? (
-              reqPerListing.map((listing) => (
-                <div key={listing.tradeListingTitle}>
-                  <div>Trade Listing Title: {listing.tradeListingTitle}</div>
+<div style={{ flex: 1, fontSize: "20px", textAlign: "center", maxHeight: "70vh", overflow: "auto"}}>
+  <div style={{ fontWeight: "bolder", fontSize: "40px", marginBottom: "5%" }}>
+    Received Requests:
+    <div style={{ fontWeight: "normal", fontSize: "25px" }}>
+      View individual trade requests for each of your trade listings
+    </div>
+  </div>
+  {someoneWant ? (
+    <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+      {reqPerListing.length > 0 ? (
+        reqPerListing.map((listing) => (
+          <div key={listing.tradeListingTitle} style={{ width: "50%", margin: "2%" }}>
+            <Card style={{ padding: "-2%" }} elevation="5">
+              <CardHeader action={
+          <DeleteTLTransitionModal tradeListing = {listing} /> 
+        }>
 
+              </CardHeader>
+
+              <CardContent>
+                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                  Requests Received ({listing.tradeRequests.length})
+                </Typography>
+                <Typography sx={{ fontWeight: "bold" }} variant="h6" component="div">
+                  {listing.tradeListingTitle}
+                </Typography>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                   {listing.tradeRequests && listing.tradeRequests.length > 0 ? (
                     listing.tradeRequests.map((tradeRequest) => (
-                      <div key={tradeRequest.requestTitle}>
-                        Received Request from: {tradeRequest.madeBy}
-                        <div>Trade Request Title: {tradeRequest.requestTitle}</div>
-                      </div>
+                      <Card elevation="10" sx={{ width: "80%", margin: "2%" }}>
+                        <CardContent sx={{ fontSize: "15px" }}>
+                          <div>Request #{listing.tradeRequests.indexOf(tradeRequest) + 1} - {tradeRequest.requestTitle}</div>
+                          <div>From: {tradeRequest.madeBy}</div>
+                        </CardContent>
+                        <CardActions
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <TradeRequestListingModal tradeRequest = {tradeRequest}/>
+                        </CardActions>
+                      </Card>
                     ))
                   ) : (
                     <div>No trade requests for this listing</div>
                   )}
                 </div>
-              ))
-            ) : (
-              <div>No requests for any of your listings</div>
-            )}
+              </CardContent>
+            </Card>
           </div>
-        ) : (
-          "You have not received any requests for any of your listings"
-        )}
-      </div>
+        ))
+      ) : (
+        <div>No requests for any of your listings</div>
+      )}
+    </div>
+  ) : (
+    "You have not received any requests for any of your listings"
+  )}
+</div>
+
+
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import db from "../../config/firebase.js";
 import { auth } from '../../config/firebase.js';
 import {toast} from 'react-toastify'
 import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteTLTransitionModal from './DeleteTLTransitionModal.js';
 
 export default function DeleteTransitionModal(props) {
 
