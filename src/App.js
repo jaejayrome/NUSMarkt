@@ -1,4 +1,4 @@
-import { Route, Routes, Outlet } from 'react-router-dom';
+import { Route, Routes, Outlet, BrowserRouter } from 'react-router-dom';
 import Home from './Home.js';
 import Sell_Page from './components/pages/sell/Sell_Page.js'
 import Trade_Page from './components/pages/trade/Trade_Page.js'
@@ -16,49 +16,50 @@ import Trade_Inbox from './components/pages/trade/Trade_Inbox.js';
 import Sell_Listings from './components/pages/sell/Sell_Listings.js';
 import Sell_Analytics from './components/pages/sell/Sell_Analytics.js';
 import Payment from './components/pages/payments/index.js';
-import Trade_Intermediate from './components/pages/trade/Trade_Intermediate.js';
+import Trade_Intermediate from './components/pages/trade/Trade_Intermediate.js'
 import Trade_Outgoing from './components/pages/trade/Trade_Outgoing.js';
 
 function App() {
   return (
     <div>
-      <Routes>
-        <Route path="/" element={<Home />} />
 
-        <Route path= "/BUY" element={<Outlet />}>
-          <Route index element={<Home />} /> 
-          <Route path=":listingID" element={<ListingPage />} />
-          <Route path= "CART" element = {<Cart />}/>
-        </Route>
+        <Routes>
+          <Route path="/" element={<Home />} />
 
-        <Route path = "/SELL" element = {<Outlet />}>
-          <Route index element={<Sell_Page/>} />
-          <Route path = "ADD_LISTING" element = {<Outlet />}>
-            <Route index element={<Sell_addListing/>} />
-            <Route path = "STEP2" element = {<Sell_addListing2/>}/>
-            <Route path = "STEP3" element = {<Sell_addListing3/>}/>
+          <Route path= "/BUY" element={<Outlet />}>
+            <Route index element={<Home />} /> 
+            <Route path=":listingID" element={<ListingPage />} />
+            <Route path= "CART" element = {<Cart />}/>
           </Route>
-          <Route path = "LISTINGS" element = {<Sell_Listings/>}/>
-          <Route path = "ANALYTICS" element = {<Sell_Analytics/>}/>
-        </Route>
 
-        <Route path = "/TRADE" element = {<Outlet />}>
-          <Route index element = {<Trade_Page/>}/> 
-          <Route path = "INTERMEDIATE" element = {<Trade_Intermediate/>} />
-          <Route path = "MARKETPLACE" element = {<Trade_Marketplace/>}/>
-          <Route path = "REQUEST" element = {<Trade_Request/>}/>
-          <Route path = "INBOX" element = {<Trade_Inbox/>}/>
-          <Route path = "OUTGOING" element = {<Trade_Outgoing/>}/>
-        </Route>
+          <Route path = "/SELL" element = {<Outlet />}>
+            <Route index element={<Sell_Page/>} />
+            <Route path = "ADD_LISTING" element = {<Outlet />}>
+              <Route index element={<Sell_addListing/>} />
+              <Route path = "STEP2" element = {<Sell_addListing2/>}/>
+              <Route path = "STEP3" element = {<Sell_addListing3/>}/>
+            </Route>
+            <Route path = "LISTINGS" element = {<Sell_Listings/>}/>
+            <Route path = "ANALYTICS" element = {<Sell_Analytics/>}/>
+          </Route>
 
-        <Route path = "/SIGNUP" element = {<Signup />} />
-        
-        <Route path = "/REGISTER" element = {<Register />}/>
+          <Route path = "/TRADE" element = {<Outlet />}>
+            <Route index element = {<Trade_Page/>}/> 
+            <Route path = "INTERMEDIATE" element = {<Trade_Intermediate/>} />
+            <Route path = "MARKETPLACE" element = {<Trade_Marketplace/>}/>
+            <Route path = "REQUEST" element = {<Trade_Request/>}/>
+            <Route path = "INBOX" element = {<Trade_Inbox/>}/>
+            <Route path = "OUTGOING" element = {<Trade_Outgoing/>}/>
+          </Route>
 
-        <Route path = "/PAYMENT" element = {<Payment/>}/>
-        
-      </Routes>
-      <ToastContain />
+          <Route path = "/SIGNUP" element = {<Signup />} />
+          
+          <Route path = "/REGISTER" element = {<Register />}/>
+
+          <Route path = "/PAYMENT" element = {<Payment/>}/>
+          
+        </Routes>
+        <ToastContain />
     </div>
   )
 }

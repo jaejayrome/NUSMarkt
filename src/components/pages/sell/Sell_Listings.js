@@ -52,7 +52,7 @@ export default function Sell_Listings() {
       <Navbar />
 
 
-      <div style = {{fontSize: "30px", fontFamily: "monospace", marginLeft: "4%"}}> 
+      <div style = {{fontSize: "30px", fontFamily: "sans-serif", marginLeft: "4%"}}> 
       Your Listings
       </div>
 

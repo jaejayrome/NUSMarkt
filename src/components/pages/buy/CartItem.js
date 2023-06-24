@@ -7,6 +7,7 @@ import CartItemRow from "./Cart/CartItemRow.js"
 import { query, collection, where, getDocs,getDoc} from 'firebase/firestore';
 import { Table, TableBody, TableRow, TableCell, TableHead, Button } from '@mui/material';
 import { onAuthStateChanged } from 'firebase/auth';
+import PaymentIcon from '@mui/icons-material/Payment';
 
 export default function CartItem(props) {
 
@@ -71,7 +72,7 @@ export default function CartItem(props) {
             {cart != null? "Shopping Cart" : <ShoppingBagOutlinedIcon sx={{ fontSize: 75}}/>}
             </div> 
             <div style = {{marginTop:  "1%",fontFamily: 'monospace', fontSize: "30px", display: "flex", display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-            {props.isLogged ? 
+             {props.isLogged ? 
             cart != null ?
             <div style={{width: "80%"}}>
             <Table> <TableHead> <TableRow> {headings.map((head) => <TableCell> {head} </TableCell>)} </TableRow></TableHead>
@@ -85,7 +86,7 @@ export default function CartItem(props) {
             </Table>
 
             <div style = {{justifyContent: 'center', alignItems: 'center', display: 'flex', marginTop: "5%"}}> 
-            <Button variant = "outlined" sx= {{borderColor: "black", align:"center", position: "relative", color: "black"}}> Checkout </Button>
+            <Button startIcon = {<PaymentIcon />} variant = "outlined" sx= {{borderColor: "black", align:"center", position: "relative", color: "black"}}> Checkout </Button>
             </div>
             
             </div>

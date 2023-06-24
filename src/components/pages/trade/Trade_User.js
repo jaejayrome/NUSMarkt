@@ -49,7 +49,7 @@ export default function Trade_User() {
         >
           <div> <ChangeCircleIcon /> </div>
           <div>Trade Listing</div>
-          <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}>View & Add Your Current Trade Listings</div>
+          <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}>Add Your Own Current Trade Listing</div>
           <Link to = "/TRADE/REQUEST">  
           <Button startIcon = {<ExitToAppIcon/>} sx = {{color: "black",textTransform: "none"}}> Enter </Button>
           </Link> 

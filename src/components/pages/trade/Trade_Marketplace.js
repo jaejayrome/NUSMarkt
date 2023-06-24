@@ -20,14 +20,19 @@ export default function Trade_Marketplace() {
     }, [])
     
     return (
-        <div> 
+        <div>
             <Navbar />
 
-            <div style = {{fontSize: "20px"}}> 
-            Welcome To The Marketplace!
+            <div style={{flex: 1, fontSize: "20px", textAlign: "center"}}>
+            <div style={{ fontWeight: "bolder", fontSize: "40px", marginBottom: "5%" }}>
+                Welcome to the marketplace
+                <div style={{ fontWeight: "normal", fontSize: "25px" }}>
+                view trade listings made by NUS peers within the NUSMarkt community
+                </div>
+            </div>
             </div>
             {listings.length != 0 && (
-
+                <div style={{ height: "60vh", overflow: "auto" }}> 
                 <Box sx = {{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}> 
                     {listings.map((listing) => 
                     <Trade_IndivListing listing = {listing}/>
@@ -35,6 +40,7 @@ export default function Trade_Marketplace() {
                     
                     }
                 </Box>
+                </div>
             )}
 
         </div>

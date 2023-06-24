@@ -13,14 +13,14 @@ export default function ListingPage() {
     // user upload haven't been done yet 
     return (
         <div>
-            <img src = {homePageIcon} alt = "NUS MARKT" style = {{
+            {/* <img src = {homePageIcon} alt = "NUS MARKT" style = {{
                 position: "fixed",
                 left: "35px",
                 top: "-35px",
                 maxWidth: "25%",
                 maxHeight: "25%",
                 cursor: "pointer"
-            }}/>
+            }}/> */}
 
             <Navbar />
             <ListingReader listingID={listingID}/>

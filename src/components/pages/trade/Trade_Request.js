@@ -7,6 +7,9 @@ import db from "../../../config/firebase";
 import { collection, arrayUnion, updateDoc, query, getDocs, where, addDoc} from "@firebase/firestore";
 import {toast} from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import TradeStepper from "../../mini_components/TradeStepper";
+import CheckIcon from '@mui/icons-material/Check';
+import UploadIcon from '@mui/icons-material/Upload';
 
 export default function Trade_Request() {
     // yet to include the trade listings that u have made so far 
@@ -14,6 +17,8 @@ export default function Trade_Request() {
     const [selectedSizes, setSelectedSizes] = useState([]);
     const [listingTitle, setListingTitle] = useState("");
     const [listingDescription, setListingDescription] = useState("")
+    const [stepper, setStepper] = useState(0)
+    const [submit, setSubmit] = useState(false)
 
     const navigate = useNavigate()
     // callback function
@@ -29,6 +34,14 @@ export default function Trade_Request() {
         setListingDescription(event.target.value)
     }
 
+    const disableLogoNow = () => {
+        if (stepper == 2){
+            setSubmit(true)
+            return
+        }
+        setStepper(stepper + 1)      
+      }
+
     const newListing = {
         listingTitle: listingTitle,
         selectedSizes: selectedSizes, 
@@ -43,7 +56,7 @@ export default function Trade_Request() {
     
     const submitHandler = async () => {
         try {
-            // this is correect because i myself is trying to upload this 
+            // this is correct because i myself is trying to upload this 
             const q = query(collection(db, "users"), where("uid", "==", userID));
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach(async (user) => {
@@ -73,37 +86,75 @@ export default function Trade_Request() {
 
             <Box sx = {{display: "flex", flexDirection: "column", alignItems:"center", justifyContent: "center", margin: "0 auto"}}>
 
-                <div style={{fontWeight: "bold",color: "black", fontSize: "30px", fontFamily: "monospace"}}> 
-                    Fill In the Following Details
+            <div style={{ flex: 1, fontSize: "20px", textAlign: "center"}}>
+            <div style={{ fontWeight: "bolder", fontSize: "40px", marginBottom: "5%" }}>
+                Add Your Trade Request
+                <div style={{ fontWeight: "normal", fontSize: "25px" }}>
+                customise and denote what other shirts are you willing to trade for
                 </div>
 
-                <div>
-                    <InputLabel htmlFor= "listing-title" sx = {{color: "black"}}> Looking For:</InputLabel>
-                    <FormHelperText> This would appear in your trade listing title!</FormHelperText>
-                    <TextField onChange = {listing_title_handler} id = "listing-title" multiline maxRows={2} fullWidth margin = "dense"> </TextField>
-                </div>
+            </div>
+            </div>
 
-                <div>
-                    <div style={{margin: "2%"}}> 
-                    Sizes Looking For:
+            <TradeStepper stage = {stepper}/>
+                {stepper == 0 && (<div style = {{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", margin: "7%"}}>
+                    {/* <InputLabel htmlFor= "listing-title" sx = {{color: "black"}}> Looking For:</InputLabel> */}
+                    
+                    <TextField label= "Enter here" onChange = {listing_title_handler} id = "listing-title" multiline maxRows={2} sx ={{width: "100%", marginBottom: "1%"}} margin = "dense"> </TextField>
+                    <FormHelperText sx = {{fontSize: "18px"}}> this would appear in your trade listing title!</FormHelperText>
+                    <Button  variant = "outlined" startIcon = {<CheckIcon />}  onClick={disableLogoNow} sx = {{borderColor: "black" ,color: "black", marginTop: "10%"}}> Confirm Input </Button>
+                </div>)}
+
+                
+
+                {stepper == 1 &&(<div>
+                    <div style={{marginBottom: "5%", marginTop: "20%"}}> 
+                    Select Your Size:
                     </div>
 
 
                     <SizeButtonGroup selectedSizes={selectedSizes}
                     onSelectedSizes={handleSelectedSizes}/>
 
-                    <div> 
-                        Selected Sizes: {selectedSizes.map(size => size + " ")}
+                    <div style = {{marginTop: "5%"}}> 
+                        Current Selection: {selectedSizes.map(size => size + " ")}
                     </div>
-                </div>
+                    <Button variant = "outlined" startIcon = {<CheckIcon />}  onClick={disableLogoNow} sx = {{marginTop: "5%",borderColor: "black" ,color: "black"}}> Confirm Input </Button>
+                </div>)}
 
-                <div>
-                    <InputLabel htmlFor= "product-description"> Trade Description </InputLabel>
-                    <TextField onChange = {listing_description_handler} id = "product-description" multiline maxRows={4} fullWidth margin = "dense"> </TextField>
-                </div>
+                {
+                        stepper === 2 && (
+                    
+                            <div style={{ marginTop: "5%" }}>
+                            <InputLabel htmlFor="product-description">Trade Description</InputLabel>
+                            <TextField
+                                onChange={listing_description_handler}
+                                id="product-description"
+                                multiline
+                                maxRows={4}
+                                fullWidth
+                                margin="dense"
+                                disabled = {submit}
+                                sx={{ flex: 1, marginBottom: "1%" }} // Set flex: 1 to make the TextField expand to fill the available space
+                            />
+                            <Button
+                                disabled={submit}
+                                variant="outlined"
+                                startIcon={<CheckIcon />}
+                                onClick={disableLogoNow}
+                                
+                                sx={{ borderColor: "black", color: "black", marginTop: "5%" }}
+                            >
+                                Confirm Input
+                            </Button>
+                            </div>
+                        )}
 
-                <Button onClick = {submitHandler}> Submit </Button>
 
+                {stepper == 2 && (<div style = {{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", margin: "4%"}}> 
+                    <Button  startIcon={<UploadIcon />} sx = {{color: "black", borderColor: "black"}}variant = "outlined" disabled = {!submit} onClick = {submitHandler}> Upload Listing </Button>
+                </div>)}
+                
             </Box>
         </div>
     )

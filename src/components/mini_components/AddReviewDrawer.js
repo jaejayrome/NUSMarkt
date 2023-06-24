@@ -1,4 +1,4 @@
-import { Button, Drawer} from "@mui/material";
+import { Button, Drawer, Box} from "@mui/material";
 import { useState } from "react";
 import {TextField} from "@mui/material"
 import {getDoc, doc, updateDoc, arrayUnion, collection, addDoc} from 'firebase/firestore'
@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { auth } from "../../config/firebase.js";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
+import AddCommentIcon from '@mui/icons-material/AddComment';
 
 export default function AddReviewDrawer(props) {
     const [isOpen, setIsOpen] = useState(false);
@@ -83,20 +84,22 @@ export default function AddReviewDrawer(props) {
 
     return (
         <div>
-            <Button sx = {{right: "-85%",color: "black"}} onClick = {toggleDrawer}> Add A Review </Button>
+            <Button variant = "outlined" startIcon = {<AddCommentIcon />} sx = {{borderColor: "black", right: "-85%",color: "black"}} onClick = {toggleDrawer}> Add A Review </Button>
             <Drawer PaperProps={{
             sx: { width: "45%" },
             }}
             anchor="right" open={isOpen} onClose={toggleDrawer}>
 
-            <div style = {{fontWeight: "black", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", fontFamily: "monospace",fontWeight: "bold",marginBottom: "3%", fontSize: "30px"}}> 
+            <div style = {{fontWeight: "black", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",fontWeight: "bolder",marginBottom: "3%", fontSize: "30px", marginTop: "10%"}}> 
             Your Feedback Matters
             </div>
-
+            <div style = {{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",marginBottom: "3%", fontSize: "20px"}}> 
+            How did you find the item? 
+            </div>
             <div style = {{flexDirection: "column",display: "flex", justifyContent: "center", alignItems: "center"}}> 
                <TextField onChange = {messageContentHandler} label = "Leave Your Review " sx  = {{width: "50%"}} multiline = {true}> Add a comment </TextField>
     
-                <Button disabled = {click} onClick = {uploadReview} sx = {{font: "black", textTransform: "none"}}> Leave Review </Button>
+                <Button variant = "contained" disabled = {click} onClick = {uploadReview} sx = {{backgroundColor: "black", marginTop: "5%", color: "white", font: "black", textTransform: "none"}}> Leave Review </Button>
 
                 {click && loading && (
                     <div style = {{fontSize: "20px"}}>
@@ -106,6 +109,7 @@ export default function AddReviewDrawer(props) {
                 )}
             </div>
 
+   
 
       </Drawer>
         </div>

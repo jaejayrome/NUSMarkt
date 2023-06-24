@@ -2,6 +2,7 @@ import { useEffect, useState} from "react"
 import TradeListingDrawer from "../../mini_components/TradeListingDrawer"
 import TradeRequestDrawer from "../../mini_components/TradeRequestDrawer"
 import { auth } from "../../../config/firebase"
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 
 export default function Trade_IndivListing(props) {
 
@@ -20,12 +21,11 @@ export default function Trade_IndivListing(props) {
             {listing.listingTitle}
             </div>
 
-            <div style={{fontSize: "20px"}}> 
-                Listed By: 
+            <div style={{fontSize: "20px", display: "flex"}}> 
+            <PermIdentityIcon />{listing.listedBy}
                 {listing.listedBy}
-                <TradeListingDrawer listedBy = {listing.listedBy} listingDescription = {listing.listingDescription} selectedSizes = {listing.selectedSizes}/>
             </div>
-            
+            <TradeListingDrawer listedBy = {listing.listedBy} listingDescription = {listing.listingDescription} selectedSizes = {listing.selectedSizes}/>
             <TradeRequestDrawer disabled = {isSame} originalListingReference = {listing.reference}/>
             
         </div>

@@ -26,7 +26,7 @@ export default function ListingMessage(props) {
       
 
     return (
-        <Card>
+        <Card sx = {{width: "50%", marginBottom: "2%"}} elevation={5}>
             {message &&( 
          <div>
             <CardHeader 

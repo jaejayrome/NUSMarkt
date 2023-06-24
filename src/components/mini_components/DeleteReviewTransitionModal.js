@@ -20,11 +20,14 @@ export default function DeleteReviewTransitionModal(props) {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 600,
+        width: 400,
         bgcolor: 'background.paper',
-        border: '2px solid #000',
         boxShadow: 24,
         p: 4,
+        alignItems: 'center', 
+        display: 'flex', 
+        flexDirection: 'column',
+        justifyContent: 'center'
       };
 
       const deleteHandler =  async () => {
@@ -67,12 +70,12 @@ export default function DeleteReviewTransitionModal(props) {
         <Fade in={open}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-            Are You Sure?
+            Delete Review?
             </Typography>
 
             <div style = {{display: "flex", flexDirection:"row"}}> 
             <Typography id="transition-modal-description" sx={{flex: 1, mt: 2 }}>
-            Confirm Now:
+      
             </Typography>
 
             <Typography sx={{ flex: 1, mt: 2 }}>
@@ -81,10 +84,10 @@ export default function DeleteReviewTransitionModal(props) {
             </div>
 
             <div style={{display: "flex", alignItems: "center", justifyContent:"center", marginTop: "5%"}}>
-            <Button sx = {{mr: "2%"}}variant = "outlined" onClick = {handleClose}> Cancel </Button>
+            <Button sx = {{mr: "2%"}} color = "error"variant = "outlined" onClick = {handleClose}> NO </Button>
 
             <Link to = "/BUY" onClick = {deleteHandler}>
-                <Button variant = "outlined"sx = {{font: "black"}}> Confirm Delete </Button>
+                <Button color = "success" variant = "outlined"sx = {{font: "black"}}> YES </Button>
             </Link>
             </div>
           </Box>

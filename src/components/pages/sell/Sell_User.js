@@ -56,7 +56,7 @@ export default function Sell_User() {
         >
           <div> <SellIcon /> </div>
           <div> Your Listings </div>
-          <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}>Add your own configured trade request!</div>
+          <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}>View your current listings! </div>
           <Link to = "/SELL/LISTINGS">  
           <Button startIcon = {<ExitToAppIcon/>} sx = {{color: "black",textTransform: "none"}}> Enter </Button>
           </Link> 
@@ -77,7 +77,7 @@ export default function Sell_User() {
         >
           <div> <LibraryAddIcon /></div>
           <div> Add Listing </div>
-          <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}>See if you have received any enticing trade offers!</div>
+          <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}> Add your own configured listing to sell!</div>
           <Link to = "/SELL/ADD_LISTING">   
           <Button startIcon = {<ExitToAppIcon/>} sx = {{color: "black",textTransform: "none"}}> Enter </Button>
           </Link> 

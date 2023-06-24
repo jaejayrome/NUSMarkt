@@ -9,13 +9,14 @@ import ImageHandler from './ImageHandler.js';
 import "../stylesheets/Listing.css";
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import { styled } from '@mui/system';
-import { Button, TextField } from '@mui/material';
+import { Button,Box, Typography, TextField } from '@mui/material';
 import CheckroomRoundedIcon from '@mui/icons-material/CheckroomRounded';
 import SizingGuideTable from '../components/mini_components/SizingGuideTable.js';
 import CartTransitionModal from '../components/mini_components/CartTransitionModal.js';
 import Divider from '@mui/material/Divider';
 import AddReviewDrawer from '../components/mini_components/AddReviewDrawer.js';
 import ListingMessage from './ListingMessage.js';
+import LockIcon from '@mui/icons-material/Lock';
 
 // things learnt we cannot retrieve the data before rendering the component in case if it is null 
 // create a transition modal that would allow the user to add to cart? 
@@ -33,6 +34,18 @@ export default function ListingReader({ listingID }) {
   const LargeAccountCircleSharpIcon = styled(AccountCircleSharpIcon)`
   font-size: 60px;`;
 
+
+  const StyledLockIcon = () => {
+    return (
+      <Box sx={{borderTop: "2px solid black", pt: "10%", display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: "column"}}>
+        <LockIcon sx={{ fontSize: '72px' }} />
+        <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+          Feature Locked
+        </Typography>
+      </Box>
+    );
+  };
+
   const fetchListing = useCallback(async () => {
     try {
       const listingRef = doc(db, 'listing', listingID);
@@ -41,7 +54,6 @@ export default function ListingReader({ listingID }) {
         const data = listingSnapshot.data();
         setListingData({...data, uid: listingSnapshot.id});
       } else {
-        // listing does not exist
         console.log('listing does not exist');
       }
     } catch (error) {
@@ -77,17 +89,11 @@ export default function ListingReader({ listingID }) {
       if (user) {
         fetchListing(user.uid);
         fetchMessages();
-          
-
-        
       } else {
-        // User is not logged in
-        // Handle the case when there is no user authenticated
-        console.log('No user authenticated');
+        // features locked
+        
       }
     });
-
-    // Cleanup the event listener on component unmount
     return () => unsubscribe();
   }, [fetchListing]);
 
@@ -165,13 +171,20 @@ export default function ListingReader({ listingID }) {
 
         <div> 
           {listingMessages.length > 0 && (
-            <div>{listingMessages.map((indivMessageRef) => {
+            <div style = {{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>{listingMessages.map((indivMessageRef) => {
               return (<ListingMessage listingRef = {listingRef} messageInstance = {indivMessageRef} />)
             })}
             </div>
           )}
         </div>
 
+        </div>
+      )}
+
+      {!listingData &&(
+        <div style = {{fontSize: "20px", textAlign: "center"}}> 
+        <StyledLockIcon />
+        Sign In To Unlock Feature
         </div>
       )}
     </ScrollableCardContainer>

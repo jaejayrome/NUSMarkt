@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../config/firebase.js"
 import {toast} from 'react-toastify';
+import {withErrorBoundary} from "../../ErrorBoundary.js"
 
 // pass a state through the link to the sub pages trade and sell
 // the state wherein the user has been logged in or not 
@@ -49,7 +50,7 @@ function Navbar(props) {
 
         {actionArr.map((action, index)=> {
         return (
-        <NavLink activeClassName = "active" to = {`/${action.title}`}>
+        <NavLink key = {index} activeClassName = "active" to = {`/${action.title}`}>
             <button className = "main_button" key = {index}>
             {action.title}
             </button>
@@ -70,4 +71,5 @@ function Navbar(props) {
     )
 }
 
+// const Navbar = withErrorBoundary(Navbar);
 export default Navbar;

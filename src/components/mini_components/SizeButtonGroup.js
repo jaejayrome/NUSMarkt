@@ -26,7 +26,7 @@ export default function SizeButtonGroup(props) {
     const sizeArr = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL']
 
     return (
-        <div>
+        <div style = {{display: 'flex'}}>
             {sizeArr.map((sizing) => (<SizeButton key = {sizing} size = {sizing} onSizeToggle = {handleSizeToggle} isSelected={props.selectedSizes.includes(sizing)}/>))}
         </div>
     )
