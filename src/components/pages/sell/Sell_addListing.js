@@ -174,17 +174,18 @@ export default function Sell_addListing() {
                 }
             </div>
 
-            {bankDetailsUploaded ? <div> </div> : <div> 
-            <InputLabel htmlFor = "bankAccountNumber"> Bank Account Number </InputLabel>
+            {bankDetailsUploaded ? <div> </div> : <div style={{marginTop: "5%", flex: 1, display: 'flex', flexDirection: 'row', justifyContent: 'left', alignItems: 'left', marginLeft: "10%"}}>
+            {/* <InputLabel htmlFor = "bankAccountNumber"> Bank Account Number </InputLabel> */}
                 <TextField id = "bankAccountNumber"
                 variant = "outlined"
+                label = "Bank Account Number"
                 value = {bankAccountNumber}
                 onChange = {bankAccountNumberHandler}
-                sx = {{width: 500, mb: '1%'}}
+                sx = {{width: 500, marginRight: "3%"}}
                 required
                 />
             
-            <FormControl sx={{ mt: 2 }}>
+            <FormControl sx={{ }}>
             <Select
             labelId="quantity-label"
             id="quantity-select"
