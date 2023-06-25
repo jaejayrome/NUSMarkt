@@ -63,7 +63,13 @@ export default function Sell_addListing2() {
 
       <div style = {{display: 'flex', justifyContent: "center"}}>
 
+        
+
       <div style={{ flex: 1.5, textAlign: "center", marginBottom: "1rem", marginTop: "12rem"}}>
+
+      <div style = {{marginBottom: "5%"}}> 
+          Only images of <span style={{fontWeight: 'bold'}}> jpg or .jpeg </span>. extensions are allowed!
+        </div>
         {!selectedImage ? (
           <Button
             startIcon={<AddPhotoAlternateOutlinedIcon />}

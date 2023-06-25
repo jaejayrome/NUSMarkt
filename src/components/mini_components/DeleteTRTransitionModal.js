@@ -3,7 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import {Button, Modal, Box, Backdrop, Fade, IconButton, Typography, Select, FormControl, MenuItem} from '@mui/material'
 import { useState } from "react";
 import { Link } from 'react-router-dom';
-import { query, where, collection, getDocs, getDoc, arrayRemove, deleteDoc, updateDoc } from "@firebase/firestore";
+import { query, where, collection, getDocs, getDoc, arrayRemove, deleteDoc, updateDoc, deleteField } from "@firebase/firestore";
 import db from "../../config/firebase.js";
 // import { auth } from "../../config/firebase.js";
 
@@ -12,7 +12,6 @@ export default function DeleteTRTransitionModal(props) {
 
     const deleteHandler = async  () => {
         //deleting the actual request
-
         try{
         await deleteDoc(props.refer)
         // loop through all the listings
@@ -25,8 +24,8 @@ export default function DeleteTRTransitionModal(props) {
               // Compare the trade request references for equality
               return tradeReqRef.path !== props.refer.path;
             });
-      
             // Update the trade listing with the modified tradeRequestArr
+            await updateDoc(listing.ref, {tradeRequestArr: deleteField()})
             await updateDoc(listing.ref, { tradeRequestArr: updatedTradeReqArr });
           });
         } catch(error) {
@@ -87,10 +86,10 @@ export default function DeleteTRTransitionModal(props) {
                         </div>
 
                         <div style={{display: "flex", alignItems: "center", justifyContent:"center", marginTop: "5%"}}>
-                        <Button sx = {{mr: "2%"}}variant = "outlined" onClick = {handleClose}> Cancel </Button>
+                        <Button sx = {{borderColor: "black", color: "black",mr: "2%"}}variant = "outlined" onClick = {handleClose}> Cancel </Button>
 
                         <Link to = "/TRADE/INTERMEDIATE" onClick = {deleteHandler}>
-                            <Button variant = "outlined"sx = {{font: "black"}}> Confirm Delete </Button>
+                            <Button variant = "outlined"sx = {{borderColor: "black", color: "black"}}> Confirm </Button>
                         </Link>
                         </div>
                     </Box>

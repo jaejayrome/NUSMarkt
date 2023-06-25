@@ -5,6 +5,10 @@ import { getDocs, query, where, collection, updateDoc, arrayRemove, deleteDoc } 
 import db, { auth } from "../../config/firebase.js";
 import { toast } from 'react-toastify';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ChatIcon from '@mui/icons-material/Chat';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import TitleIcon from '@mui/icons-material/Title';
+import TeleIcon from "../../images/telegram.jpg";
 
 export default function TradeRequestListingModal(props) {
   const [teleHandle, setTeleHandle] = useState("");
@@ -47,7 +51,7 @@ export default function TradeRequestListingModal(props) {
 
   return (
     <div>
-      <Button onClick={handleOpen}>View Request</Button>
+      <Button sx ={{ color: "black"}} onClick={handleOpen}>View Request</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -63,24 +67,32 @@ export default function TradeRequestListingModal(props) {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2" >
-              Request Title: {props.tradeRequest?.requestTitle}
+
+          <Typography sx = {{fontWeight: "bold"}} variant="h6" component="h2" >
+              Trade Request
             </Typography>
 
+           
+            <Typography sx={{ flex: 1, mt: 2 }} color="black">
+            <TitleIcon sx={{mr: "1%"}}/>{props.tradeRequest?.requestTitle}
+            </Typography>
+
+  
             <div style={{ display: "flex", flexDirection: "row" }}>
               <Typography id="transition-modal-description" sx={{ flex: 1, mt: 2 }}>
-                made by: {props.tradeRequest?.madeBy}
+                <PermIdentityIcon sx={{mr: "1%"}}/> {props.tradeRequest?.madeBy}
               </Typography>
             </div>
 
             <div>
               <Typography sx={{ flex: 1, mt: 2 }} color="black">
-                Request Description: {props.tradeRequest?.requestDescription}
+                <ChatIcon sx = {{mr: "1%"}} /> {props.tradeRequest?.requestDescription}
                 
               </Typography>
 
               <div> 
-              Telegram Handle: {teleHandle}
+              <img src={TeleIcon} alt="Telegram Icon" style={{ height: "24px", marginRight: "2%" }} />
+              {teleHandle}
               </div>
             </div>
 
@@ -89,7 +101,7 @@ export default function TradeRequestListingModal(props) {
             </div> */}
 
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "5%" }}>
-              <Button sx={{ mr: "2%" }} variant="outlined" onClick={handleClose} >
+              <Button sx={{ borderColor: "black",color: "black", mr: "2%" }} variant="outlined" onClick={handleClose} >
                 Cancel
               </Button>
 

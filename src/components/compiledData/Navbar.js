@@ -88,7 +88,7 @@ function Navbar(props) {
         </div>
           )}
             </div> :
-            <Link to = "/SIGNUP" className = "sign-up" reloadDocument> 
+            <Link to = "/SIGNUP" className = "sign-upA" reloadDocument> 
             <Button  size = "large" variant = "text" sx = {{color: "black", borderColor: "black"}}> SIGN IN </Button>
             </Link> 
         }

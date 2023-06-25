@@ -1,30 +1,82 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, IconButton, Button, Card, CardContent, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Typography } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
 import Navbar from '../compiledData/Navbar';
+import Image from '../../images/coverImage.png';
+import goingBackGif from '../../images/showgoingback.gif';
+import showBuyGif from '../../images/showBuy.gif';
+import showDyna from '../../images/showDyna.gif';
+import sendTR from '../../images/sendTradeRequest.gif';
+import sendTL from '../../images/sendTL.gif';
+import sendImg from '../../images/showimg.gif';
+import showTR from '../../images/showTR.gif';
+import showMessage from '../../images/showMessage.gif';
+import showProfile from '../../images/profile.gif';
+import CloseIcon from '@mui/icons-material/Close';
 
 const CarousellPopup = () => {
   const navigate = useNavigate();
   const [items] = useState([
-
     {
-        url: "", 
-        isGif: false,
-        title: "Thank You For Signing In", 
-        description: "We have prepared this tutorial in order to help you to navigate through our website more easily!"
+      url: Image,
+      isGif: false,
+      title: 'Welcome to the tutorial!',
+      description: 'We have prepared this tutorial for better user experience! This tutorial doesn\'t cover ALL features',
     },
     {
-      url: 'https://picsum.photos/200',
-      isGif: false,
-      title: 'Item 1',
-      description: 'Description of Item 1',
+      url: goingBackGif,
+      isGif: true,
+      title: 'Navigating Back & Forth',
+      description: 'Click any of the buttons on the Navigation Bar to go back!',
     },
     {
-      url: 'https://picsum.photos/id/237/200/300',
-      isGif: false,
-      title: 'BUY',
-      description: 'Description of Item 2',
+      url: showBuyGif,
+      isGif: true,
+      title: 'BUY: Adding Items to Cart',
+      description: "Click on 'Add To Cart' Button and Choose Your Size and Quantity!",
+    },
+    {
+      url: showDyna,
+      isGif: true,
+      title: 'SELL: Dynamic Sizing Table',
+      description: 'Dynamic Sizing Table only shown after you have clicked on any size',
+    },
+    {
+      url: sendImg,
+      isGif: true,
+      title: 'SELL: Uploading Images',
+      description: 'Do note that we currently only support .jpg and .jpeg extensions only',
+    },
+    {
+      url: sendTL,
+      isGif: true,
+      title: 'TRADE: Sending a Trade Listing',
+      description: "Click on 'Send Trade Request Listing' button to begin the process of uploading a listing on the marketplace!",
+    },
+    {
+      url: sendTR,
+      isGif: true,
+      title: 'TRADE: Sending a Trade Request',
+      description: "Click on 'Send Trade Request Button' to send a request for the particular listing you are interested in!",
+    },
+    {
+      url: showTR,
+      isGif: true,
+      title: 'TRADE: Viewing your Trade Requests',
+      description: 'Navigate to the Trade Inbox to view requests. Should you want to trade with them, we have provided their telegram handle for you to liaise with them!',
+    },
+    {
+      url: showMessage,
+      isGif: true,
+      title: 'REVIEW: Sentiment Analysis Based Review',
+      description: 'AI would auto-generate their sentiment analysis on what you feel about the product!',
+    },
+    {
+      url: showProfile,
+      isGif: true,
+      title: 'PROFILE: View User Credentials',
+      description: 'Somehow forgot your name?',
     },
   ]);
 
@@ -36,14 +88,21 @@ const CarousellPopup = () => {
     <div>
       <Navbar />
 
-      <div className="background">
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <Box
           sx={{
-            mt: '5%',
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
             bgcolor: 'white',
             p: 2,
             width: '600px',
@@ -62,30 +121,30 @@ const CarousellPopup = () => {
               justifyContent: 'center',
               alignItems: 'center',
               marginBottom: '2%',
-              border: '2px solid black',
             }}
           >
             {items.map((item, index) => (
               <Card
                 key={index}
+                elevation={0}
                 sx={{
-                  border: '2px solid black',
-                  width: '90%',
+                  width: '100%',
                   height: '90%',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  marginLeft: "5%"
                 }}
               >
                 {item.isGif ? (
-                  <img src={item.url} alt={`GIF ${index}`} style={{ width: '100%', height: 'auto' }} />
+                  <img src={item.url} alt={`GIF ${index}`} style={{ width: '700px', height: '400px' }} />
                 ) : (
-                  <img src={item.url} alt={`Image ${index}`} style={{ width: "700px", height: "400px" }} />
+                  <img src={item.url} alt={`Image ${index}`} style={{ width: '700px', height: '400px' }} />
                 )}
                 <CardContent>
-                  <Typography variant="subtitle1">{item.title}</Typography>
+                  <Typography sx={{ fontWeight: 'bold' }} variant="subtitle1">
+                    {item.title}
+                  </Typography>
                   <Typography variant="body2">{item.description}</Typography>
                 </CardContent>
               </Card>
@@ -99,7 +158,9 @@ const CarousellPopup = () => {
               alignItems: 'center',
             }}
           >
-            <Button sx = {{color: "white", backgroundColor: 'black'}} variant = "contained" onClick={handleClose}> Close </Button>
+            <Button  sx={{textTransform: "none", color: 'white', backgroundColor: 'black' }} variant="contained" onClick={handleClose}>
+              Close
+            </Button>
           </Box>
         </Box>
       </div>

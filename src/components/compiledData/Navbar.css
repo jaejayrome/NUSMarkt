@@ -41,6 +41,13 @@
   font-size: 18px;
   
 }
+.sign-upA {
+  position: absolute; 
+  right: 7%;
+  top: 50px; 
+  font-size: 18px;
+  
+}
 
 .sign-up:hover {
     color: lightslategray;
