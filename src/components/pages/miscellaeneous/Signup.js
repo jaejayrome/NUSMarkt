@@ -37,7 +37,7 @@ function Signup() {
     const login = async () => {
         try {
             const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-            await navigate(`/BUY/`)
+            await navigate(`/TUTORIAL`)
             toast("You have successfully signed in")
             
         } catch (error) {

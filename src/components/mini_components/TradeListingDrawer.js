@@ -51,7 +51,7 @@ export default function TradeListingDrawer(props) {
     </div>
   </div>
   <div style={{ display: "flex", marginBottom: "5%" }}>  
-    {props.selectedSizes.map((size) => (
+    {props.selectedSizes && props.selectedSizes.length !== 0 && props.selectedSizes.map((size) => (
       <SizeTradeButton size={size} />
     ))}
   </div>

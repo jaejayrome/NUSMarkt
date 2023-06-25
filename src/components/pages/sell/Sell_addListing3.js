@@ -59,8 +59,6 @@ export default function Sell_addListing3() {
         }
     }
 
-
-
     return (
 
         <div> 

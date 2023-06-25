@@ -37,16 +37,10 @@ export default function Sell_IndivListing(props) {
         }),
       }));
 
-      // const navigate = useNavigate()\
-
-
       
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-
-    // delete the listing and it's reference from the users collection
-    
 
 
       useEffect(() => {
@@ -106,12 +100,12 @@ export default function Sell_IndivListing(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        {/* <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />
-        </IconButton>
+        </IconButton> */}
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
@@ -123,9 +117,9 @@ export default function Sell_IndivListing(props) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
+          <Typography paragraph> Product Description</Typography>
           <Typography paragraph>
-           
+           {listing.productDescription}
           </Typography>
           <Typography paragraph>
 

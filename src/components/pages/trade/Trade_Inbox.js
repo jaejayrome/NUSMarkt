@@ -74,7 +74,10 @@ export default function Trade_Inbox() {
 
       setReq(tradeListings);
       setSomeoneWant(tradeListings.length > 0);
+      console.log(tradeListings.length)
     };
+
+
 
     
 
@@ -118,10 +121,10 @@ export default function Trade_Inbox() {
                     listing.tradeRequests.map((tradeRequest) => (
                       <Card elevation="10" sx={{ width: "80%", margin: "2%" }}>
                         <CardContent sx={{ pt: 1, fontSize: "15px", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-                          <div style={{alignItems: "center", marginBottom: "2%"}}>Request #{listing.tradeRequests.indexOf(tradeRequest) + 1} - {tradeRequest.requestTitle}</div>
+                          <div style={{alignItems: "center", marginBottom: "2%"}}>Request #{listing.tradeRequests.indexOf(tradeRequest) + 1} - {tradeRequest && tradeRequest.requestTitle}</div>
                           <div style={{ display: "flex", alignItems: "center" }}>
                           <Avatar size="small" />
-                          <div style={{ marginLeft: "5px" }}>{tradeRequest.madeBy}</div>
+                          <div style={{ marginLeft: "5px" }}>{tradeRequest?.madeBy}</div>
                         </div>
                         </CardContent>
                         <CardActions

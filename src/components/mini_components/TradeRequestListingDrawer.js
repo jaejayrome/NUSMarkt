@@ -31,7 +31,7 @@ export default function TradeRequestListingModal(props) {
   useEffect(() => {
     const getUserTele = async () => {
       try {
-        const q = query(collection(db, "users"), where("userName", "==", props.tradeRequest.madeBy));
+        const q = query(collection(db, "users"), where("userName", "==", props?.tradeRequest.madeBy));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((user) => {
           setTeleHandle(user.data().telegramHandle);
@@ -64,18 +64,18 @@ export default function TradeRequestListingModal(props) {
         <Fade in={open}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h6" component="h2" >
-              Request Title: {props.tradeRequest.requestTitle}
+              Request Title: {props.tradeRequest?.requestTitle}
             </Typography>
 
             <div style={{ display: "flex", flexDirection: "row" }}>
               <Typography id="transition-modal-description" sx={{ flex: 1, mt: 2 }}>
-                made by: {props.tradeRequest.madeBy}
+                made by: {props.tradeRequest?.madeBy}
               </Typography>
             </div>
 
             <div>
               <Typography sx={{ flex: 1, mt: 2 }} color="black">
-                Request Description: {props.tradeRequest.requestDescription}
+                Request Description: {props.tradeRequest?.requestDescription}
                 
               </Typography>
 

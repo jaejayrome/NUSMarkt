@@ -7,6 +7,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../config/firebase.js"
 import {toast} from 'react-toastify';
 import {withErrorBoundary} from "../../ErrorBoundary.js"
+import { useNavigate } from "react-router-dom";
+
 
 // pass a state through the link to the sub pages trade and sell
 // the state wherein the user has been logged in or not 
@@ -16,12 +18,25 @@ import {withErrorBoundary} from "../../ErrorBoundary.js"
 function Navbar(props) {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(false); 
+    const navigate = useNavigate()
     // delays the evaluation by wrapping it around a "supplier"
     const signout =  () => {
         // toast("You have successfully signed out")
+        navigate("/SIGNUP")
         auth.signOut()
         
     };
+    const handleDropdownToggle = () => {
+        setShowDropdown(!showDropdown); // Toggle the visibility of the dropdown
+      };
+
+      const profileClickHandler = () => {
+        navigate("/PROFILE")
+      }
+
+
+    
 
     // don't understand why the useEffect hook would unmount have to unmount 
     // when do we know what we should include at the second argument of the useEffect hook
@@ -56,10 +71,23 @@ function Navbar(props) {
             </button>
         </NavLink>)})}
 
-        {isLoggedIn ? 
-            <Link to = "/SIGNUP" className = "sign-up" reloadDocument> 
-            <Button onClick =  {signout} size = "large" variant = "text" sx = {{color: "black", borderColor: "black"}}> SIGN OUT </Button>
-            </Link> :
+        {/* <div style={{display:"flex", justifyContent: "center", alignItems: "center"}}> */}
+        {isLoggedIn ?  
+         <div  className = "sign-up"> 
+            <Button onClick = {handleDropdownToggle} sx = {{color: "black"}}> {auth.currentUser.displayName}</Button>
+            {showDropdown && (
+            <div>
+            
+            <div className="dropdown-content">
+              <Button sx = {{color: "black"}} onClick={signout}>Sign Out</Button>
+            </div>
+
+            <div> 
+                <Button onClick = {profileClickHandler} sx = {{color: "black"}}> Profile </Button >
+            </div> 
+        </div>
+          )}
+            </div> :
             <Link to = "/SIGNUP" className = "sign-up" reloadDocument> 
             <Button  size = "large" variant = "text" sx = {{color: "black", borderColor: "black"}}> SIGN IN </Button>
             </Link> 

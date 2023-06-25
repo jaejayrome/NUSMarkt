@@ -24,18 +24,5 @@ export default function No_Signin (props){
                 <StyledLockIcon />
                 Sign In To Unlock Feature
         </div>
-
-
-        // <div className='total_movement'> 
-        //     <div className = 'bag_icon'> 
-        //         <DangerousSharpIcon sx={{ fontSize: 75}}/>
-        //     </div>
-        //     <div className='sell_missing_font' style = {{fontWeight: "bold", fontSize: "45px"}}> 
-        //         No Listing found
-        //     </div> 
-        //     <div className = "sell_bottom_font">
-        //     Sign in to start {props.action == 1 ? action1 : action2}
-        //     </div>
-        // </div>
     )
 }

@@ -1,21 +1,22 @@
 const functions = require("firebase-functions");
 const express = require("express");
 const cors = require("cors");
-const stripe = require("stripe")("sk_test_51NIWCvJV7xrxUeZRZvx2dfu8ohN3Vq8iiK3M9sIDiHkr84S15yaUksYAr0YdqBmNIUMW8EMKsBp499oR9bOCn3Vi00w7Ng62fI");
+const stripe = require("stripe")
+("sk_test_51NIWCvJV7xrxUeZRZvx2dfu8ohN3Vq8iiK3M9sIDiHkr84S15yaUksYAr0YdqBmNIUMW8EMKsBp499oR9bOCn3Vi00w7Ng62fI");
 
 const app = express();
-app.use(cors({ origin: true }));
+app.use(cors({origin: true}));
 app.use(express.json());
 
 app.post("/payments/create", async (req, res) => {
   try {
-    const { amount, shipping } = req.body;
+    const {amount, shipping} = req.body;
     const paymentIntent = await stripe.paymentIntents.create({
       shipping,
       amount,
       currency: "usd",
     });
-    res.status(200).send({ clientSecret: paymentIntent.client_secret });
+    res.status(200).send({clientSecret: paymentIntent.client_secret});
   } catch (err) {
     res.status(500).json({
       statusCode: 500,
@@ -29,8 +30,6 @@ app.get("*", (req, res) => {
 });
 
 exports.api = functions.https.onRequest(app);
-
-
 
 
 // import {getDoc, collection} from "@firebase/firestore";

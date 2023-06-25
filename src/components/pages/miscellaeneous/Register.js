@@ -64,7 +64,7 @@ function Register() {
             telegramHandle: telegramHandle
           }
         await addDoc(newUserRef, newUser)
-        await navigate(`/BUY`)
+        await navigate(`/TUTORIAL`)
         await updateProfile(auth.currentUser, {
             displayName: userName
         })

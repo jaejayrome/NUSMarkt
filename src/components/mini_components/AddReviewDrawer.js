@@ -32,7 +32,7 @@ export default function AddReviewDrawer(props) {
     }
 
     const uploadReview = async () => {
-        // for this listing i would upload to the message database 
+        
         try {          
             const checkModelLoading = async () => {
                 setClick(true)
@@ -86,7 +86,7 @@ export default function AddReviewDrawer(props) {
         <div>
             <Button variant = "outlined" startIcon = {<AddCommentIcon />} sx = {{borderColor: "black", right: "-85%",color: "black"}} onClick = {toggleDrawer}> Add A Review </Button>
             <Drawer PaperProps={{
-            sx: { width: "45%" },
+            sx: { width: "45%", borderRadius: "25px"},
             }}
             anchor="right" open={isOpen} onClose={toggleDrawer}>
 

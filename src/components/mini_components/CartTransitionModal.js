@@ -122,13 +122,17 @@ export default function CartTransitionModal(props) {
                 value={size}
                 onChange={handleSizeChange}
             >
-                <MenuItem value={"XXS"}>XXS</MenuItem>
-                <MenuItem value={"XS"}>XS</MenuItem>
+              {props.selectedSizes.map((size) => (
+                <MenuItem key={size} value={size}>{size}</MenuItem>
+              ))}
+
+                
+                {/* <MenuItem value={"XS"}>XS</MenuItem>
                 <MenuItem value={"S"}>S</MenuItem>
                 <MenuItem value={"M"}>M</MenuItem>
                 <MenuItem value={"L"}>L</MenuItem>
                 <MenuItem value={"XL"}>XL</MenuItem>
-                <MenuItem value={"XXL"}>XXL</MenuItem>
+                <MenuItem value={"XXL"}>XXL</MenuItem> */}
             </Select>
             </FormControl>
 

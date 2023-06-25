@@ -7,6 +7,7 @@ import ShowChartIcon from '@mui/icons-material/ShowChart';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import SellIcon from '@mui/icons-material/Sell';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import BrushIcon from '@mui/icons-material/Brush';
 
 
 // this component is for the sell pipeline when the user has logged in 
@@ -28,8 +29,8 @@ export default function Sell_User() {
             alignItems: "center",
           }}
         >
-          <div> <ShowChartIcon size = "large"/></div>
-          <div> Pre-Order Grind </div>
+          <div> <BrushIcon size = "large"/></div>
+          <div> DesignTruly </div>
           <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}>
             Have troubles implementing the design? 
             Use our image generator and upload a pre-order!

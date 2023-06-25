@@ -90,8 +90,6 @@ export default function ListingReader({ listingID }) {
         fetchListing(user.uid);
         fetchMessages();
       } else {
-        // features locked
-        
       }
     });
     return () => unsubscribe();
@@ -136,7 +134,7 @@ export default function ListingReader({ listingID }) {
 
               <div style= {{flex: "4"}}> 
               </div>
-              <CartTransitionModal uid = {userID} listingRef = {doc(collection(db, "listing"), listingID)}/>
+              <CartTransitionModal selectedSizes = {listingData.sizesAvailable} uid = {userID} listingRef = {doc(collection(db, "listing"), listingID)}/>
             </div>
 
           <div style = {{fontFamily: 'monospace', fontSize: "20px", display: "flex"}}>
@@ -158,8 +156,6 @@ export default function ListingReader({ listingID }) {
            )}
           </div> 
         </div>
-
-        {/* <Divider sx = {{border: "1px dashed black"}}/> */}
 
         <div style = {{fontWeight: "bold",font: "monospace", fontSize: "22px", marginLeft: "5%"}}>
           Already Purchased & Received Item? 

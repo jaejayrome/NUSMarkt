@@ -23,7 +23,6 @@ export default function Trade_IndivListing(props) {
 
             <div style={{fontSize: "20px", display: "flex"}}> 
             <PermIdentityIcon />{listing.listedBy}
-                {listing.listedBy}
             </div>
             <TradeListingDrawer listedBy = {listing.listedBy} listingDescription = {listing.listingDescription} selectedSizes = {listing.selectedSizes}/>
             <TradeRequestDrawer disabled = {isSame} originalListingReference = {listing.reference}/>

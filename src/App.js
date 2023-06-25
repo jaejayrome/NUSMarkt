@@ -18,6 +18,8 @@ import Sell_Analytics from './components/pages/sell/Sell_Analytics.js';
 import Payment from './components/pages/payments/index.js';
 import Trade_Intermediate from './components/pages/trade/Trade_Intermediate.js'
 import Trade_Outgoing from './components/pages/trade/Trade_Outgoing.js';
+import SignInCarousel from './components/mini_components/SignInCarousel.js';
+import UserProfile from './components/mini_components/UserProfile.js';
 
 function App() {
   return (
@@ -28,10 +30,13 @@ function App() {
 
           <Route path= "/BUY" element={<Outlet />}>
             <Route index element={<Home />} /> 
+          
             <Route path=":listingID" element={<ListingPage />} />
             <Route path= "CART" element = {<Cart />}/>
           </Route>
 
+          <Route path= "/TUTORIAL" element = {<SignInCarousel />}/> 
+          <Route path = "PROFILE" element = {<UserProfile />}/>
           <Route path = "/SELL" element = {<Outlet />}>
             <Route index element={<Sell_Page/>} />
             <Route path = "ADD_LISTING" element = {<Outlet />}>
