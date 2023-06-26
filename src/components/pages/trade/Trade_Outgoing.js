@@ -49,7 +49,7 @@ export default function Trade_Outgoing() {
 
             <div style={{ flex: 1, fontSize: "20px", textAlign: "center"}}>
             <div style={{ fontWeight: "bolder", fontSize: "40px", marginBottom: "5%" }}>
-                Outgoing Requests:
+                Outgoing Requests
                 <div style={{ fontWeight: "normal", fontSize: "25px" }}>
                 view trade requests that you have sent
                 </div>

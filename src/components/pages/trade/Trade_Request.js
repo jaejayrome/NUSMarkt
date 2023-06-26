@@ -88,7 +88,7 @@ export default function Trade_Request() {
 
             <div style={{ flex: 1, fontSize: "20px", textAlign: "center"}}>
             <div style={{ fontWeight: "bolder", fontSize: "40px", marginBottom: "5%" }}>
-                Add Your Trade Request
+                Add Your Trade Listing
                 <div style={{ fontWeight: "normal", fontSize: "25px" }}>
                 customise and denote what other shirts are you willing to trade for
                 </div>

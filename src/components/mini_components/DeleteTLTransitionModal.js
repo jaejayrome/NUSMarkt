@@ -91,10 +91,10 @@ export default function DeleteTLTransitionModal(props) {
                         </div>
 
                         <div style={{display: "flex", alignItems: "center", justifyContent:"center", marginTop: "5%"}}>
-                        <Button sx = {{mr: "2%"}}variant = "outlined" onClick = {handleClose}> Cancel </Button>
+                        <Button sx = {{color: "black", borderColor: "black", mr: "2%"}}variant = "outlined" onClick = {handleClose}> Cancel </Button>
 
                         <Link to = "/TRADE/INTERMEDIATE" onClick = {deleteHandler}>
-                            <Button variant = "outlined"sx = {{font: "black"}}> Confirm Delete </Button>
+                            <Button variant = "outlined"sx = {{color: "black", borderColor: "black"}}> Confirm Delete </Button>
                         </Link>
                         </div>
                     </Box>
