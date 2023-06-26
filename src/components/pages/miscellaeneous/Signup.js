@@ -37,11 +37,12 @@ function Signup() {
     const login = async () => {
         try {
             const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-            await navigate(`/BUY/`)
+            await navigate(`/TUTORIAL`)
             toast("You have successfully signed in")
             
         } catch (error) {
             console.log(error)
+            toast("You have keyed in wrong details")
         }
     }
 
@@ -50,10 +51,11 @@ function Signup() {
 
             <Navbar> </Navbar>
 
-            <h3 className='login'> Login </h3>
+         <div style = {{display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: "center"}}> 
+            <h2 style = {{textAlign: "left"}}> Login </h2>
 
             <InputLabel htmlFor = "user_email_add"
-            style = {{left: "41%" ,top: "100px"}}
+            
             > Email Address </InputLabel>
             <TextField id="user_email_add" 
             variant="outlined"
@@ -65,7 +67,7 @@ function Signup() {
             />
 
             <InputLabel htmlFor = "user_password"
-            style = {{marginTop: "30px", left: "41%" ,top: "100px"}}
+            style = {{marginTop: "30px"}}
             > Password </InputLabel>
             <TextField id = "user_password"
             InputProps = {{
@@ -85,18 +87,19 @@ function Signup() {
             sx = {{width: 300}}
             />
 
-            <Button variant = "outlined" type = "submit"  sx = {{top: "170px", left: "20.8%",  borderColor: "black", color: "black", margin: "10px"
-            }} size = "large" onClick = {login}>
+            <Button variant = "outlined" type = "submit"  sx = {{ borderColor: "black", color: "black", marginTop: "2%"
+            }}  onClick = {login}>
             Login
             </Button>
         
 
-            <h4 className = "email" style = {{marginTop: "80px"}}> Don't have an account? </h4>
+            <h4 className = "email" style = {{marginTop: "3%"}}> Don't have an account? </h4>
             <Link to = "/REGISTER" element = {<Register />}> 
                 <Button variant = "outlined" sx = {{marginTop: "5px", color:"black", borderColor: "black"}}
                 size = "large"
                 className = "email"> Create Account </Button>
             </Link>
+        </div>
         </div>
     );
 }

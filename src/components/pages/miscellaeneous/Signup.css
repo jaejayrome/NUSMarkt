@@ -13,9 +13,9 @@
 }
 
 .email {
-    position: relative;
-    left: 41%;
-    top: 100px;
+    /* position: relative; */
+    /* left: 41%;
+    top: 100px; */
     font-family: "GM_C";
     overflow-y: hidden;
 }

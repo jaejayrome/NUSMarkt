@@ -15,5 +15,3 @@ root.render(
 );
 
 reportWebVitals();
-
-console.log("afafa")

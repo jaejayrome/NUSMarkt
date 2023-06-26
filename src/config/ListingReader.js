@@ -1,73 +1,108 @@
 // this component reads individuial listings from the DB
 // this component aims to return everything that needs to be displayed within an individual listing
 
-import { useEffect, useState } from 'react';
-import { auth, db } from './firebase.js';
+import { useEffect, useState, useCallback } from 'react';
+import db from './firebase.js'
+import { auth } from './firebase.js';
 import { collection, query, where, getDoc, doc, getDocs, updateDoc, arrayUnion} from '@firebase/firestore';
 import ImageHandler from './ImageHandler.js';
 import "../stylesheets/Listing.css";
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import { styled } from '@mui/system';
-import { Button } from '@mui/material';
+import { Button,Box, Typography, TextField } from '@mui/material';
 import CheckroomRoundedIcon from '@mui/icons-material/CheckroomRounded';
 import SizingGuideTable from '../components/mini_components/SizingGuideTable.js';
 import CartTransitionModal from '../components/mini_components/CartTransitionModal.js';
+import Divider from '@mui/material/Divider';
+import AddReviewDrawer from '../components/mini_components/AddReviewDrawer.js';
+import ListingMessage from './ListingMessage.js';
+import LockIcon from '@mui/icons-material/Lock';
 
 // things learnt we cannot retrieve the data before rendering the component in case if it is null 
 // create a transition modal that would allow the user to add to cart? 
 // alternative is to create  an add button thtat would allow us to increment the quantity but when it is 0 we disable the button
 export default function ListingReader({ listingID }) {
   const [listingData, setListingData] = useState(null);
+  const [listingMessages, setListingMessages] = useState([])
+
+  const listingRef = doc(db, 'listing', listingID)
+
+  const ScrollableCardContainer = styled('div')`
+  max-height: 500px; 
+  overflow-y: auto;`;
 
   const LargeAccountCircleSharpIcon = styled(AccountCircleSharpIcon)`
   font-size: 60px;`;
 
-  useEffect(() => {
-    const fetchlisting = async () => {
-      try {
-        const listingRef = doc(db, 'listing', listingID);
-        const listingSnapshot = await getDoc(listingRef);
-        if (listingSnapshot.exists()) {
-          const data = listingSnapshot.data();
-          setListingData({...data, uid: listingSnapshot.id});
-        } else {
-          // listing does not exist
-          console.log('listing does not exist');
-        }
-      } catch (error) {
-        console.log('Error fetching listing:', error);
+
+  const StyledLockIcon = () => {
+    return (
+      <Box sx={{borderTop: "2px solid black", pt: "10%", display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: "column"}}>
+        <LockIcon sx={{ fontSize: '72px' }} />
+        <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+          Feature Locked
+        </Typography>
+      </Box>
+    );
+  };
+
+  const fetchListing = useCallback(async () => {
+    try {
+      const listingRef = doc(db, 'listing', listingID);
+      const listingSnapshot = await getDoc(listingRef);
+      if (listingSnapshot.exists()) {
+        const data = listingSnapshot.data();
+        setListingData({...data, uid: listingSnapshot.id});
+      } else {
+        console.log('listing does not exist');
       }
-    };
+    } catch (error) {
+      console.log('Error fetching listing:', error);
+    }
+  }, [listingID] )
 
-    fetchlisting();
-  }, [listingID]);
 
 
-  const userID = auth.currentUser.uid;
+  const fetchMessages = async () => {
+    try {
+      //loop through the listing
+      const listingRef = doc(db, 'listing', listingID)
+      const listingSnapshot = await getDoc(listingRef);
+      if (listingSnapshot.exists()) {
+        const listingMessages = listingSnapshot.data().messagesArr
+        if (listingMessages.length > 0){
+        setListingMessages(listingMessages)
+        } else{
+          console.log("no messages im this listing")
+        }
+      } else {
+        // listing does not exist
+        console.log('listing does not exist');
+      }
+    } catch (error) {
+      console.log('listing does not exists')
+    }
+  }
 
-  // const addToCartHandler = async (userID, Item) => {
-  //   try {
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        fetchListing(user.uid);
+        fetchMessages();
+      } else {
+      }
+    });
+    return () => unsubscribe();
+  }, [fetchListing]);
 
-  //     const q = query(collection(db, "users"), where("uid", "==", userID));
 
-  //     const querySnapshot = await getDocs(q);
-  //     querySnapshot.forEach((doc) => {
-  //       const documentRef =  doc.ref;
-  //       updateDoc(documentRef, {
-  //         cart: arrayUnion(Item)
-  //       })
 
-  //     });
+  const userID = auth.currentUser?.uid;
 
-  //   }  catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
-  // Render your component using the fetched listingData
   return (
-    <div>
+    <ScrollableCardContainer>
       {listingData && (
+        <div> 
         <div className = 'listing-container'>
 
           <div className='imageHandler'> 
@@ -99,7 +134,7 @@ export default function ListingReader({ listingID }) {
 
               <div style= {{flex: "4"}}> 
               </div>
-              <CartTransitionModal uid = {userID} listingRef = {doc(collection(db, "listing"), listingID)}/>
+              <CartTransitionModal selectedSizes = {listingData.sizesAvailable} uid = {userID} listingRef = {doc(collection(db, "listing"), listingID)}/>
             </div>
 
           <div style = {{fontFamily: 'monospace', fontSize: "20px", display: "flex"}}>
@@ -121,7 +156,33 @@ export default function ListingReader({ listingID }) {
            )}
           </div> 
         </div>
+
+        <div style = {{fontWeight: "bold",font: "monospace", fontSize: "22px", marginLeft: "5%"}}>
+          Already Purchased & Received Item? 
+          <AddReviewDrawer callback = {fetchListing} listingRef = {listingID}/>
+          <div> 
+            Reviews
+          </div>
+        </div>
+
+        <div> 
+          {listingMessages.length > 0 && (
+            <div style = {{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>{listingMessages.map((indivMessageRef) => {
+              return (<ListingMessage listingRef = {listingRef} messageInstance = {indivMessageRef} />)
+            })}
+            </div>
+          )}
+        </div>
+
+        </div>
       )}
-    </div>
+
+      {!listingData &&(
+        <div style = {{fontSize: "20px", textAlign: "center"}}> 
+        <StyledLockIcon />
+        Sign In To Unlock Feature
+        </div>
+      )}
+    </ScrollableCardContainer>
   );
 }

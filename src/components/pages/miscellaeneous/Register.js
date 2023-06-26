@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../../compiledData/Navbar.js';
 import {createUserWithEmailAndPassword, onAuthStateChanged, updateProfile} from 'firebase/auth';
 import {collection, addDoc} from "firebase/firestore"
-import {auth, db} from '../../../config/firebase.js';
+import db from '../../../config/firebase.js';
+import {auth} from '../../../config/firebase.js';
 import  TextField   from '@mui/material/TextField';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import  InputAdornment from '@mui/material/InputAdornment';
@@ -63,7 +64,7 @@ function Register() {
             telegramHandle: telegramHandle
           }
         await addDoc(newUserRef, newUser)
-        await navigate(`/BUY`)
+        await navigate(`/TUTORIAL`)
         await updateProfile(auth.currentUser, {
             displayName: userName
         })

@@ -1,12 +1,14 @@
 
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
-import { Button, InputLabel, TextField } from '@mui/material';
+import { Button, InputLabel, TextField, FormControl, Select, MenuItem } from '@mui/material';
 import Navbar from '../../compiledData/Navbar.js';
 import SizeButtonGroup from '../../mini_components/SizeButtonGroup.js';
 import {auth} from '../../../config/firebase.js'
 import SizingGuide from '../../mini_components/SizingGuide.js';
 import TransitionModal from '../../mini_components/TransitionModal.js';
+import {query, collection, where, getDocs, updateDoc} from "@firebase/firestore"
+import db from "../../../config/firebase.js"
 
 // this component is for the user to add any listings up to sell
 
@@ -17,7 +19,9 @@ export default function Sell_addListing() {
     const [selectedSizes, setSelectedSizes] = useState([]);
     const [sizingGuide, setSizingGuide] = useState([]);
     const [cSizingGuide, setCSizingGuide] = useState([]);
-
+    const [bankAccountNumber, setBankAccountNumber] = useState("")
+    const [bank, setBank] = useState("");
+    const [bankDetailsUploaded, setBankDetailsUploaded] = useState(false)
     const [isSizeGuideConfirmed, setIsSizeGuideConfirmed] = useState(false);
 
 
@@ -51,9 +55,22 @@ export default function Sell_addListing() {
     const handleSelectedSizes = (sizes) => {
         setSelectedSizes(sizes);
     };
+
+    const bankAccountNumberHandler = (event) => {
+        setBankAccountNumber(event.target.value)
+    }
+
+    const handleBankChange = (event) => {
+        setBank(event.target.value);
+    };
+
+    const handleSetBankUpload = () => {
+        setBankDetailsUploaded(true)
+    }
     
     // retrieves the currentUser username 
     const listedBy = auth.currentUser.displayName;
+    const userID = auth.currentUser.uid;
 
     // new Listing object
     const newListing = {
@@ -68,9 +85,39 @@ export default function Sell_addListing() {
 
     const navigate = useNavigate()
 
+
+
+    // check this part again
     const navigationHandler = () => {
         navigate('STEP2', {state: newListing})
+        const updateDB = async () => {
+            const q = query(collection(db, "users"), where("uid", "==", userID));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach(async (user) => {
+            await updateDoc(user.ref, {bankAccount: {
+                bankAccountNumber: bankAccountNumber, 
+                bank: bank
+            }});
+        })
+
+       
+        }
+        updateDB()
     }
+
+
+    useEffect(() => {
+        const receiveDB = async () => {
+            const q = query(collection(db, "users"), where("uid", "==", auth.currentUser.uid));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach(async (user) => {
+            if (user.data().bankAccount != null) {
+                handleSetBankUpload();
+            }
+        })
+        }
+        receiveDB()
+    }, [])
 
     
     return (
@@ -126,6 +173,35 @@ export default function Sell_addListing() {
                     </div> : <div style = {{flex: 1}}> </div>
                 }
             </div>
+
+            {bankDetailsUploaded ? <div> </div> : <div style={{marginTop: "5%", flex: 1, display: 'flex', flexDirection: 'row', justifyContent: 'left', alignItems: 'left', marginLeft: "10%"}}>
+            {/* <InputLabel htmlFor = "bankAccountNumber"> Bank Account Number </InputLabel> */}
+                <TextField id = "bankAccountNumber"
+                variant = "outlined"
+                label = "Bank Account Number"
+                value = {bankAccountNumber}
+                onChange = {bankAccountNumberHandler}
+                sx = {{width: 500, marginRight: "3%"}}
+                required
+                />
+            
+            <FormControl sx={{ }}>
+            <Select
+            labelId="quantity-label"
+            id="quantity-select"
+            value={bank}
+            onChange={handleBankChange}
+            >
+            <MenuItem value={'POSB/DBS'}>POSB/DBS</MenuItem>
+            <MenuItem value={'OCBC'}>OCBC</MenuItem>
+            <MenuItem value={'UOB'}>UOB</MenuItem>
+        </Select>
+        </FormControl>
+
+
+        </div>}
+            
+           
 
             <div style = {{marginTop: "3%" ,position: 'relative', left: "42%"}}>
             <TransitionModal navigation = {navigationHandler}/>

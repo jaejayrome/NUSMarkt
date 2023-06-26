@@ -10,12 +10,14 @@ export default function SizeButton(props) {
     props.onSizeToggle(props.size);
   };
 
+
     return (
       <ToggleButton
         value= {props.size}
         selected={props.isSelected}
         onChange={handleSizeToggle}
-        sx={{ marginRight: "5%", height: '50px', width: '50px' }}
+        sx={{ marginRight: "5%", height: '50px', width: '50px' ,    minWidth: "50px", // Add this line to set a minimum width
+        minHeight: "50px"}}
       >
         {props.size}
       </ToggleButton>
