@@ -4,7 +4,7 @@ import {auth} from '../../../../config/firebase.js';
 import {useState, useEffect} from 'react';
 import { onAuthStateChanged } from "firebase/auth";
 import LockIcon from '@mui/icons-material/Lock';
-import { Button,Box, Typography, TextField } from '@mui/material';
+import { Button, Box, Typography, TextField } from '@mui/material';
 
 export default function Cart() {
     const StyledLockIcon = () => {

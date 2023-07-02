@@ -8,12 +8,15 @@ import { query, collection, where, getDocs,getDoc} from 'firebase/firestore';
 import { Table, TableBody, TableRow, TableCell, TableHead, Button } from '@mui/material';
 import { onAuthStateChanged } from 'firebase/auth';
 import PaymentIcon from '@mui/icons-material/Payment';
+import StripeCheckout from 'react-stripe-checkout';
+import axios from "axios"
 
 export default function CartItem(props) {
 
     const [totalCost, setTotalCost] = useState(0);
     const [cart, setCart] = useState(null)
     const [uid, setUid] = useState(null);
+    const [payNow, setPaynow] = useState(false)
 
 
     useEffect(() => {
@@ -61,6 +64,17 @@ export default function CartItem(props) {
   
       calculateTotalCost();
     }, [cart]);
+
+    const paymentHandler = () => {
+      setPaynow(true)
+    }
+
+    const paymentToken = async (token) => {
+      await axios.post("http://localhost:8000/pay", {
+      amount: totalCost * 100, 
+      token: token,
+    })
+    }
     
 
     const headings = ["Product Name", "Price", "Quantity", 'Size', 'Subtotal', ' ']
@@ -86,8 +100,23 @@ export default function CartItem(props) {
             </Table>
 
             <div style = {{justifyContent: 'center', alignItems: 'center', display: 'flex', marginTop: "5%"}}> 
-            <Button startIcon = {<PaymentIcon />} variant = "outlined" sx= {{borderColor: "black", align:"center", position: "relative", color: "black"}}> Checkout </Button>
+            <Button onClick = {paymentHandler} startIcon = {<PaymentIcon />} variant = "outlined" sx= {{borderColor: "black", align:"center", position: "relative", color: "black"}}> Checkout </Button>
             </div>
+
+            {payNow && (
+              <div> 
+                <StripeCheckout 
+                stripeKey='pk_test_51NIWCvJV7xrxUeZRngBA3tGIxShEI28dquXmgUGT01sjWOpnx7LQQZMCJNP4HvtfhHgzQe42H5tHnlULb9gDXXvU00zt7XeG7c'
+                name = "testPay"
+                label= "pay now"
+                description= {`Your total amount is ${totalCost} SGD`}
+                email = {auth.currentUser.email}
+                amount = {totalCost * 100}
+                token = {paymentToken}
+                
+                />
+              </div>
+            )}
             
             </div>
             : "Add Items to you Cart"

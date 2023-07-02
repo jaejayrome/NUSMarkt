@@ -9,6 +9,7 @@ export default function CartItemRow(props) {
   const [listing, setListing] = useState(null);
   const userID = auth.currentUser.uid;
 
+
   useEffect(() => {
     const fetchListing = async () => {
       try {
