@@ -54,7 +54,7 @@ export default function CartItemRow(props) {
         {calculateItemTotal(listing && listing.listingPrice, props.item.quantity)}
       </TableCell>
       <TableCell align="center">
-        <Button startIcon={<DeleteIcon />} onClick={deleteButtonClick} />
+        <Button startIcon={<DeleteIcon sx={{color: "black"}} />} onClick={deleteButtonClick} />
       </TableCell>
     </TableRow>
   );

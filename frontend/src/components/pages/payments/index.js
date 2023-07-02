@@ -12,4 +12,7 @@ export default function Payment() {
         <PaymentDetails />
         </Elements>
     )
+
+
+    
 }

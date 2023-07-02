@@ -10,6 +10,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import PaymentIcon from '@mui/icons-material/Payment';
 import StripeCheckout from 'react-stripe-checkout';
 import axios from "axios"
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 export default function CartItem(props) {
 
@@ -104,17 +105,21 @@ export default function CartItem(props) {
             </div>
 
             {payNow && (
-              <div> 
+              <div style={{marginTop: "3%" ,display: "flex", justifyContent: "center", alignItems: "center"}}> 
                 <StripeCheckout 
                 stripeKey='pk_test_51NIWCvJV7xrxUeZRngBA3tGIxShEI28dquXmgUGT01sjWOpnx7LQQZMCJNP4HvtfhHgzQe42H5tHnlULb9gDXXvU00zt7XeG7c'
-                name = "testPay"
-                label= "pay now"
+                name = "Payment" 
+                // label= "Click to Proceed"
                 description= {`Your total amount is ${totalCost} SGD`}
                 email = {auth.currentUser.email}
                 amount = {totalCost * 100}
-                token = {paymentToken}
-                
-                />
+                token = {paymentToken}>
+
+                <Button variant = "outlined"  style = {{color: "black", borderColor: "black"}}> Click to Proceed </Button>
+
+                </StripeCheckout>
+
+                {/* <Button> Click To Proceed </Button> */}
               </div>
             )}
             
