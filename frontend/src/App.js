@@ -20,6 +20,9 @@ import Trade_Intermediate from './components/pages/trade/Trade_Intermediate.js'
 import Trade_Outgoing from './components/pages/trade/Trade_Outgoing.js';
 import SignInCarousel from './components/mini_components/SignInCarousel.js';
 import UserProfile from './components/mini_components/UserProfile.js';
+import SuccessPage from './components/pages/payment/SuccessPage.js'
+import FailedPage from './components/pages/payment/FailedPage.js'
+
 
 function App() {
   return (
@@ -62,6 +65,11 @@ function App() {
           <Route path = "/REGISTER" element = {<Register />}/>
 
           <Route path = "/PAYMENT" element = {<Payment/>}/>
+
+          <Route path = "/payment" element = {<Outlet />}>  
+            <Route path = "success" element = {<SuccessPage/>}/>
+            <Route path = "failed" element = {<FailedPage/>}/>
+          </Route> 
           
         </Routes>
         <ToastContain />

@@ -11,8 +11,10 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import StripeCheckout from 'react-stripe-checkout';
 import axios from "axios"
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import { useNavigate } from 'react-router-dom';
 
 export default function CartItem(props) {
+    const navigate = useNavigate()
 
     const [totalCost, setTotalCost] = useState(0);
     const [cart, setCart] = useState(null)
@@ -58,6 +60,7 @@ export default function CartItem(props) {
           const subtotals = await Promise.all(promises);
           const total = subtotals.reduce((acc, subtotal) => acc + subtotal, 0);
           setTotalCost(total.toFixed(2));
+        
         } else {
           setTotalCost("0.00");
         }
@@ -69,12 +72,31 @@ export default function CartItem(props) {
     const paymentHandler = () => {
       setPaynow(true)
     }
+    
 
     const paymentToken = async (token) => {
-      await axios.post("http://localhost:8000/pay", {
+    try {
+
+    console.log("before")
+    console.log(cart)
+    const response = await axios.post("http://localhost:8000/pay", {
       amount: totalCost * 100, 
       token: token,
     })
+
+    if (response.data.success) {
+
+    console.log("after")
+    console.log(cart)
+      // sending the cart instance wherein it contains many "orders" in arrays
+      navigate("/payment/success")
+    } else {
+      navigate("/payment/failed")
+    }
+
+    } catch (error) {
+      console.log(error)
+    }
     }
     
 
