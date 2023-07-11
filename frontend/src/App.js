@@ -22,6 +22,7 @@ import SignInCarousel from './components/mini_components/SignInCarousel.js';
 import UserProfile from './components/mini_components/UserProfile.js';
 import SuccessPage from './components/pages/payment/SuccessPage.js'
 import FailedPage from './components/pages/payment/FailedPage.js'
+import Sell_KickStartIt from './components/pages/sell/Sell_kickStartIt.js';
 
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
             </Route>
             <Route path = "LISTINGS" element = {<Sell_Listings/>}/>
             <Route path = "ANALYTICS" element = {<Sell_Analytics/>}/>
+            <Route path = "KICKSTARTIT" element = {<Sell_KickStartIt />} />
           </Route>
 
           <Route path = "/TRADE" element = {<Outlet />}>

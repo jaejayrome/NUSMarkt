@@ -5,8 +5,13 @@ import Steppers from "../../mini_components/Steppers";
 import CheckIcon from '@mui/icons-material/Check';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from "react-router-dom";
+
 
 export default function Sell_Analytics() {
+
+  const navigate = useNavigate()
+
   const [thumbnailUrl, setThumbnailUrl] = useState([]);
   const [logo, setLogo] = useState("")
   const [color, setColor] = useState("")
@@ -36,6 +41,15 @@ export default function Sell_Analytics() {
 
   const disableFinalOnClick = () => {
     setDisableFinal(true)
+  }
+
+  const routeToKickStartIt = () => {
+    navigate("/SELL/KICKSTARTIT")
+  }
+
+  const generateAgain = (event) => {
+    setThumbnailUrl([])
+    handleSubmit(event)
   }
 
   const handleSubmit = async (event) => {
@@ -70,7 +84,7 @@ export default function Sell_Analytics() {
       <Navbar />
             <div style={{ textAlign: "center", marginBottom: "2%"}}>
             <h1>DesignTruly</h1>
-                <div style={{ fontSize: "20px", fontFamily: "monospace" }}>
+                <div style={{ fontSize: "20px"}}>
                     Let us create custom shirt designs for you based on logo name and preferred colour.
                     <div>
                     Choose your favourite design and set it up for pre-order!
@@ -127,21 +141,32 @@ export default function Sell_Analytics() {
       </div> 
       : <div> </div> }
       {thumbnailUrl.length > 0 && (
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             {thumbnailUrl.map((url) => (
-            <div style = {{margin: "2%"}}>
+            <div style = {{margin: "2%", display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
                 <img
                     src={url.url}
                     alt="Thumbnail"
                     style={{  width: "300px", height: "300px" }}
                 />
 
-                 <div style={{textAlign:"center", fontFamily: "Bodoni, serif"}}>
+                 {/* <div style={{textAlign:"center", fontFamily: "Bodoni, serif"}}>
                     Choice {thumbnailUrl.indexOf(url) + 1}
-                </div>
+                </div> */}
+
+                <Button onClick = {routeToKickStartIt} variant =  "outlined" startIcon = {<CheckIcon />} sx = {{mt: "5%", borderColor: "black", textTransform: 'none', color: 'black'}}> 
+                  Choose Design
+                </Button>
             </div>
+
+            
              
             ))}
+
+            <div style = {{display: "flex", flexDirection: "column-reverse", justifyContent: 'center', alignItems: 'center'}}> 
+              <Button onClick = {generateAgain} variant = "outlined" sx = {{color: 'black', borderColor: "black", mt : "15%"}}> Generate Design Again! </Button>
+              <Button variant = "outlined" sx = {{color: 'black', borderColor: "black"}}> Back to Home Page </Button>
+            </div> 
         </div>
       )}
 

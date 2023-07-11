@@ -5,7 +5,7 @@ import {auth} from "../../../config/firebase.js"
 import OrderDetails from "./OrderDetails"
 import { query, collection, where, getDocs, updateDoc, deleteField} from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
-import { Button, Grid, Box, ImageList } from "@mui/material"
+import { Button, Box, ImageList } from "@mui/material"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom"
@@ -74,6 +74,8 @@ export default function SucessPage() {
 
             <div style={{flexDirection: "column", display: "flex", justifyContent: "center", alignItems: "center"}}> 
 
+                {cart ? 
+                <div> 
                 <div style={{marginBottom: "3%", textAlign: "center"}}> 
                 <div style = {{fontSize: "30px", fontWeight: "bold"}}> 
                 <div> 
@@ -91,6 +93,12 @@ export default function SucessPage() {
 
                 </div>
 
+                </div> 
+                : <div> 
+                    Error 404 Not Found
+                </div> }
+                
+
 
                 <Box sx = {{flexGrow: 1}}> 
                 <ImageList sx ={{ overflowX: "hidden", overflowY: "auto", maxHeight: "400px", marginLeft: "2%", marginRight: '2%' }}>
@@ -103,11 +111,11 @@ export default function SucessPage() {
                 </Box>
 
 
-                <div> 
+                {cart ? <div> 
                     <Button onClick = {clearCartHandler} startIcon = {<ArrowBackIcon/>} variant = "outlined" sx = {{color: "black", borderColor: "black", textTransform: 'none'}}> 
                     Back to Home 
                     </Button>
-                </div>
+                </div>: <div> </div> }
                 </div>
 
            
