@@ -19,6 +19,7 @@ export default function Sell_Analytics() {
   const [disabledColor, setDisabledColor] = useState(false)
   const [disableFinal, setDisableFinal] = useState(false)
   const [stepper, setStepper] = useState(0)
+  const [chosenDesign, setChosenDesign] = useState("")
 
   const logoHandler = (event) => {
     setLogo(event.target.value);
@@ -34,17 +35,21 @@ export default function Sell_Analytics() {
     setStepper(2)
   }
 
+  const navigateHome = () => {
+    navigate("/BUY")
+  }
+
   const disableLogoNow = () => {
     setDisabledLogo(true)
     setStepper(1)
   }
 
-  const disableFinalOnClick = () => {
-    setDisableFinal(true)
-  }
+  // const disableFinalOnClick = () => {
+  //   setDisableFinal(true)
+  // }
 
-  const routeToKickStartIt = () => {
-    navigate("/SELL/KICKSTARTIT")
+  const routeToKickStartIt = (url) => {
+    navigate("/SELL/KICKSTARTIT", {state: {url : url}})
   }
 
   const generateAgain = (event) => {
@@ -154,7 +159,7 @@ export default function Sell_Analytics() {
                     Choice {thumbnailUrl.indexOf(url) + 1}
                 </div> */}
 
-                <Button onClick = {routeToKickStartIt} variant =  "outlined" startIcon = {<CheckIcon />} sx = {{mt: "5%", borderColor: "black", textTransform: 'none', color: 'black'}}> 
+                <Button onClick = {() => routeToKickStartIt(url.url)} variant =  "outlined" startIcon = {<CheckIcon />} sx = {{mt: "5%", borderColor: "black", textTransform: 'none', color: 'black'}}> 
                   Choose Design
                 </Button>
             </div>
@@ -165,7 +170,7 @@ export default function Sell_Analytics() {
 
             <div style = {{display: "flex", flexDirection: "column-reverse", justifyContent: 'center', alignItems: 'center'}}> 
               <Button onClick = {generateAgain} variant = "outlined" sx = {{color: 'black', borderColor: "black", mt : "15%"}}> Generate Design Again! </Button>
-              <Button variant = "outlined" sx = {{color: 'black', borderColor: "black"}}> Back to Home Page </Button>
+              <Button onClick = {navigateHome} variant = "outlined" sx = {{color: 'black', borderColor: "black"}}> Back to Home Page </Button>
             </div> 
         </div>
       )}
