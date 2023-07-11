@@ -23,7 +23,12 @@ import UserProfile from './components/mini_components/UserProfile.js';
 import SuccessPage from './components/pages/payment/SuccessPage.js'
 import FailedPage from './components/pages/payment/FailedPage.js'
 import Sell_KickStartIt from './components/pages/sell/Sell_kickStartIt.js';
-
+import Buy_Intermediate from './components/pages/buy/Buy_Intermediate.js';
+import Buy_Preorder_Intermediate from './components/pages/buy/Buy_Preorder_Intermediate.js';
+import Buy_Actual_Intermediate from './components/pages/buy/Buy_Actual_Intermediate.js';
+import Buy_Actual_Listings from './components/pages/buy/Buy_Actual_Listings.js';
+import Buy_Preorder_Listings from './components/pages/buy/Buy_Preorder_Listings.js';
+import Buy_Preorder_Marketplace from './components/pages/buy/Buy_Preorder_Marketplace.js';
 
 function App() {
   return (
@@ -33,7 +38,19 @@ function App() {
           <Route path="/" element={<Home />} />
 
           <Route path= "/BUY" element={<Outlet />}>
-            <Route index element={<Home />} /> 
+            <Route index element={<Buy_Intermediate />} /> 
+
+            <Route path = "PREORDER" element = {<Outlet />}> 
+              <Route index element = {<Buy_Preorder_Intermediate/>}/>
+              <Route path = "MARKETPLACE" element = {<Buy_Preorder_Marketplace/>}/>
+              <Route path = "LISTINGS" element = {<Buy_Preorder_Listings/>} />
+            </Route>
+
+            <Route path = "ACTUAL" element = {<Outlet />}> 
+              <Route index element = {<Buy_Actual_Intermediate/>}/>
+              <Route path = "MARKETPLACE" element = {<Home/>}/>
+              <Route path = "LISTINGS" element = {<Buy_Actual_Listings/>} />
+            </Route>
           
             <Route path=":listingID" element={<ListingPage />} />
             <Route path= "CART" element = {<Cart />}/>
