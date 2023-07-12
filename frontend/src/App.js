@@ -29,6 +29,7 @@ import Buy_Actual_Intermediate from './components/pages/buy/Buy_Actual_Intermedi
 import Buy_Actual_Listings from './components/pages/buy/Buy_Actual_Listings.js';
 import Buy_Preorder_Listings from './components/pages/buy/Buy_Preorder_Listings.js';
 import Buy_Preorder_Marketplace from './components/pages/buy/Buy_Preorder_Marketplace.js';
+import Buy_Preorder_Indiv from './components/pages/buy/Buy_Preorder_Indiv.js';
 
 function App() {
   return (
@@ -42,7 +43,10 @@ function App() {
 
             <Route path = "PREORDER" element = {<Outlet />}> 
               <Route index element = {<Buy_Preorder_Intermediate/>}/>
-              <Route path = "MARKETPLACE" element = {<Buy_Preorder_Marketplace/>}/>
+              <Route path = "MARKETPLACE" element = {<Outlet/>}>
+                <Route index element = {<Buy_Preorder_Marketplace/>}/>
+                <Route path = ":listingID" element = {<Buy_Preorder_Indiv/>}/>
+              </Route>
               <Route path = "LISTINGS" element = {<Buy_Preorder_Listings/>} />
             </Route>
 
