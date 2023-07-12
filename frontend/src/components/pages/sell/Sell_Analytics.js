@@ -5,7 +5,7 @@ import Steppers from "../../mini_components/Steppers";
 import CheckIcon from '@mui/icons-material/Check';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 
 
 export default function Sell_Analytics() {
@@ -73,11 +73,13 @@ export default function Sell_Analytics() {
           prompt: madePrompt, 
           n: 3,
           size: "256x256",
+          response_format: "b64_json"
         }),
         method: "POST",
       });
 
       const data = await res.json();
+      console.log(JSON.stringify(data))
       setThumbnailUrl([...data.data])
     } catch (error) {
       console.error(error);
@@ -149,17 +151,18 @@ export default function Sell_Analytics() {
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             {thumbnailUrl.map((url) => (
             <div style = {{margin: "2%", display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-                <img
-                    src={url.url}
-                    alt="Thumbnail"
-                    style={{  width: "300px", height: "300px" }}
-                />
+                  <img
+                src={`data:image/jpeg;base64, ${url.b64_json}`} // Set the src to the base64 data URL
+                alt="Thumbnail"
+                style={{  width: "300px", height: "300px" }}
+              />
+
 
                  {/* <div style={{textAlign:"center", fontFamily: "Bodoni, serif"}}>
                     Choice {thumbnailUrl.indexOf(url) + 1}
                 </div> */}
 
-                <Button onClick = {() => routeToKickStartIt(url.url)} variant =  "outlined" startIcon = {<CheckIcon />} sx = {{mt: "5%", borderColor: "black", textTransform: 'none', color: 'black'}}> 
+                <Button onClick = {() => routeToKickStartIt(url.b64_json)} variant =  "outlined" startIcon = {<CheckIcon />} sx = {{mt: "5%", borderColor: "black", textTransform: 'none', color: 'black'}}> 
                   Choose Design
                 </Button>
             </div>

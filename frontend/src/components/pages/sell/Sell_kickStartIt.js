@@ -5,6 +5,8 @@ import db from "../../../config/firebase.js"
 import {auth} from "../../../config/firebase.js"
 import { Divider, TextField, InputLabel, Button, InputAdornment, OutlinedInput, FormControl} from "@mui/material";
 import { addDoc, collection } from "@firebase/firestore";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+
 
 // NOTE THAT THE NAME OF THE FUNCTION IS NOT THE SAME AS THAT OF THE FILE NAME
 
@@ -21,6 +23,32 @@ export default function Sell_KickStartIt() {
     const [description, setDescription] = useState("")
     const [target, setTarget] = useState(0)
 
+    // Function to upload image to storage 
+    
+    const storage = getStorage(); // Initialize Firebase storage
+
+    const uploadImageToStorage = async (base64Data, fileName) => {
+        try {
+          const decodedData = atob(base64Data);
+          const arrayBuffer = new ArrayBuffer(decodedData.length);
+          const uint8Array = new Uint8Array(arrayBuffer);
+      
+          for (let i = 0; i < decodedData.length; i++) {
+            uint8Array[i] = decodedData.charCodeAt(i);
+          }
+      
+          const blob = new Blob([uint8Array], { type: 'image/jpeg' });
+      
+          const storagePath = `preOrder/${fileName}.jpg`;
+          const fileRef = ref(storage, storagePath);
+          await uploadBytes(fileRef, blob);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+
+
     const titleHandler = (event) => {
         setTitle(event.target.value)
     } 
@@ -36,30 +64,28 @@ export default function Sell_KickStartIt() {
     const targetHandler = (event) => {
         setTarget(event.target.value)
     } 
-
-    // const titleHandler = (event) => {
-    //     setTitle(event.target.value)
-    // } 
-
     const uploadOrder = async () => {
-
-
         const preOrder = {
             listingTitle: title, 
             listingPrice: price, 
             listingDescription: description,
             pledgeTarget: target, 
             pledgeCounter: 0,
-            listedBy: auth.currentUser.displayName, 
-            url: url
+            listedBy: auth.currentUser.displayName,
+            json64: url
         }
 
-        try {
+
         const collectionRef = collection(db, "preOrders")
-        await addDoc(collectionRef, preOrder)
-        } catch(error) {
-            console.log(error)
-        }
+        addDoc(collectionRef, preOrder)
+        // .then((docRef) => {
+        // const uid = docRef.id;
+        // return uploadImageToStorage(url, uid);
+        // })
+        // .catch((error) => {
+        // console.log(error);
+        // });
+       
     }
 
     return (
@@ -88,7 +114,7 @@ export default function Sell_KickStartIt() {
                 <div style={{display: "flex", flexDirection: 'row'}}> 
 
                 <div style={{marginLeft: "10%" , flex: 1}}> 
-                {url && <img height = "400px" width = "400px" src = {url}  alt = "image not found"/>}
+                {url && <img height = "400px" width = "400px" src={`data:image/jpeg;base64, ${url}`}  alt = "image not found"/>}
                 </div>
 
                 <div style={{flex: 1, display: 'flex', flexDirection: 'column'}}> 
