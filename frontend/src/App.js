@@ -15,7 +15,7 @@ import Trade_Request from './components/pages/trade/Trade_Request.js';
 import Trade_Inbox from './components/pages/trade/Trade_Inbox.js';
 import Sell_Listings from './components/pages/sell/Sell_Listings.js';
 import Sell_Analytics from './components/pages/sell/Sell_Analytics.js';
-import Payment from './components/pages/payments/index.js';
+// import Payment from './components/pages/payments/index.js';
 import Trade_Intermediate from './components/pages/trade/Trade_Intermediate.js'
 import Trade_Outgoing from './components/pages/trade/Trade_Outgoing.js';
 import SignInCarousel from './components/mini_components/SignInCarousel.js';
@@ -87,7 +87,7 @@ function App() {
           
           <Route path = "/REGISTER" element = {<Register />}/>
 
-          <Route path = "/PAYMENT" element = {<Payment/>}/>
+          {/* <Route path = "/PAYMENT" element = {<Payment/>}/> */}
 
           <Route path = "/payment" element = {<Outlet />}>  
             <Route path = "success" element = {<SuccessPage/>}/>
