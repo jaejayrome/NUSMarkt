@@ -1,3 +1,0 @@
-export const publishableKey = 'pk_test_51NIWCvJV7xrxUeZRngBA3tGIxShEI28dquXmgUGT01sjWOpnx7LQQZMCJNP4HvtfhHgzQe42H5tHnlULb9gDXXvU00zt7XeG7c'
-
-export const secretkey = "sk_test_51NIWCvJV7xrxUeZRZvx2dfu8ohN3Vq8iiK3M9sIDiHkr84S15yaUksYAr0YdqBmNIUMW8EMKsBp499oR9bOCn3Vi00w7Ng62fI"
