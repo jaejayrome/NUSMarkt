@@ -1,11 +1,12 @@
 import Navbar from "../../compiledData/Navbar";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import db from "../../../config/firebase.js"
 import {auth} from "../../../config/firebase.js"
 import { Divider, TextField, InputLabel, Button, InputAdornment, OutlinedInput, FormControl} from "@mui/material";
-import { addDoc, collection } from "@firebase/firestore";
+import { addDoc, arrayUnion, collection, getDocs, updateDoc, where, query } from "@firebase/firestore";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { toast } from "react-toastify";
 
 
 // NOTE THAT THE NAME OF THE FUNCTION IS NOT THE SAME AS THAT OF THE FILE NAME
@@ -16,16 +17,16 @@ import { getStorage, ref, uploadBytes } from "firebase/storage";
 export default function Sell_KickStartIt() {
 
     const location = useLocation()
+    const navigate = useNavigate()
 
     const url = location.state?.url
     const [title, setTitle] = useState("")
     const [price, setPrice] = useState("")
     const [description, setDescription] = useState("")
     const [target, setTarget] = useState(0)
-
-    // Function to upload image to storage 
+ 
     
-    const storage = getStorage(); // Initialize Firebase storage
+    const storage = getStorage(); 
 
     const uploadImageToStorage = async (base64Data, fileName) => {
         try {
@@ -78,13 +79,23 @@ export default function Sell_KickStartIt() {
 
         const collectionRef = collection(db, "preOrders")
         addDoc(collectionRef, preOrder)
-        // .then((docRef) => {
-        // const uid = docRef.id;
-        // return uploadImageToStorage(url, uid);
-        // })
-        // .catch((error) => {
-        // console.log(error);
-        // });
+        .then(async (docRef) => {
+
+            const collection2Ref = collection(db, "users")
+            const q = query(collection2Ref, where("uid", "==", auth.currentUser.uid))
+            const querySnapshot = await getDocs(q)
+            querySnapshot.forEach((user) => {
+                updateDoc(user.ref, {preorder_arr: arrayUnion(docRef)})
+            })
+       
+        })
+        .catch((error) => {
+        console.log(error);
+        });
+        
+        toast("You have successfully uploaded your pre-order listing!")
+        navigate("/BUY/PREORDER/LISTINGS")
+        
        
     }
 
@@ -129,7 +140,6 @@ export default function Sell_KickStartIt() {
                 <TextField onChange = {descriptionHandler}  sx = {{width:  '80%', marginTop: "5%" }} label = "Listing Description" multiline = {true}> </TextField>
 
                 <TextField onChange = {targetHandler}  helperText = "Please key in the number of pledges that you think you need to attain before converting it to an actual listing " sx = {{width:  '80%', marginTop: "5%" }} label = "Pledge Target" multiline = {false}> </TextField>
-
 
                 </div>
 

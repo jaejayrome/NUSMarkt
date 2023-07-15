@@ -22,6 +22,17 @@ export default function CartItem(props) {
     const [payNow, setPaynow] = useState(false)
 
 
+    // const updateWithdrawAmount = async () => {
+    //   try {
+    //     // fetch the user and update the person accordingly 
+    //     // i need to know the listing owners 
+         
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // }
+
+
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
           if(user) {
@@ -88,8 +99,7 @@ export default function CartItem(props) {
 
     console.log("after")
     console.log(cart)
-      // sending the cart instance wherein it contains many "orders" in arrays
-      navigate("/payment/success")
+    navigate("/payment/success")
     } else {
       navigate("/payment/failed")
     }

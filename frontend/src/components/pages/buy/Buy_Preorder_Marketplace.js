@@ -31,7 +31,7 @@ export default function Buy_Preorder_Marketplace() {
       <Navbar />
 
 
-       <Box  sx={{ width: 1500, textAlign: "center", alignItems: 'center', justifyItems: 'center' }}> 
+       <Box  sx={{  width: "100%", height: "500px", overflow: "auto"  }}> 
        <ImageList cols = {3} gap = {100}>
             
         {listingArr.length > 0 &&
@@ -39,7 +39,7 @@ export default function Buy_Preorder_Marketplace() {
           <ImageListItem rows = {1} cols={1} key={listing.id}>
 
           {listing.json64 &&  
-          <Link to = {listing.id}> 
+          <Link to = {{pathname: listing.id, state: {listing}}}> 
           <img  height = "400px" width = "400px" src={`data:image/jpeg;base64, ${listing.json64}`}  alt = "not found"/>
           </Link>
           }  
