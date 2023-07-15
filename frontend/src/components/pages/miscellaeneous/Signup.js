@@ -4,14 +4,17 @@ import  InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
 import {Link, useNavigate} from 'react-router-dom';
 import {useState} from 'react'; 
-import {auth} from '../../../config/firebase.js';
+import {auth, provider} from '../../../config/firebase.js';
 import Navbar from '../../compiledData/Navbar.js'
 import Register from './Register.js';
 import {signInWithEmailAndPassword} from 'firebase/auth'
 import './Signup.css';
 import InputLabel from '@mui/material/InputLabel';
 import {toast} from 'react-toastify';
+import { signInWithPopup } from 'firebase/auth';
 import 'react-toastify/dist/ReactToastify.css';
+import { query, where, getDocs, addDoc, collection } from '@firebase/firestore';
+import db from "../../../config/firebase.js"
 
 // missing the current features: signout 
 // auth.currentUser gives us the currentUser
@@ -44,6 +47,47 @@ function Signup() {
             console.log(error)
             toast("You have keyed in wrong details")
         }
+    }
+
+    const googleSignIn = async () => {
+        signInWithPopup(auth, provider).then(async (result) => {
+
+            // check whether user has an exisitng account before 
+            const collectionRef = collection(db, "users")
+            const q = query(collectionRef, where("uid", "==", result.user.uid))
+            const snapshot = await getDocs(q)
+
+            if (snapshot.empty) {
+                // means the user doesn't exist
+                // create a user
+
+                const firstName = prompt("Please enter your first name:");
+                const lastName = prompt("Please enter your last name:");
+                const telegramHandle = prompt("Please enter your Telegram Handle:");
+                const userName = result.user.displayName
+                const email = result.user.email
+                const phoneNumber = result.user.phoneNumber
+
+                const newUser = {
+                    firstName: firstName, 
+                    lastName: lastName, 
+                    telegramHandle: telegramHandle, 
+                    userName: userName, 
+                    registerEmail: email, 
+                    phoneNumber: phoneNumber, 
+                    uid: result.user.uid
+                }
+
+                await addDoc(collectionRef, newUser)
+            }
+
+            await navigate('/BUY')
+
+
+
+        }).catch((error) => {
+            console.log(error)
+        })
     }
 
     return (
@@ -90,6 +134,10 @@ function Signup() {
             <Button variant = "outlined" type = "submit"  sx = {{ borderColor: "black", color: "black", marginTop: "2%"
             }}  onClick = {login}>
             Login
+            </Button>
+
+            <Button onClick={googleSignIn}> 
+                Sign In With Google
             </Button>
         
 
