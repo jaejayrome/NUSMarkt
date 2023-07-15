@@ -3,6 +3,9 @@ import { useEffect, useState } from "react"
 import { Box, Card, Avatar, CardContent, CardHeader, CardActions} from "@mui/material"
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import DeleteReviewTransitionModal from "../components/mini_components/DeleteReviewTransitionModal";
 
 export default function ListingMessage(props) {
@@ -43,7 +46,10 @@ export default function ListingMessage(props) {
 
             {message.content}
         <CardActions disableSpacing> 
-            {message.reviewStatus == 'POSITIVE' ? <ThumbUpOffAltIcon /> :<ThumbDownOffAltIcon />}
+            {message.reviewStatus == 'POSITIVE' ? <SentimentVerySatisfiedIcon /> :
+              message.reviewStatus == 'NEGATIVE' ? <SentimentVeryDissatisfiedIcon /> :
+              <SentimentNeutralIcon />
+            }
         </CardActions>
           
             </CardContent>
