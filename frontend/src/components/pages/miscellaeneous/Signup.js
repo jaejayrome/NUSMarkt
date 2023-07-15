@@ -4,7 +4,8 @@ import  InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
 import {Link, useNavigate} from 'react-router-dom';
 import {useState} from 'react'; 
-import {auth, provider} from '../../../config/firebase.js';
+import {auth} from '../../../config/firebase.js';
+import { provider } from '../../../config/firebase.js';
 import Navbar from '../../compiledData/Navbar.js'
 import Register from './Register.js';
 import {signInWithEmailAndPassword} from 'firebase/auth'
@@ -15,6 +16,8 @@ import { signInWithPopup } from 'firebase/auth';
 import 'react-toastify/dist/ReactToastify.css';
 import { query, where, getDocs, addDoc, collection } from '@firebase/firestore';
 import db from "../../../config/firebase.js"
+import google from "../../../images/real_google.png"
+import { Typography } from '@mui/material';
 
 // missing the current features: signout 
 // auth.currentUser gives us the currentUser
@@ -136,10 +139,14 @@ function Signup() {
             Login
             </Button>
 
-            <Button onClick={googleSignIn}> 
-                Sign In With Google
+            <div sx={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "5%" }}>
+            <Button variant = "outlined" sx = {{borderColor: "black", color: "black", mt : "10%", textTransform: 'none', fontSize: '15px'}} startIcon={<img width="80%" style={{marginRight: '-100px'}} height="30%" src={google} alt="GOOGLE" />} onClick={googleSignIn}>
+
+
+                Continue With Google
+
             </Button>
-        
+            </div>
 
             <h4 className = "email" style = {{marginTop: "3%"}}> Don't have an account? </h4>
             <Link to = "/REGISTER" element = {<Register />}> 
