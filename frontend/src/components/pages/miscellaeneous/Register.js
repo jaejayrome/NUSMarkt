@@ -61,7 +61,8 @@ function Register() {
             lastName: lastName,
             userName: userName,
             phoneNumber: phoneNumber,
-            telegramHandle: telegramHandle
+            telegramHandle: telegramHandle,
+            withdrawAmount: 0.00
           }
         await addDoc(newUserRef, newUser)
         await navigate(`/TUTORIAL`)
