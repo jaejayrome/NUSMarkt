@@ -39,7 +39,7 @@ export default function ListingMessage(props) {
                  title = {message.listedBy}
                  subheader = "commented"
             action={
-            <DeleteReviewTransitionModal listingRef = {props.listingRef} messageRef = {messageRef} onDelete = {props.onDelete}itemRef = {props.itemRef}/> 
+            <DeleteReviewTransitionModal ownerUID = {message.messageOwnerUID} listingRef = {props.listingRef} messageRef = {messageRef} onDelete = {props.onDelete}itemRef = {props.itemRef}/> 
             }
             /> 
            <CardContent>

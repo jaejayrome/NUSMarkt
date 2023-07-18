@@ -12,7 +12,8 @@ import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import Grid from '@mui/material/Grid';
 import {toast} from 'react-toastify';
-
+import { IconButton } from '@mui/material';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 // pass the user state down to the page component that contains the routes 
 // missing functionalities
@@ -30,6 +31,8 @@ function Register() {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [telegramHandle, setTelegramHandle] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [visible, setVisible] = useState(false)
+    const [visible2, setVisible2] = useState(false)
 
     const registerEmailHandler = (event) => setRegisterEmail(event.target.value);
     const registerPasswordHandler = (event) => setRegisterPassword(event.target.value);
@@ -62,7 +65,8 @@ function Register() {
             userName: userName,
             phoneNumber: phoneNumber,
             telegramHandle: telegramHandle,
-            withdrawAmount: 0.00
+            withdrawAmount: 0.00, 
+            noTutorial: false
           }
         await addDoc(newUserRef, newUser)
         await navigate(`/TUTORIAL`)
@@ -70,9 +74,9 @@ function Register() {
             displayName: userName
         })
 
-        toast("You have successfully signed up")
+        toast.success("You have successfully signed up")
         } catch (error) {
-            alert("You have not completed the required fields!")
+            toast.error("You have not completed the required fields!")
             console.log(error.message);
         }
     }
@@ -85,10 +89,13 @@ function Register() {
 
         return () => unsubscribe()
     }, [])
-    
 
-    const checkWhetherPasswordAreTheSame = () => {
-        return firstRePassword == registerPassword;
+    const makePasswordVisisble = () => {
+        setVisible(prevState => !prevState)
+    }
+
+    const makePasswordVisisble2 = () => {
+        setVisible2(prevState => !prevState)
     }
 
 
@@ -97,7 +104,10 @@ function Register() {
     return (
         <div> 
             <Navbar />
+
             <p className='para'> CREATE ACCOUNT </p>
+
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: "center", flexDirection: 'column'}}> 
 
 
 
@@ -161,7 +171,14 @@ function Register() {
                     InputProps = {{
                         endAdornment: (
                         <InputAdornment position = "end">
+                            {visible ? 
+                            <IconButton onClick = {makePasswordVisisble}> 
                             <VisibilityIcon> </VisibilityIcon>
+                            </IconButton>
+                            :
+                            <IconButton onClick = {makePasswordVisisble}> 
+                            <VisibilityOffIcon> </VisibilityOffIcon>
+                            </IconButton>}
                         </InputAdornment>
                         )
                     }}
@@ -170,7 +187,7 @@ function Register() {
                     variant = "outlined"
                     required 
                     size = "medium"
-                    type = "password"
+                    type = {visible ? "text" : "password"}
                     sx = {{width: 300}}
                 />
                 </Grid>
@@ -182,7 +199,14 @@ function Register() {
                     InputProps = {{
                         endAdornment: (
                         <InputAdornment position = "end">
+                            {visible2 ? 
+                            <IconButton onClick = {makePasswordVisisble2}> 
                             <VisibilityIcon> </VisibilityIcon>
+                            </IconButton>
+                            :
+                            <IconButton onClick = {makePasswordVisisble2}> 
+                            <VisibilityOffIcon> </VisibilityOffIcon>
+                            </IconButton>}
                         </InputAdornment>
                         )
                     }}
@@ -191,7 +215,7 @@ function Register() {
                     variant = "outlined"
                     required 
                     size = "medium"
-                    type = "password"
+                    type = {visible2 ? "text" : "password"}
                     sx = {{width: 300}}
                 />
                 </Grid>
@@ -223,16 +247,19 @@ function Register() {
                 </Grid>
             
             </Grid>
+           
 
 
             <Button variant = "outlined" 
             disableRipple
-            type = "submit" size = "large" sx = {{borderColor: "black", color: "black", backgroundColor: "transparent", top: "50px",left: "36%", '&hover': {
+            type = "submit" size = "large" sx = {{marginTop: "5%", borderColor: "black", color: "black", backgroundColor: "transparent",  '&hover': {
                 backgroundColor: "lightslategray"
             }}}
             onClick = {register}>
             Register Now
             </Button>
+
+            </div>
         </div>
     )
 }

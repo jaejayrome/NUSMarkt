@@ -1,15 +1,16 @@
 @font-face {
     font-family: 'Bondoni FLF';
     src: url('../../../../public/fonts/BodoniFLF-Roman.ttf') format('truetype'); 
-    /* update the url with the correct path to your font file */
   }
 
 .para {
     font-family: "Bondoni FLF";
     font-size: 30px;
-    padding-left: 10%;
+    text-align: left;
+    padding-left: 21%;
+    /* padding-left: 10%;
     padding-bottom: 10px;
-    overflow-y: hidden;
+    overflow-y: hidden; */
 }
 
 .email {

@@ -20,6 +20,7 @@ export default function CartItem(props) {
     const [cart, setCart] = useState(null)
     const [uid, setUid] = useState(null);
     const [payNow, setPaynow] = useState(false)
+  
 
 
     // const updateWithdrawAmount = async () => {
@@ -90,10 +91,12 @@ export default function CartItem(props) {
 
     console.log("before")
     console.log(cart)
-    const response = await axios.post("http://localhost:8000/pay", {
+    const response = await axios.post("https://us-central1-nusmarkt-41131.cloudfunctions.net/api/pay", {
       amount: totalCost * 100, 
       token: token,
     })
+
+    // if no response i can put like a loading page 
 
     if (response.data.success) {
 
@@ -133,7 +136,7 @@ export default function CartItem(props) {
             </Table>
 
             <div style = {{justifyContent: 'center', alignItems: 'center', display: 'flex', marginTop: "5%"}}> 
-            <Button onClick = {paymentHandler} startIcon = {<PaymentIcon />} variant = "outlined" sx= {{borderColor: "black", align:"center", position: "relative", color: "black"}}> Checkout </Button>
+            <Button disabled = {payNow} onClick = {paymentHandler} startIcon = {<PaymentIcon />} variant = "outlined" sx= {{borderColor: "black", align:"center", position: "relative", color: "black"}}> Checkout </Button>
             </div>
 
             {payNow && (
