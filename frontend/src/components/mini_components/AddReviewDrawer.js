@@ -42,21 +42,17 @@ export default function AddReviewDrawer(props) {
                   } else {
                     setLoading(false);
                     console.log(JSON.stringify(response));
-                    
-                    const score = response[0][0].score
+                
 
-                    if (score == 0) {
-                        setReviewStatus("NEUTRAL")
-                    } else {
                     const updateReviewStatus = response[0][0].label;
                     setReviewStatus(updateReviewStatus);
-                    }
-                  
                     const messageCollectionRef = collection(db, "message");
+                    console.log(response[0][0].score)
                     const addedMessage = await addDoc(messageCollectionRef, {
                       content: messageContent,
                       listedBy: auth.currentUser.displayName,
-                      reviewStatus: reviewStatus,
+                      reviewStatus: response[0][0].score != 0 ? response[0][0].label : "NEUTRAL",
+                      messageOwnerUID: auth.currentUser.uid
                     });
                   
                     const listingRef = doc(db, "listing", props.listingRef);
