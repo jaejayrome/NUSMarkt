@@ -43,7 +43,6 @@ export default function OrderDetails(props) {
         const retrieveListingOwner = async () => {
             // update the amount mof money that the listing owner earns here 
             try {
-                console.log('retreive read called')
                 const listingOwnerUserName = item.listedBy
                 const q = query(collection(db, "users"), where("userName", "==", listingOwnerUserName));
                 const querySnapshot = await getDocs(q);
@@ -76,8 +75,6 @@ export default function OrderDetails(props) {
 
     }, [item])
 
-
-
     useEffect(() => {
         
         const uploadListing = async () => {
@@ -104,21 +101,8 @@ export default function OrderDetails(props) {
                 }
 
                 const order = {...sendHere, qty: cartItem.quantity, size: cartItem.size}
-                await addDoc(collection(db, "orders"), order).then(async (orderDoc) => {
-
-                    const q = query(collection(db, "users"), where("uid", "==", auth.currentUser.uid))
-                    const snapshot = await getDocs(q)
-                    if (snapshot) {
-                        snapshot.forEach((user) => {
-                            updateDoc(user.ref, {"order_arr" : arrayUnion(orderDoc)})
-                        })
-                    }
-                }).catch((error) => {
-                    console.log(error)
-                })
-
-                // need to add a reference to this 
-                
+                // props.callback(order)
+                console.log("hellooo")
 
             }
 
