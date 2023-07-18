@@ -47,7 +47,8 @@ const style = {
             amount: price,
             bank: props.bank, 
             bankAccountNumber: props.bankAccountNumber,
-            userName: props.userName
+            userName: props.userName, 
+            completed: false
         }
 
         console.log(toSend)
@@ -61,6 +62,8 @@ const style = {
                 updateDoc(user.ref, {withdrawAmount: props.withdrawAmount - price})
             })
         }
+
+        toast.success("You have submitted a withdrawal request!")
         
         }
 
