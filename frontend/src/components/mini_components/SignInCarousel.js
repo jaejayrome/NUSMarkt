@@ -14,9 +14,13 @@ import showTR from '../../images/showTR.gif';
 import showMessage from '../../images/showMessage.gif';
 import showProfile from '../../images/profile.gif';
 import CloseIcon from '@mui/icons-material/Close';
+import {auth} from "../../config/firebase.js"
+import db from "../../config/firebase.js"
+import { getDocs, updateDoc, query, where, collection } from '@firebase/firestore';
 
 const CarousellPopup = () => {
   const navigate = useNavigate();
+  const [ifClicked, setIfClicked] = useState(false)
   const [items] = useState([
     {
       url: Image,
@@ -79,6 +83,25 @@ const CarousellPopup = () => {
       description: 'Somehow forgot your name?',
     },
   ]);
+
+  const clickHandler = async () => {
+
+    try {
+
+      const q = query(collection(db, "users"), where("uid", "==", auth.currentUser.uid))
+      const snapshot = await getDocs(q)
+      if (snapshot) {
+        snapshot.forEach((user) => {
+          updateDoc(user.ref, {noTutorial: true})
+          setIfClicked(true)
+        })
+        navigate("/BUY") 
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const handleClose = () => {
     navigate('/BUY');
@@ -146,6 +169,7 @@ const CarousellPopup = () => {
                     {item.title}
                   </Typography>
                   <Typography variant="body2">{item.description}</Typography>
+                  
                 </CardContent>
               </Card>
             ))}
@@ -158,7 +182,11 @@ const CarousellPopup = () => {
               alignItems: 'center',
             }}
           >
-            <Button  sx={{textTransform: "none", color: 'white', backgroundColor: 'black' }} variant="contained" onClick={handleClose}>
+           
+{/* 
+            <Button disabled = {ifClicked} variant = "contained" onClick = {clickHandler} sx = {{textTransform: "none", backgroundColor: "red", color: "white", marginRight: "5%"}}> Don't show again </Button> */}
+
+            <Button  sx={{textTransform: "none", color: 'white', backgroundColor: 'black' }} variant="contained" onClick={clickHandler}>
               Close
             </Button>
           </Box>
