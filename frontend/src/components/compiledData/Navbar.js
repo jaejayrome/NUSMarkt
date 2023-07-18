@@ -17,8 +17,11 @@ import { useNavigate } from "react-router-dom";
 // added in the functionality where the 
 function Navbar(props) {
 
+    const masterUID = "wCQ4GPK1h1YXXU09MOJrg19DJ9B2"
+
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false); 
+    const [isMaster, setMaster] = useState(false)
     const navigate = useNavigate()
     // delays the evaluation by wrapping it around a "supplier"
     const signout =  () => {
@@ -34,6 +37,9 @@ function Navbar(props) {
       const profileClickHandler = () => {
         navigate("/PROFILE")
       }
+    const viewRequest = () => {
+        navigate("/VIEWPAGE")
+    }
 
 
     
@@ -42,11 +48,19 @@ function Navbar(props) {
     // when do we know what we should include at the second argument of the useEffect hook
     useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-        setIsLoggedIn(user !== null);
-      });
 
-    return () => unsubscribe();
-    }, []);
+      try {
+        setIsLoggedIn(user !== null);
+        setMaster(user.uid == masterUID)
+      }catch(error) {
+      console.log(error)
+      }
+
+    
+    })
+    
+    return () => unsubscribe();}
+    , []);
 
     const actionArr = [
         {title: 'BUY'},
@@ -57,7 +71,7 @@ function Navbar(props) {
 
     return (
         <div> 
-        <Link to = "/BUY" reloadDocument>
+        <Link to = "/" reloadDocument>
                 <img src = {homePageIcon} alt = "NUS MARKT" className= 'logo_button'/>
         </Link>
         
@@ -84,7 +98,13 @@ function Navbar(props) {
 
             <div> 
                 <Button onClick = {profileClickHandler} sx = {{color: "black"}}> Profile </Button >
-            </div> 
+            </div>
+
+            {isMaster ? <div className="master-only"> 
+            <Button sx = {{color: 'black'}} onClick = {viewRequest}> 
+              View Withdrawal Request
+            </Button>
+            </div> : <div> </div>} 
         </div>
           )}
             </div> :
