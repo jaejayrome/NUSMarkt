@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { arrayRemove, deleteDoc, getDoc, getDocs, snapshotEqual } from "@firebase/firestore"
 import { useState } from "react"
-import { IconButton, Card, CardActions, CardContent, CardHeader, ImageListItem } from "@mui/material"
+import { IconButton, Card, CardActions, CardContent, CardHeader, Button } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete';
 import db from "../../config/firebase.js"
 import {auth} from "../../config/firebase.js"
@@ -14,6 +14,7 @@ export default function PreOrderShowListing(props) {
 
     const [listing, setListing] = useState(null)
     const navigate = useNavigate()
+    const [noHitTarget, setTarget] = useState(true)
 
 
     useEffect(() => {
@@ -22,6 +23,14 @@ export default function PreOrderShowListing(props) {
             .then((listing) => {
                 const data = listing.data()
                 setListing({...data})
+                console.log("inside haha")
+
+                const pledgeCounter = listing.data().pledgeCounter
+                const pledgeTarget = listing.data().pledgeTarget
+
+                if (pledgeCounter >= pledgeTarget ) {
+                    setTarget(false)
+                }
             })
             .catch((error) => {
                 console.log(error)
@@ -59,6 +68,11 @@ export default function PreOrderShowListing(props) {
         }
     }
 
+    const rerouteHandler = () => {
+        navigate("/SELL/ADD_LISTING", {state: {json64: listing.json64}})
+        toast.success("Navigating You to Add a Listing!")
+    }
+
     return (
         <Card sx = {{border: "1px solid black"}}>
 
@@ -80,12 +94,12 @@ export default function PreOrderShowListing(props) {
         </div>
 
         <CardActions> 
-
         <IconButton onClick = {deleteHandler} sx = {{}} aria-label="add to favorites">
           <DeleteIcon />
         </IconButton>
+
+        <Button disabled = {noHitTarget} onClick = {rerouteHandler} variant = "outlined" sx = {{borderColor: "black", color: 'black'}}> Make It A Listing! </Button>
             
-  
         </CardActions>
         </CardContent>
         </Card>
