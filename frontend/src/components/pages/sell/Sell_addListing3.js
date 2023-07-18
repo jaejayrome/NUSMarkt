@@ -23,6 +23,7 @@ export default function Sell_addListing3() {
     font-size: 30px;`;
 
     const navigate = useNavigate()
+    const json64 = location.state?.json64
 
 
     const newListing = {
@@ -77,7 +78,8 @@ export default function Sell_addListing3() {
                     alignItems: 'flex-start'}}>
 
                 <div style = {{flex: 1, marginLeft: '2%'}}> 
-                    <ImageHandler height = "400px" width = "400px" alt = {newListing.listingTitle} filePath= {newListing.filePath}/>
+                {!!json64 ?  <img height = "400px" width = "400px" alt = {newListing.listingTitle} src={`data:image/jpeg;base64, ${json64}`} />
+                    : <ImageHandler height = "400px" width = "400px" alt = {newListing.listingTitle} filePath= {newListing.filePath}/>}
                 </div>
 
                 <div style = {{flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>

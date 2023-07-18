@@ -1,6 +1,6 @@
 
 import {useState, useEffect} from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Button, InputLabel, TextField, FormControl, Select, MenuItem } from '@mui/material';
 import Navbar from '../../compiledData/Navbar.js';
 import SizeButtonGroup from '../../mini_components/SizeButtonGroup.js';
@@ -8,9 +8,12 @@ import {auth} from '../../../config/firebase.js'
 import SizingGuide from '../../mini_components/SizingGuide.js';
 import TransitionModal from '../../mini_components/TransitionModal.js';
 import {query, collection, where, getDocs, updateDoc} from "@firebase/firestore"
+import { ref, getStorage, uploadBytes } from 'firebase/storage';
 import db from "../../../config/firebase.js"
 
 // this component is for the user to add any listings up to sell
+
+// need to think of what else we can skip so we need to ensure that the image is being uploaded in accordance ot it's listing title also 
 
 export default function Sell_addListing() {
     const [listingTitle, setListingTitle] = useState("")
@@ -23,6 +26,30 @@ export default function Sell_addListing() {
     const [bank, setBank] = useState("");
     const [bankDetailsUploaded, setBankDetailsUploaded] = useState(false)
     const [isSizeGuideConfirmed, setIsSizeGuideConfirmed] = useState(false);
+
+    const location = useLocation()
+    const storage = getStorage(); 
+
+    const uploadImageToStorage = async (base64Data, fileName) => {
+        try {
+          const decodedData = atob(base64Data);
+          const arrayBuffer = new ArrayBuffer(decodedData.length);
+          const uint8Array = new Uint8Array(arrayBuffer);
+      
+          for (let i = 0; i < decodedData.length; i++) {
+            uint8Array[i] = decodedData.charCodeAt(i);
+          }
+      
+          const blob = new Blob([uint8Array], { type: 'image/jpeg' });
+      
+          const storagePath = `images/${fileName}.jpg`;
+          const fileRef = ref(storage, storagePath);
+          await uploadBytes(fileRef, blob);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
 
 
     const preBuiltSizes = ["Chest Width", 'Shoulder Width', "Chest Length"]
@@ -89,7 +116,8 @@ export default function Sell_addListing() {
 
     // check this part again
     const navigationHandler = () => {
-        navigate('STEP2', {state: newListing})
+
+        
         const updateDB = async () => {
             const q = query(collection(db, "users"), where("uid", "==", userID));
             const querySnapshot = await getDocs(q);
@@ -99,10 +127,17 @@ export default function Sell_addListing() {
                 bank: bank
             }});
         })
-
-       
         }
         updateDB()
+
+        const checkPreOrder = location.state?.json64;
+
+        if (checkPreOrder != null) {
+            uploadImageToStorage(checkPreOrder, newListing.listingTitle);
+            navigate('STEP3', { state: { ...newListing, json64: checkPreOrder } });
+        } else {
+            navigate('STEP2', { state: newListing });
+        }
     }
 
 
@@ -118,7 +153,6 @@ export default function Sell_addListing() {
         }
         receiveDB()
     }, [])
-
     
     return (
         <div>

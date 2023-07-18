@@ -28,27 +28,6 @@ export default function Sell_KickStartIt() {
     
     const storage = getStorage(); 
 
-    const uploadImageToStorage = async (base64Data, fileName) => {
-        try {
-          const decodedData = atob(base64Data);
-          const arrayBuffer = new ArrayBuffer(decodedData.length);
-          const uint8Array = new Uint8Array(arrayBuffer);
-      
-          for (let i = 0; i < decodedData.length; i++) {
-            uint8Array[i] = decodedData.charCodeAt(i);
-          }
-      
-          const blob = new Blob([uint8Array], { type: 'image/jpeg' });
-      
-          const storagePath = `preOrder/${fileName}.jpg`;
-          const fileRef = ref(storage, storagePath);
-          await uploadBytes(fileRef, blob);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-
 
     const titleHandler = (event) => {
         setTitle(event.target.value)
@@ -94,7 +73,7 @@ export default function Sell_KickStartIt() {
         });
         
         toast("You have successfully uploaded your pre-order listing!")
-        navigate("/BUY/PREORDER/LISTINGS")
+        navigate("/BUY/PREORDER/")
         
        
     }
@@ -146,7 +125,7 @@ export default function Sell_KickStartIt() {
 
                 </div>
 
-                <div  style = {{alignItems: "center", justifyContent: 'center', display: 'flex', marginTop: "3%"}}> 
+                <div  style = {{alignItems: "center", justifyContent: 'center', display: 'flex', marginTop: "2%"}}> 
                 <Button onClick = {uploadOrder} variant = "outlined" sx = {{borderColor: "black", color: "black"}}> Enter </Button>
                 </div>
 

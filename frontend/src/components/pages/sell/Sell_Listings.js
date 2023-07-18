@@ -101,14 +101,15 @@ export default function Sell_Listings() {
       </div>
 
       <div style={{textAlign: 'center', font: "black", fontsize: '20px'}}> 
-      Amount to Withdraw: ${withdrawAmount.toFixed(2)}
+      Account Balance: ${parseFloat(withdrawAmount).toFixed(2)}
       </div>
 
+      <div style={{marginTop: '2%'}}> 
       <WithdrawalModal uuid = {uuid} bank = {bank} bankAccountNumber = {bankAccountNumber} userName = {userName} withdrawAmount = {withdrawAmount}/>
-
+      </div>
     
       </div>
-      <Divider sx = {{border: "1px solid black"}} />
+      <Divider sx = {{marginTop: "2%", border: "1px solid black"}} />
       <ScrollableCardContainer>
         <Box sx={{ flexGrow: 1 }}> 
           <ImageList>
