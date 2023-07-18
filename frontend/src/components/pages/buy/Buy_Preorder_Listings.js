@@ -7,12 +7,19 @@ import PreOrderShowListing from "../../mini_components/PreOrderShowListing"
 import { useState } from "react"
 import { onAuthStateChanged } from "firebase/auth"
 import { Box, ImageList, ImageListItem, CardContent } from "@mui/material"
+import Buy_Actual_NoListing from "./Buy_Actual_NoListing"
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import styled from '@emotion/styled';
 
 
 
 // this would show the pre-order listings that a user has pledged to
 
 export default function Buy_Preorder_Listings() {
+
+    const StyledIcon = styled(SentimentVeryDissatisfiedIcon)`
+    font-size: 60px
+`
 
     const [preOrderArr, setPreOrderArr] = useState([])
     const [uid, setUid] = useState(null);
@@ -41,8 +48,6 @@ export default function Buy_Preorder_Listings() {
                 // check whether the id matches that of the path
                 const data = user.data()
                 setPreOrderArr([...data.preorder_arr])
-                console.log ("inside")
-                // console.log(preOrderArr.length)
             })
 
             } catch(error) {
@@ -60,20 +65,20 @@ export default function Buy_Preorder_Listings() {
         <div> 
             <Navbar />
 
-            <div style = {{fontSize: "30px"}}> 
-                Your Pre-Order Listings
-            </div>
-
-            <Box  sx={{  width: "100%", height: "500px", overflow: "auto"  }}> 
-            <ImageList cols = {3} gap = {100} sx = {{marginLeft: "2%"}}>
-                    
-                {preOrderArr.length > 0 &&
-                preOrderArr.map((listing) => (
-                <PreOrderShowListing listingRef = {listing}/>
-                ))}
-        
-            </ImageList>
-            </Box>
+            {preOrderArr.length > 0 ?
+                <Box  sx={{  width: "100%", height: "500px", overflow: "auto"  }}> 
+                 <div style = {{fontSize: "30px", marginLeft: "3%"}}> 
+                            Your Pre-Order Listings
+                </div>
+                <ImageList cols = {3} gap = {100} sx = {{marginLeft: "2%"}}>
+                   {preOrderArr.map((listing) => (
+                    <div> 
+                        <PreOrderShowListing listingRef = {listing}/>
+                    </div>
+                    ))}
+                </ImageList>
+                </Box> 
+            : <Buy_Actual_NoListing id = {2}/>}
 
         </div>
     )

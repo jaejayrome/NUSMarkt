@@ -143,7 +143,7 @@ export default function ListingReader({ listingID }) {
               </div>
 
               <div style={{flex: 6}}>
-              <Button variant = "outlined" size = "medium" startIcon = {<CheckroomRoundedIcon />} sx = {{borderColor: "black", backgroundColor: 'white', color: "black", textTransform: "none"}}> SizeMeUp </Button>
+              {/* <Button variant = "outlined" size = "medium" startIcon = {<CheckroomRoundedIcon />} sx = {{borderColor: "black", backgroundColor: 'white', color: "black", textTransform: "none"}}> SizeMeUp </Button> */}
               </div>
           </div> 
 

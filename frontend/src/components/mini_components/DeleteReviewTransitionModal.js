@@ -51,7 +51,7 @@ return (
 
 
 
-<IconButton onClick = {handleOpen} sx = {{borderColor: 'black', color: 'black'}} >
+<IconButton disabled = {props.ownerUID != userID} onClick = {handleOpen} sx = {{borderColor: 'black', color: 'black'}} >
 <DeleteIcon />
 </IconButton>
   <Modal

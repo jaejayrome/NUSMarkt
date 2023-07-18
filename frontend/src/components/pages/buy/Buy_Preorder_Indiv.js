@@ -1,4 +1,4 @@
-import { collection, doc } from "@firebase/firestore";
+import { collection, doc, documentId, updateDoc } from "@firebase/firestore";
 import Navbar from "../../compiledData/Navbar";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -7,9 +7,8 @@ import { getDoc } from "@firebase/firestore";
 import { useState } from "react";
 import { Button, LinearProgress } from "@mui/material";
 import HandshakeIcon from '@mui/icons-material/Handshake';
+import { toast } from "react-toastify";
 
-// this component would be the individual preorder listings 
-// showcase the metadata of the individual preorder listings 
 export default function Buy_Preorder_Indiv() {
 
     const {listingID} = useParams()
@@ -36,9 +35,28 @@ export default function Buy_Preorder_Indiv() {
         getListing()
     }, []);
 
-    const addPledge = () => {
-        setPledge((prevState) => !prevState);
+    // using local storage would prevent the user to refrehs the pledge button after he has done it 
+    useEffect(() => {
+        const storedPledge = localStorage.getItem("pledged");
+        if (storedPledge) {
+          setPledge(JSON.parse(storedPledge));
+        }
+      }, []);
+
+    const addPledge = async () => {
+        try {
+        setPledge(true);
+        localStorage.setItem("pledged", JSON.stringify(true));
         setProgress((prevProgress) => (pledged ? prevProgress - 1 : prevProgress + 1));
+        // set the pledge to 1 
+        const documentRef = doc(db, `/preOrders/${listingID}`)
+        const actualDoc = await getDoc(documentRef)
+        await updateDoc(documentRef, {pledgeCounter: actualDoc.data().pledgeCounter + 1})
+        toast.success("You have successfully pledged for this current listing!")
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const progressPercentage = ((progress / pledgeTarget) * 100).toFixed(2);
@@ -63,12 +81,34 @@ export default function Buy_Preorder_Indiv() {
         {listing && listing.listedBy}
         </div>
 
-        {/* <div style={{fontFamily: 'monospace'}}>
-        {listing && listing.listingDescription}
-        </div> */}
+
+        <div style={{fontSize: "20px", marginTop: "5%"}}>
+        <div> 
+        Price: ${listing && listing.listingPrice}
+        </div>
 
         <div> 
-        Current Pledges: {progress} / Pledge Target: {pledgeTarget}
+        Description: {listing && listing.listingDescription}
+        </div>
+        </div>
+
+
+        <div style={{marginTop: "5%", marginBottom: "1%"}}> 
+
+
+        <div style={{fontSize: "50px"}}> 
+        {progress} <span style={{fontSize: "20px"}}> pledges </span>
+        </div>
+        out of 
+        </div>
+
+        <div style={{fontSize: "50px"}}> 
+        {pledgeTarget} <span style={{fontSize: "20px"}}> pledge target </span>
+        
+        </div>
+        which means
+        <div style={{fontSize: "50px", marginBottom: "5%"}}> 
+        {pledgeTarget - progress} <span style={{fontSize: "20px"}}> pledges to go </span>
         </div>
 
         {/* <div> 
@@ -81,11 +121,11 @@ export default function Buy_Preorder_Indiv() {
         
 
         <div> 
-        Milestone Completed: {progressPercentage}%
+        Milestone Progress: {progressPercentage}%
         </div>
 
-        <div> 
-            <Button startIcon = {<HandshakeIcon/>} onClick = {addPledge} variant = "outlined" sx = {{textTransform: "none" , borderColor: "black", color: "black"}}> Pledge </Button>
+        <div style={{marginTop: '5%'}}> 
+            <Button disabled = {pledged} startIcon = {<HandshakeIcon/>} onClick = {addPledge} variant = "outlined" sx = {{textTransform: "none" , borderColor: "black", color: "black"}}> Pledge </Button>
         </div>
 
 
