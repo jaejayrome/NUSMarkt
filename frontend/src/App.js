@@ -30,13 +30,19 @@ import Buy_Actual_Listings from './components/pages/buy/Buy_Actual_Listings.js';
 import Buy_Preorder_Listings from './components/pages/buy/Buy_Preorder_Listings.js';
 import Buy_Preorder_Marketplace from './components/pages/buy/Buy_Preorder_Marketplace.js';
 import Buy_Preorder_Indiv from './components/pages/buy/Buy_Preorder_Indiv.js';
+import ViewRequests from "./master/ViewRequests.js"
+import Metadata from './components/pages/miscellaeneous/Metadata.js';
+import HomePage from './components/mini_components/HomePage.js';
+import Application from './components/mini_components/Application.js';
 
 function App() {
   return (
     <div>
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Application />} />
+
+          <Route path = "/METADATA" element = {<Metadata/>}/>
 
           <Route path= "/BUY" element={<Outlet />}>
             <Route index element={<Buy_Intermediate />} /> 
@@ -93,6 +99,8 @@ function App() {
             <Route path = "success" element = {<SuccessPage/>}/>
             <Route path = "failed" element = {<FailedPage/>}/>
           </Route> 
+
+          <Route path = "/VIEWPAGE" element = {<ViewRequests/>} />
           
         </Routes>
         <ToastContain />
