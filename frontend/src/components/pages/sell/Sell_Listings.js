@@ -104,9 +104,13 @@ export default function Sell_Listings() {
       Account Balance: ${parseFloat(withdrawAmount).toFixed(2)}
       </div>
 
+      {withdrawAmount >= 0 ?
       <div style={{marginTop: '2%'}}> 
-      <WithdrawalModal uuid = {uuid} bank = {bank} bankAccountNumber = {bankAccountNumber} userName = {userName} withdrawAmount = {parseFloat(withdrawAmount).toFixed(2)}/>
-      </div>
+       <WithdrawalModal uuid = {uuid} bank = {bank} bankAccountNumber = {bankAccountNumber} userName = {userName} withdrawAmount = {parseFloat(withdrawAmount).toFixed(2)}/> :
+      </div> : 
+      <div> 
+      </div> 
+      }
     
       </div>
       <Divider sx = {{marginTop: "2%", border: "1px solid black"}} />
