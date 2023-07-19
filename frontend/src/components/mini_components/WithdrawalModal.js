@@ -110,16 +110,16 @@ return (
 
                 <div> 
                 
-                <InputLabel htmlFor = "pricing" sx = {{marginTop:"5%"}}> Proposed Pricing</InputLabel>
-                <OutlinedInput type= "number" onChange = {priceHandler} startAdornment = {<InputAdornment position="start"> $</InputAdornment>} sx = {{width:  '80%' }} id = "pricing" multiline = {false}> 
+                <InputLabel htmlFor = "pricing" sx = {{marginTop:"5%"}}> </InputLabel>
+                <OutlinedInput  type= "number" onChange = {priceHandler} startAdornment = {<InputAdornment position="start"> $</InputAdornment>} sx = {{width:  '80%' }} id = "pricing" multiline = {false}> 
                 </OutlinedInput>
                 </div>
 
                 <div style={{display: "flex", alignItems: "center", justifyContent:"center", marginTop: "5%"}}>
-                <Button sx = {{mr: "2%"}} color = "error"variant = "outlined" onClick = {handleClose}> NO </Button>
+                <Button sx = {{mr: "2%"}} color = "error"variant = "outlined" onClick = {handleClose}> Cancel </Button>
 
                 <Link to = "/SELL">
-                    <Button  onClick = {deleteHandler} color = "success" variant = "outlined"sx = {{font: "black"}}> YES </Button>
+                    <Button  onClick = {deleteHandler} color = "success" variant = "outlined"sx = {{font: "black"}}> Confirm </Button>
                 </Link>
                 </div>
             </Box>

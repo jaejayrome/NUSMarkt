@@ -1,7 +1,7 @@
 
 import {useState, useEffect} from 'react'
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Button, InputLabel, TextField, FormControl, Select, MenuItem } from '@mui/material';
+import { Button, InputLabel, TextField, FormControl, Select, MenuItem, InputAdornment } from '@mui/material';
 import Navbar from '../../compiledData/Navbar.js';
 import SizeButtonGroup from '../../mini_components/SizeButtonGroup.js';
 import {auth} from '../../../config/firebase.js'
@@ -178,6 +178,9 @@ export default function Sell_addListing() {
                     variant = "outlined"
                     value = {listingPrice}
                     onChange = {listingPriceHandler}
+                    InputProps={{
+                        startAdornment: <InputAdornment position='start'>$</InputAdornment>
+                    }}
                     sx = {{width: 500, mb: '1%'}}
                     required
                     />

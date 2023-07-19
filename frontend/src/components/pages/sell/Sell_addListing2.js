@@ -5,11 +5,14 @@ import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternate
 import Navbar from '../../compiledData/Navbar.js';
 import { useLocation, useNavigate } from 'react-router-dom';
 import TransitionModal from '../../mini_components/TransitionModal.js';
+import {useForm, useFormState} from 'react-hook-form'
+import * as yup from 'yup'
 
 export default function Sell_addListing2() {
   const location = useLocation();
   const navigate = useNavigate();
   const listingTitle = location.state.listingTitle;
+  const [uploaded, setUploaded] = useState(false)
 
   const newListing = {
     listingTitle: location.state.listingTitle, 
@@ -33,10 +36,28 @@ export default function Sell_addListing2() {
     imageUploadRef.current.click();
   };
 
+
+  const schema = yup.object().shape({
+    picture: yup
+    .mixed()
+    .required("You need to provide a file!")
+    .test("fileSize", "The file size is too large", (value) => {
+      return value && value[0].size < 5000000
+    })
+    // .test("fileSize", "We only support jpeg file", (value) => {
+    //   return value && value[0].type == "image/jpg"
+    // })
+   
+  })
+
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
-      
+    console.log(JSON.stringify(file))
     try {
+      // await schema.validate({picture: file})
+      if (file != null) {
+        setUploaded(true)
+      }
       const storage = getStorage();
       const listingImagesRef = ref(storage, `images/${listingTitle}.jpg`);
       const snapshot = await uploadBytes(listingImagesRef, file);
@@ -47,10 +68,14 @@ export default function Sell_addListing2() {
       
       console.log('Selected file:', file);
       console.log('Image URL:', downloadURL);
+      // setUploaded(true)
     } catch (error) {
       console.log('Error uploading image:', error);
     }
   };
+
+  
+
 
   return (
     <div>
@@ -68,8 +93,14 @@ export default function Sell_addListing2() {
       <div style={{ flex: 1.5, textAlign: "center", marginBottom: "1rem", marginTop: "12rem"}}>
 
       <div style = {{marginBottom: "5%"}}> 
-          Only images of <span style={{fontWeight: 'bold'}}> jpg or .jpeg </span>. extensions are allowed!
-        </div>
+          Only images of <span style={{fontWeight: 'bold'}}> .jpg/.png/.jpeg </span>. extensions are allowed!
+
+          <div style = {{marginTop: "1%"}}> 
+          Image Upload is <span style={{fontWeight:"bold"}}> compulsory </span> to move to the next step
+          </div>
+      </div>
+
+     
         {!selectedImage ? (
           <Button
             startIcon={<AddPhotoAlternateOutlinedIcon />}
@@ -108,9 +139,10 @@ export default function Sell_addListing2() {
           </Button>
         )}
 
-        <div style={{ textAlign: "center", marginTop: "1rem" }}>
+        {uploaded ?  <div style={{ textAlign: "center", marginTop: "1rem" }}>
         <TransitionModal navigation={navigationHandler} />
-        </div>
+        </div> : <div> </div> }
+       
       </div>
 
       <div style = {{flex: 2, marginTop: "2rem"}}>
