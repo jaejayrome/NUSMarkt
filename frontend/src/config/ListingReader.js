@@ -24,6 +24,8 @@ import LockIcon from '@mui/icons-material/Lock';
 export default function ListingReader({ listingID }) {
   const [listingData, setListingData] = useState(null);
   const [listingMessages, setListingMessages] = useState([])
+  const [myListing, setMyOwnListing] = useState(false)
+  const [uid, setUID] = useState(null)
 
   const listingRef = doc(db, 'listing', listingID)
 
@@ -46,6 +48,8 @@ export default function ListingReader({ listingID }) {
     );
   };
 
+  const userID = auth.currentUser?.uid;
+
   const fetchListing = useCallback(async () => {
     try {
       const listingRef = doc(db, 'listing', listingID);
@@ -61,7 +65,32 @@ export default function ListingReader({ listingID }) {
     }
   }, [listingID] )
 
-
+  const checkUser = async (uid) => {
+    try {
+      const userDocRef = doc(collection(db, "users"), uid);
+      const q = query(collection(db, "users"), where("uid", "==", uid))
+      const userDocSnapshot = await getDocs(q)
+  
+     
+        userDocSnapshot.forEach((user) => {
+          const userData = user.data();
+          console.log('call')
+          const sellListingArr = userData.Sell_ListingArr || [];
+          console.log(sellListingArr)
+          sellListingArr.forEach((element) => {
+            const listingPath = doc(db, "listing", listingID)
+            if (element.path === listingPath.path) {
+              console.log("true");
+              setMyOwnListing(true);
+            }
+          });
+        })
+        
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
 
   const fetchMessages = async () => {
     try {
@@ -77,7 +106,7 @@ export default function ListingReader({ listingID }) {
         }
       } else {
         // listing does not exist
-        console.log('listing does not exist');
+        
       }
     } catch (error) {
       console.log('listing does not exists')
@@ -87,17 +116,24 @@ export default function ListingReader({ listingID }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
-        fetchListing(user.uid);
+        fetchListing();
         fetchMessages();
-      } else {
+        setUID(user.uid)
       }
     });
-    return () => unsubscribe();
-  }, [fetchListing]);
+
+    return () => unsubscribe()
+  }, []);
+  
+  useEffect(() => {
+    if (uid) {
+      checkUser(uid);
+    }
+  }, [uid]);
+  
 
 
-
-  const userID = auth.currentUser?.uid;
+  
 
   return (
     <ScrollableCardContainer>
@@ -159,7 +195,7 @@ export default function ListingReader({ listingID }) {
 
         <div style = {{fontWeight: "bold",font: "monospace", fontSize: "22px", marginLeft: "5%"}}>
           Already Purchased & Received Item? 
-          <AddReviewDrawer callback = {fetchListing} listingRef = {listingID}/>
+          <AddReviewDrawer myListing = {myListing} callback = {fetchListing} listingRef = {listingID}/>
           <div> 
             Reviews
           </div>
@@ -168,7 +204,7 @@ export default function ListingReader({ listingID }) {
         <div> 
           {listingMessages.length > 0 && (
             <div style = {{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>{listingMessages.map((indivMessageRef) => {
-              return (<ListingMessage listingRef = {listingRef} messageInstance = {indivMessageRef} />)
+              return (<ListingMessage myListing = {myListing} listingRef = {listingRef} messageInstance = {indivMessageRef} listingID = {listingID}/>)
             })}
             </div>
           )}

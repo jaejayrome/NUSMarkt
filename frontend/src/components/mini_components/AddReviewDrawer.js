@@ -52,7 +52,8 @@ export default function AddReviewDrawer(props) {
                       content: messageContent,
                       listedBy: auth.currentUser.displayName,
                       reviewStatus: response[0][0].score != 0 ? response[0][0].label : "NEUTRAL",
-                      messageOwnerUID: auth.currentUser.uid
+                      messageOwnerUID: auth.currentUser.uid,
+                      replies_arr: []
                     });
                   
                     const listingRef = doc(db, "listing", props.listingRef);
@@ -64,7 +65,7 @@ export default function AddReviewDrawer(props) {
                     }
                   
                     toast("Successfully submitted the review!");
-                    navigate("/BUY");
+                    navigate(`/BUY`);
                   }
                   
                 }
@@ -86,7 +87,7 @@ export default function AddReviewDrawer(props) {
 
     return (
         <div>
-            <Button variant = "outlined" startIcon = {<AddCommentIcon />} sx = {{borderColor: "black", right: "-85%",color: "black"}} onClick = {toggleDrawer}> Add A Review </Button>
+            <Button disabled = {props.myListing} variant = "outlined" startIcon = {<AddCommentIcon />} sx = {{borderColor: "black", right: "-85%",color: "black"}} onClick = {toggleDrawer}> Add A Review </Button>
             <Drawer PaperProps={{
             sx: { width: "45%", borderRadius: "25px"},
             }}
@@ -104,9 +105,9 @@ export default function AddReviewDrawer(props) {
                 <Button variant = "contained" disabled = {click} onClick = {uploadReview} sx = {{backgroundColor: "black", marginTop: "5%", color: "white", font: "black", textTransform: "none"}}> Leave Review </Button>
 
                 {click && loading && (
-                    <div style = {{fontSize: "20px"}}>
-                        Uploading Comment...
+                    <div style = {{fontSize: "20px", display: 'flex', flexDirection: 'column'}}>
                         <CircularProgress color="inherit" />
+                        Uploading Comment...
                     </div>
                 )}
             </div>
