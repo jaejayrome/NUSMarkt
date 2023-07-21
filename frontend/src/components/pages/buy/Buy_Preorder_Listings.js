@@ -66,7 +66,7 @@ export default function Buy_Preorder_Listings() {
             <Navbar />
 
             {preOrderArr.length > 0 ?
-                <Box  sx={{  width: "100%", height: "500px", overflow: "auto"  }}> 
+                <Box  sx={{  width: "100%", height: "620px", overflow: "auto"  }}> 
                  <div style = {{fontSize: "30px", marginLeft: "3%"}}> 
                             Your Pre-Order Listings
                 </div>

@@ -81,7 +81,7 @@ export default function PreOrderShowListing(props) {
 
         </CardHeader>
         {listing && listing.json64 &&   
-        <img  height = "400px" width = "400px" src={`data:image/jpeg;base64, ${listing.json64}`}  alt = "not found"/>
+        <img  style = {{padding: '1rem'}} height = "400px" width = "400px" src={`data:image/jpeg;base64, ${listing.json64}`}  alt = "not found"/>
         }  
         
         <CardContent sx={{ overflowY: 'hidden' }}> 
