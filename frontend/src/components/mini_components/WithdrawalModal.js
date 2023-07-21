@@ -51,7 +51,6 @@ const style = {
             completed: false
         }
 
-        console.log(toSend)
         const collectionRef = collection(db, "withdrawalRequests")
         await addDoc(collectionRef, toSend)
 
@@ -75,12 +74,13 @@ const style = {
 
   const priceHandler = (event) => {
     setPrice(event.target.value)
+    console.log('ajhjaa')
   } 
 
 
 return (
     <div> 
-        <Button onClick={handleOpen} startIcon = {<RequestQuoteIcon />} variant="outlined" sx = {{color: 'black', borderColor: 'black', backgroundColor: 'white', textTransform: 'none'}}> Withdraw Amount </Button>
+        <Button disabled = {props.withdrawAmount == 0} onClick={handleOpen} startIcon = {<RequestQuoteIcon />} variant="outlined" sx = {{color: 'black', borderColor: 'black', backgroundColor: 'white', textTransform: 'none'}}> Withdraw Amount </Button>
 
         <Modal
             aria-labelledby="transition-modal-title"
