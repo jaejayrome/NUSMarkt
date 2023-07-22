@@ -21,7 +21,7 @@ export default function Sell_addListing2() {
     sizesAvailable: location.state.sizesAvailable, 
     filePath: location.state.listingTitle,
     listedBy: location.state.listedBy,
-    sizingGuide: location.state.sizingGuide
+    sizingGuide: location.state.sizingGuide, 
   };
 
   const navigationHandler = () => {
@@ -44,17 +44,12 @@ export default function Sell_addListing2() {
     .test("fileSize", "The file size is too large", (value) => {
       return value && value[0].size < 5000000
     })
-    // .test("fileSize", "We only support jpeg file", (value) => {
-    //   return value && value[0].type == "image/jpg"
-    // })
-   
   })
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     console.log(JSON.stringify(file))
     try {
-      // await schema.validate({picture: file})
       if (file != null) {
         setUploaded(true)
       }
@@ -68,7 +63,6 @@ export default function Sell_addListing2() {
       
       console.log('Selected file:', file);
       console.log('Image URL:', downloadURL);
-      // setUploaded(true)
     } catch (error) {
       console.log('Error uploading image:', error);
     }

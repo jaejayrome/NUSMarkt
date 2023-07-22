@@ -52,6 +52,13 @@ export default function DeleteTransitionModal(props) {
          await updateDoc(user.ref, {Sell_ListingArr: arrayRemove(props.itemRef)})
         
          props.onDelete();
+
+
+      //   // Update the 'arr' state after deletion
+      //   setArr((prevArr) =>
+      //   prevArr.filter((item) => item.path !== props.itemRef.path)
+      // );
+
          toast("successfully deleted")
          })
          
@@ -100,10 +107,10 @@ export default function DeleteTransitionModal(props) {
             </div>
 
             <div style={{display: "flex", alignItems: "center", justifyContent:"center", marginTop: "5%"}}>
-            <Button sx = {{mr: "2%"}}variant = "outlined" onClick = {handleClose}> Cancel </Button>
+            <Button sx = {{mr: "2%", color: "black", borderColor: "black"}}variant = "outlined" onClick = {handleClose}> Cancel </Button>
 
             <Link to = "/SELL" onClick = {deleteHandler}>
-                <Button variant = "outlined"sx = {{font: "black"}}> Confirm Delete </Button>
+                <Button variant = "outlined"sx = {{color: 'black', borderColor: "black"}}> Confirm Delete </Button>
             </Link>
             </div>
           </Box>

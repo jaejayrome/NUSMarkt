@@ -9,6 +9,7 @@ import Sell_IndivListing from "./Sell_IndivListing";
 import {Box, ImageListItem, ImageList, Divider, Button} from '@mui/material';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import WithdrawalModal from "../../mini_components/WithdrawalModal";
+import { useNavigate } from "react-router-dom";
 
 // need to add in some validation for the amount of money that the person can withdraw
 
@@ -21,6 +22,7 @@ export default function Sell_Listings() {
   const [userName, setUserName] = useState('')
   const [uuid, setUUID] = useState('')
   // const [userRef, setUserRef] = useState(null)
+  const navigate = useNavigate()
 
 
   const BigIcon = styled(SentimentVeryDissatisfiedIcon)({
@@ -32,7 +34,7 @@ export default function Sell_Listings() {
   // after i send the withdrawl request the amount ot withdraw should be reduced
 
   const handleDeletion = () => {
-    fetchUser();
+    fetchUser()
   };
 
   const fetchUser = async () => {
@@ -53,10 +55,7 @@ export default function Sell_Listings() {
       setUserName(userName);
       setArr(data);
       setWithdrawAmount(withdrawAmount);
-  
-      // console.log(bank);
-      // console.log(bankAccountNumber);
-      // console.log(userName);
+
     })
     } catch(error) {
       console.log(error)
@@ -117,7 +116,7 @@ export default function Sell_Listings() {
       <ScrollableCardContainer>
         <Box sx={{ flexGrow: 1 }}> 
           <ImageList>
-            {arr.length !== 0 && arr.map((item) => (
+            {arr?.length !== 0 && arr.map((item) => (
               <ImageListItem key={item}>
                 <Sell_IndivListing onDelete={handleDeletion} itemRef={item} />
               </ImageListItem>
