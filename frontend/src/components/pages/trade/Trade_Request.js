@@ -1,5 +1,5 @@
 import Navbar from "../../compiledData/Navbar";
-import { Box, TextField, InputLabel, FormHelperText, Button} from "@mui/material";
+import { Box, TextField, InputLabel, FormHelperText, Button, selectClasses} from "@mui/material";
 import { useState } from "react";
 import SizeButtonGroup from '../../mini_components/SizeButtonGroup.js';
 import { auth } from "../../../config/firebase";
@@ -53,6 +53,10 @@ export default function Trade_Request() {
     // updates the tradeListing database
     // updates the user database 
 
+    const isInput = listingTitle.trim("")
+    const isInput1 = listingDescription.trim("")
+    const isInput2 = selectedSizes.length > 0
+
     
     const submitHandler = async () => {
         try {
@@ -102,7 +106,7 @@ export default function Trade_Request() {
                     
                     <TextField label= "Enter here" onChange = {listing_title_handler} id = "listing-title" multiline maxRows={2} sx ={{width: "100%", marginBottom: "1%"}} margin = "dense"> </TextField>
                     <FormHelperText sx = {{fontSize: "18px"}}> this would appear in your trade listing title!</FormHelperText>
-                    <Button  variant = "outlined" startIcon = {<CheckIcon />}  onClick={disableLogoNow} sx = {{borderColor: "black" ,color: "black", marginTop: "10%"}}> Confirm Input </Button>
+                    <Button disabled = {!isInput} variant = "outlined" startIcon = {<CheckIcon />}  onClick={disableLogoNow} sx = {{borderColor: "black" ,color: "black", marginTop: "10%"}}> Confirm Input </Button>
                 </div>)}
 
                 
@@ -119,7 +123,7 @@ export default function Trade_Request() {
                     <div style = {{marginTop: "5%"}}> 
                         Current Selection: {selectedSizes.map(size => size + " ")}
                     </div>
-                    <Button variant = "outlined" startIcon = {<CheckIcon />}  onClick={disableLogoNow} sx = {{marginTop: "5%",borderColor: "black" ,color: "black"}}> Confirm Input </Button>
+                    <Button variant = "outlined" startIcon = {<CheckIcon />}  disabled = {selectedSizes.length === 0} onClick={disableLogoNow} sx = {{marginTop: "5%",borderColor: "black" ,color: "black"}}> Confirm Input </Button>
                 </div>)}
 
                 {
@@ -132,13 +136,15 @@ export default function Trade_Request() {
                                 id="product-description"
                                 multiline
                                 maxRows={4}
+                                // error = {!isInput1}
+                                // helperText = {"Trade Listing Description is required!"}
                                 fullWidth
                                 margin="dense"
                                 disabled = {submit}
                                 sx={{ flex: 1, marginBottom: "1%" }} // Set flex: 1 to make the TextField expand to fill the available space
                             />
                             <Button
-                                disabled={submit}
+                                disabled={submit || !isInput1}
                                 variant="outlined"
                                 startIcon={<CheckIcon />}
                                 onClick={disableLogoNow}

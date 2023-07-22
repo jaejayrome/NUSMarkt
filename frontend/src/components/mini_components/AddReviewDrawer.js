@@ -16,6 +16,7 @@ export default function AddReviewDrawer(props) {
     const [loading, setLoading] = useState(true)
     const [click, setClick] = useState(false)
     const navigate = useNavigate()
+    const isMessageContentEmpty = messageContent.trim() === "";
 
     // api call 
     async function query(data) {
@@ -100,14 +101,16 @@ export default function AddReviewDrawer(props) {
             How did you find the item? 
             </div>
             <div style = {{flexDirection: "column",display: "flex", justifyContent: "center", alignItems: "center"}}> 
-               <TextField onChange = {messageContentHandler} label = "Leave Your Review " sx  = {{width: "50%"}} multiline = {true}> Add a comment </TextField>
+               <TextField onChange = {messageContentHandler} label = "Leave Your Review " sx  = {{width: "50%"}} multiline = {true} error = {isMessageContentEmpty} helperText = {isMessageContentEmpty && "You cannot submit an empty review!"}> Add a comment </TextField>
     
-                <Button variant = "contained" disabled = {click} onClick = {uploadReview} sx = {{backgroundColor: "black", marginTop: "5%", color: "white", font: "black", textTransform: "none"}}> Leave Review </Button>
+                <Button variant = "contained" disabled={isMessageContentEmpty || click}  onClick = {uploadReview} sx = {{backgroundColor: "black", marginTop: "5%", color: "white", font: "black", textTransform: "none"}}> Leave Review </Button>
 
                 {click && loading && (
-                    <div style = {{fontSize: "20px", display: 'flex', flexDirection: 'column'}}>
+                    <div style = {{fontSize: "20px", display: 'flex', flexDirection: 'column', marginTop: "5%", justifyContent: 'center', alignItems: 'center'}}>
                         <CircularProgress color="inherit" />
+                        <div style={{marginTop: "10%"}}> 
                         Uploading Comment...
+                        </div>
                     </div>
                 )}
             </div>

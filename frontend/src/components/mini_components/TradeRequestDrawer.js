@@ -64,6 +64,10 @@ export default function TradeRequestDrawer(props) {
     addRequest()
   }
 
+  const checkHandler = selectedSize && title.trim("") && requestDescription.trim("")
+  const check1Handler = title.trim("")
+  const check2Handler = requestDescription.trim("")
+
   return (
     <div>
       {props.disabled ? <Button disabled sx = {{right: "-85%", color: "black", borderColor: "black"}}onClick={toggleDrawer}> Send Trade Request </Button>: <Button sx = {{right: "-85%", color: "black", borderColor: "black"}}onClick={toggleDrawer}> Send Trade Request </Button>}
@@ -84,10 +88,10 @@ export default function TradeRequestDrawer(props) {
 
       <div style = {{display: 'flex', flexDirection: "column", justifyContent: "center", alignItems: "center", marginTop: "5%"}}> 
       <InputLabel htmlFor = "title"> Trade Request Title</InputLabel>
-      <TextField sx = {{marginBottom: "4%"}}onChange = {titleHandler} id = "title"/>
+      <TextField sx = {{marginBottom: "4%"}}onChange = {titleHandler} error = {!check1Handler} helperText = {!check1Handler && "Trade Request Title is required!"} id = "title"/>
 
       <InputLabel htmlFor = "title"> Trade Request Description</InputLabel>
-      <TextField onChange = {requestDescriptionHandler}  id = "title"/>
+      <TextField onChange = {requestDescriptionHandler} error = {!check2Handler} helperText = {!check2Handler && "Trade Request Description is required!"} id = "title"/>
 
       <FormControl>
       <FormLabel id="demo-row-radio-buttons-group-label" sx = {{marginTop: "5%", color: "black"}}>What size are you offering?</FormLabel>
@@ -110,7 +114,7 @@ export default function TradeRequestDrawer(props) {
       </RadioGroup>
     </FormControl>
 
-    <Button variant = "outlined" startIcon = {<UploadIcon/>} onClick = {submitHandler} sx = {{borderColor: "black", color: "black", marginTop: "4%"}}> Submit Request </Button>
+    <Button disabled = {!checkHandler}  variant = "outlined" startIcon = {<UploadIcon/>} onClick = {submitHandler} sx = {{borderColor: "black", color: "black", marginTop: "4%"}}> Submit Request </Button>
     </div>
 
     <Box sx = {{marginTop: "20%", width: "100%", height: "100%", backgroundColor: "black"}}> 
