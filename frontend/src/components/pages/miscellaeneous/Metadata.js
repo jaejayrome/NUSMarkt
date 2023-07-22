@@ -6,6 +6,8 @@ import { collection, addDoc } from "@firebase/firestore";
 import {toast} from 'react-toastify';
 import Navbar from "../../compiledData/Navbar.js";
 import styled, {createGlobalStyle} from 'styled-components'
+import { useFormik } from "formik";
+import * as Yup from 'yup';
 
 const StyledTitle = styled.div`
 font-family: 'Bondoni FLF';
@@ -28,24 +30,24 @@ const GlobalStyles = createGlobalStyle`
 
 export default function Metadata(props) {
 
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [telegramHandle, setTelegramHandle] = useState("")
+    // const [firstName, setFirstName] = useState("")
+    // const [lastName, setLastName] = useState("")
+    // const [telegramHandle, setTelegramHandle] = useState("")
     const collectionRef = collection(db, "users")
     const location = useLocation()
     const navigate = useNavigate()
 
-    const firstNameHandler = (event) => {
-        setFirstName(event.target.value)
-    }
+    // const firstNameHandler = (event) => {
+    //     setFirstName(event.target.value)
+    // }
 
-    const lastNameHandler = (event) => {
-        setLastName(event.target.value)
-    }
+    // const lastNameHandler = (event) => {
+    //     setLastName(event.target.value)
+    // }
 
-    const telegramHandleHandler = (event) => {
-        setTelegramHandle(event.target.value)
-    }
+    // const telegramHandleHandler = (event) => {
+    //     setTelegramHandle(event.target.value)
+    // }
 
 
 
@@ -53,9 +55,9 @@ export default function Metadata(props) {
         try {
 
             const updatedUser = {
-                firstName: firstName, 
-                lastName: lastName, 
-                telegramHandle: telegramHandle, 
+                firstName: formik.values.firstName, 
+                lastName: formik.values.lastName, 
+                telegramHandle: formik.values.telegramHandle, 
                 userName: location.state.newUser.userName, 
                 registerEmail: location.state.newUser.registerEmail, 
                 phoneNumber: location.state.newUser.phoneNumber, 
@@ -70,6 +72,22 @@ export default function Metadata(props) {
             console.log(error)
         }
     }
+
+    const schema = Yup.object({
+        firstName: Yup.string().required("First Name is required!"),
+        lastName: Yup.string().required("Last Name is required!"),
+        telegramHandle: Yup.string().required("Telegram Handle is required!")
+    })
+
+    const formik = useFormik({
+        initialValues: {
+            firstName: '',
+            lastName: '',
+            telegramHandle: ''
+        }, 
+        validationSchema: schema, 
+        onSubmit: (values) => addUser(values)
+    })
     return (
         <div> 
 
@@ -87,30 +105,52 @@ export default function Metadata(props) {
             </div>
             
             <Box> 
+                <form onSubmit={formik.handleSubmit}> 
                 <List> 
                     <ListItem sx = {{ display: "flex", justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}> 
                     <InputLabel htmlFor = "firstName"> Enter Your First Name</InputLabel>
-                    <TextField   sx={{ width: 500 }} id="firstName" type = 'text' required value = {firstName} onChange = {firstNameHandler}>  </TextField>
+                    <TextField   sx={{ width: 500 }}    
+                    value = {formik.values.firstName}
+                    onChange = {formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.firstName && formik.errors.firstName}
+                    helperText={formik.touched.firstName && formik.errors.firstName}
+                    
+                    id="firstName" type = 'text' required>  </TextField>
 
               
                     </ListItem>
 
                     <ListItem sx = {{display: "flex", justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>  
-                    <InputLabel htmlFor = "firstName1"> Enter Your Last Name</InputLabel>
-                    <TextField sx={{ width: 500 }} id="firstName1" type = 'text' required value={lastName} onChange={lastNameHandler}> </TextField>
+                    <InputLabel htmlFor = "lastName"> Enter Your Last Name</InputLabel>
+                    <TextField sx={{ width: 500 }}    
+                    value = {formik.values.lastName}
+                    onChange = {formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.lastName && formik.errors.lastName}
+                    helperText={formik.touched.lastName && formik.errors.lastName}
+                    
+                    id="lastName" type = 'text' required > </TextField>
                     </ListItem>
 
 
                     <ListItem sx = {{display: "flex", justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}> 
-                    <InputLabel htmlFor = "firstName2"> Enter Your Telegram Handle</InputLabel>
-                    <TextField sx={{ width: 500 }} id="firstName2" type = 'text' required value = {telegramHandle} onChange={telegramHandleHandler}> </TextField>
+                    <InputLabel htmlFor = "telegramHandle"> Enter Your Telegram Handle</InputLabel>
+                    <TextField sx={{ width: 500 }}    value = {formik.values.telegramHandle}
+                    onChange = {formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.telegramHandle && formik.errors.telegramHandle}
+                    helperText={formik.touched.telegramHandle && formik.errors.telegramHandle}
+                    
+                    id="telegramHandle" type = 'text' required > </TextField>
                     </ListItem>
 
 
                     <ListItem sx = {{display: "flex", justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>  
-                        <Button variant = "outlined" sx = {{color:"black", borderColor: "black"}} onClick = {addUser}> Submit </Button>
+                        <Button variant = "outlined" sx = {{color:"black", borderColor: "black"}} type="submit"> Submit </Button>
                     </ListItem>
                 </List>
+                </form>
 
             </Box>
         </div>

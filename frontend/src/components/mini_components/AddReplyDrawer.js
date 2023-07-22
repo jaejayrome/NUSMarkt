@@ -9,10 +9,11 @@ import { useNavigate } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import ReplyIcon from '@mui/icons-material/Reply';
+import { useFormik } from "formik";
+import * as Yup from 'yup'
 
 export default function AddReplyDrawer(props) {
     const [isOpen, setIsOpen] = useState(false);
-    const [reviewStatus, setReviewStatus] = useState("")
     const [messageContent, setContent] = useState("");
     const [loading, setLoading] = useState(true)
     const [click, setClick] = useState(false)
@@ -23,7 +24,7 @@ export default function AddReplyDrawer(props) {
    
     const uploadReview = async () => {
         try {
-            await updateDoc(props.messageRef, {replies_arr: arrayUnion({content: messageContent, listedBy: auth.currentUser.displayName})})
+            await updateDoc(props.messageRef, {replies_arr: arrayUnion({content: formik.values.messageContent, listedBy: auth.currentUser.displayName})})
             toast.success("successfully replied")
             navigate(`/BUY/${props.id}`
             
@@ -42,6 +43,18 @@ export default function AddReplyDrawer(props) {
         setIsOpen(!isOpen);
     };
 
+    const schema = Yup.object({
+        messageContent: Yup.string().required("Reply must not be empty!")
+    })
+
+    const formik = useFormik({
+        initialValues: {
+            messageContent:''
+        }, 
+        validationSchema: schema, 
+        onSubmit: values => uploadReview(values)
+    })
+
     return (
         <div>
             <IconButton sx = {{color: 'black'}} disabled = {!props.myListing} onClick = {toggleDrawer}> 
@@ -52,6 +65,8 @@ export default function AddReplyDrawer(props) {
             sx: { width: "45%", borderRadius: "25px"},
             }}
             anchor="right" open={isOpen} onClose={toggleDrawer}>
+
+            <form onSubmit={formik.handleSubmit}>
 
             <div style = {{fontWeight: "black", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",fontWeight: "bolder",marginBottom: "3%", fontSize: "30px", marginTop: "10%"}}> 
             Send Reply
@@ -78,9 +93,15 @@ export default function AddReplyDrawer(props) {
             Do remember to respond graciously to feedbacks!
             </div>
             <div style = {{flexDirection: "column",display: "flex", justifyContent: "center", alignItems: "center"}}> 
-               <TextField onChange = {messageContentHandler} label = "Enter Reply " sx  = {{width: "50%"}} multiline = {true}> Add a comment </TextField>
+               <TextField name = "messageContent" 
+               onBlur = {formik.handleBlur} required
+               error = {formik.touched.messageContent && formik.errors.messageContent} 
+               helperText={formik.touched.messageContent && formik.errors.messageContent}
+               onChange = {formik.handleChange} 
+               label = "Enter Reply " sx  = {{width: "50%"}} 
+               multiline = {true}> Add a comment </TextField>
     
-                <Button variant = "contained" disabled = {click} onClick = {uploadReview} sx = {{backgroundColor: "black", marginTop: "5%", color: "white", font: "black", textTransform: "none"}}> Send Reply </Button>
+                <Button variant = "contained" disabled = {click} type = "submit" sx = {{backgroundColor: "black", marginTop: "5%", color: "white", font: "black", textTransform: "none"}}> Send Reply </Button>
 
                 {click && loading && (
                     <div style = {{fontSize: "20px"}}>
@@ -89,6 +110,7 @@ export default function AddReplyDrawer(props) {
                     </div>
                 )}
             </div>
+            </form> 
 
    
 

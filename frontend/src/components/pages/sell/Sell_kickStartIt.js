@@ -137,10 +137,12 @@ export default function Sell_KickStartIt() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.price && formik.errors.price}
-            
                 required
-                helperText={formik.touched.price && formik.errors.price} startAdornment = {<InputAdornment position="start"> $</InputAdornment>} sx = {{width:  '80%' }} id = "pricing" multiline = {false}> 
-    
+                helperText={formik.touched.price && formik.errors.price} startAdornment = {<InputAdornment position="start"> $</InputAdornment>} sx = {{width:  '80%' }} id = "pricing" multiline = {false}
+                InputProps={{
+                    startAdornment: <InputAdornment position='start'>$</InputAdornment>
+                }} 
+                >
                 </TextField>
 
                 <TextField 
