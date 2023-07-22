@@ -5,6 +5,7 @@ import {getDoc, doc, updateDoc, arrayUnion, collection, addDoc} from 'firebase/f
 import db from "../../config/firebase.js"
 import { toast } from "react-toastify";
 import { auth } from "../../config/firebase.js";
+import { updateProfile, updateEmail, updatePassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
 import AddCommentIcon from '@mui/icons-material/AddComment';
@@ -43,9 +44,8 @@ export default function UpdateProfileDrawer(props) {
         firstName: props.user.firstName,
         lastName: props.user.lastName,
         userName: props.user.userName,
-        // registerEmail: props.user.registerEmail,
-        // registerPassword: props.user.registerPassword,
-        // firstRePassword: '',
+        // registerEmail: props.user?.registerEmail,
+        // registerPassword: props.user?.registerPassword,
         phoneNumber: props.user.phoneNumber,
         telegramHandle: props.user.telegramHandle,
       },
@@ -112,8 +112,13 @@ export default function UpdateProfileDrawer(props) {
     const uploadReview = async () => {
         try {
            await updateDoc(doc(db, `users/${props.id}`), newUser).then((data) =>{
-            toast.success("You have updated your details!")
-           setIsOpen(false)
+            updateProfile((auth.currentUser), {
+                displayName: formik.values.userName
+            }).then((dataA) => {
+                toast.success("You have updated your details!")
+                setIsOpen(false)
+            }).catch(error => console.log(error))
+            
            }).catch(error => console.log(error)) 
           
         } catch(error) {
@@ -140,9 +145,9 @@ export default function UpdateProfileDrawer(props) {
             <form onSubmit={formik.handleSubmit}>
 
 
-            <div style = {{marginTop: "5%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",marginBottom: "3%", fontSize: "30px"}}> 
+            <div style = {{marginTop: "5%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",marginBottom: "3%", fontSize: "30px", fontWeight: 'bold'}}> 
             What do you want to edit? 
-            <div style={{marginTop: "1%", fontSize: "15px"}}> 
+            <div style={{marginTop: "1%", fontSize: "15px", fontWeight: 'normal'}}> 
                 Click on any buttons below to start
             </div>
             </div>
@@ -150,7 +155,7 @@ export default function UpdateProfileDrawer(props) {
 
             <Grid container align="center" justify="center" sx={{ width: '80%' }} rowSpacing={10}>
               <Grid item xs={4}>
-                <Button  sx = {{color: "black", borderColor: 'black'}} onClick = {showFirstNameEdit}> First Name</Button> 
+                <Button  sx = {{color: "black", borderColor: 'black', fontSize: '18px'}} onClick = {showFirstNameEdit}> First Name</Button> 
 
                 {firstNameEdit ? (
                 <div> 
@@ -174,7 +179,7 @@ export default function UpdateProfileDrawer(props) {
               </Grid>
   
               <Grid item xs={4}>
-              <Button sx = {{color: "black", borderColor: 'black'}} onClick = {showLastNameEdit}> Last Name</Button> 
+              <Button sx = {{color: "black", borderColor: 'black', fontSize: '18px'}} onClick = {showLastNameEdit}> Last Name</Button> 
                 {lastNameEdit ? 
                 <div> 
                 {/* <InputLabel htmlFor="user_last_name"> Last Name </InputLabel> */}
@@ -198,7 +203,7 @@ export default function UpdateProfileDrawer(props) {
               </Grid>
   
               <Grid item xs={4}>
-              <Button sx = {{color: "black", borderColor: 'black'}} onClick = {showUserNameEdit}> Username</Button> 
+              <Button sx = {{color: "black", borderColor: 'black', fontSize: '18px'}} onClick = {showUserNameEdit}> Username</Button> 
 
                 {userNameEdit ? 
                 <div>  
@@ -225,7 +230,7 @@ export default function UpdateProfileDrawer(props) {
   
               
               <Grid item xs={6}>
-              <Button  sx = {{color: "black", borderColor: 'black'}} onClick = {showPhoneNumberEdit}> Phone Number </Button> 
+              <Button  sx = {{color: "black", borderColor: 'black', fontSize: '18px'}} onClick = {showPhoneNumberEdit}> Phone Number </Button> 
                 {phoneNumberEdit ? 
                 <div> 
                 {/* <InputLabel htmlFor="user_phoneNumber"> Phone Number </InputLabel> */}
@@ -248,7 +253,7 @@ export default function UpdateProfileDrawer(props) {
               
   
               <Grid item xs={6}>
-              <Button  sx = {{color: "black", borderColor: 'black'}} onClick = {showTelegramHandleEdit}> Telegram Handle</Button> 
+              <Button  sx = {{color: "black", borderColor: 'black', fontSize: '18px'}} onClick = {showTelegramHandleEdit}> Telegram Handle</Button> 
                 {telegramHandleEdit ? 
                 <div> 
                 {/* <InputLabel htmlFor="user_telegramHandle"> Telegram Handle </InputLabel> */}
