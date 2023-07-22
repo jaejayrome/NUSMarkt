@@ -140,10 +140,14 @@ export default function Sell_Analytics() {
       {disableFinal && thumbnailUrl.length == 0 ?
        <div style = {{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginTop: "5%"}}> 
 
-       <div style={{fontWeight: "bold"}}>
+       <div style={{display: "flex", flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}> 
+        <CircularProgress color="inherit" /> 
+       <div style={{fontWeight: "bold", marginTop: "10%"}}>
         Loading...
         </div>
-        <CircularProgress color="inherit" /> 
+
+        </div>
+        
 
       </div> 
       : <div> </div> }

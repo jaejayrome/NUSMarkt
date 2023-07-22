@@ -7,6 +7,8 @@ import { Divider, TextField, InputLabel, Button, InputAdornment, OutlinedInput, 
 import { addDoc, arrayUnion, collection, getDocs, updateDoc, where, query } from "@firebase/firestore";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { toast } from "react-toastify";
+import { useFormik } from "formik";
+import * as Yup from 'yup';
 
 
 // NOTE THAT THE NAME OF THE FUNCTION IS NOT THE SAME AS THAT OF THE FILE NAME
@@ -19,37 +21,15 @@ export default function Sell_KickStartIt() {
     const location = useLocation()
     const navigate = useNavigate()
 
-    const url = location.state?.url
-    const [title, setTitle] = useState("")
-    const [price, setPrice] = useState("")
-    const [description, setDescription] = useState("")
-    const [target, setTarget] = useState(0)
- 
-    
+    const url = location.state?.url    
     const storage = getStorage(); 
 
-
-    const titleHandler = (event) => {
-        setTitle(event.target.value)
-    } 
-
-    const priceHandler = (event) => {
-        setPrice(event.target.value)
-    } 
-
-    const descriptionHandler = (event) => {
-        setDescription(event.target.value)
-    } 
-
-    const targetHandler = (event) => {
-        setTarget(event.target.value)
-    } 
     const uploadOrder = async () => {
         const preOrder = {
-            listingTitle: title, 
-            listingPrice: price, 
-            listingDescription: description,
-            pledgeTarget: target, 
+            listingTitle: formik.values.title, 
+            listingPrice: formik.values.price, 
+            listingDescription: formik.values.description,
+            pledgeTarget: formik.values.target, 
             pledgeCounter: 0,
             listedBy: auth.currentUser.displayName,
             json64: url
@@ -78,6 +58,31 @@ export default function Sell_KickStartIt() {
        
     }
 
+
+    const validationSchema = Yup.object({
+        title: Yup.string().required("Listing Title is required!"),
+        price: Yup.number().required("Listing Price is required!")
+        .min(0.01, "Your item must cost at least $0.01")
+        .positive("Price Must be a Positive Number")
+        .test("decimal-places", "Price must have up to 2 decimal places", (value) => {
+            return value.toString().split(".")[1]?.length <= 2 })
+        ,
+        description: Yup.string().required("Listing Description is required!"),
+        target: Yup.number().required("Pledge Target is required!")
+        .min(1, "Pledge Target Must be Minimally 1")
+    })
+
+    const formik = useFormik({
+        initialValues: {
+            title: '', 
+            price: '',
+            description: '',
+            target: ''
+        }, 
+        validationSchema: validationSchema, 
+        onSubmit: (values) => uploadOrder(values)
+    })
+
     return (
         <div> 
             <Navbar />
@@ -100,6 +105,7 @@ export default function Sell_KickStartIt() {
 
                 </div> 
 
+                <form onSubmit={formik.handleSubmit}>
                 <Divider sx = {{border: "1px solid black", mb: "5%"}}/>
                 <div style={{display: "flex", flexDirection: 'row'}}> 
 
@@ -107,27 +113,63 @@ export default function Sell_KickStartIt() {
                 {url && <img height = "400px" width = "400px" src={`data:image/jpeg;base64, ${url}`}  alt = "image not found"/>}
                 </div>
 
+
+
                 <div style={{flex: 1, display: 'flex', flexDirection: 'column'}}> 
+                <TextField  sx = {{width:  '80%', marginBottom: "5%" }}
+                 multiline = {false}
+                 label = "Listing Title" 
+                 name = "title"
+                 value={formik.values.title}
+                 onChange={formik.handleChange}
+                 onBlur={formik.handleBlur}
+                 error={formik.touched.title && formik.errors.title}
+                 helperText={formik.touched.title && formik.errors.title}
+                 required
+                > </TextField>
+{/* 
+                <InputLabel htmlFor = "pricing" sx = {{marginTop:"5%"}}> Proposed Pricing</InputLabel> */}
+                <TextField
 
-                <TextField onChange = {titleHandler} sx = {{width:  '80%' }} label = "Listing Title" multiline = {false}> </TextField>
-
-                <InputLabel htmlFor = "pricing" sx = {{marginTop:"5%"}}> Proposed Pricing</InputLabel>
-                <OutlinedInput onChange = {priceHandler} startAdornment = {<InputAdornment position="start"> $</InputAdornment>} sx = {{width:  '80%' }} id = "pricing" multiline = {false}> 
+                value={formik.values.price}
+                name = "price"
+                label = "Listing Price"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.price && formik.errors.price}
+            
+                required
+                helperText={formik.touched.price && formik.errors.price} startAdornment = {<InputAdornment position="start"> $</InputAdornment>} sx = {{width:  '80%' }} id = "pricing" multiline = {false}> 
     
-                </OutlinedInput>
+                </TextField>
 
-                <TextField onChange = {descriptionHandler}  sx = {{width:  '80%', marginTop: "5%" }} label = "Listing Description" multiline = {true}> </TextField>
+                <TextField 
+                name = "description"
+                value={formik.values.description}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.description && formik.errors.description}
+                helperText={formik.touched.description && formik.errors.description}
+              
+                required
+                sx = {{width:  '80%', marginTop: "5%" }} label = "Listing Description" multiline = {true}> </TextField>
 
-                <TextField onChange = {targetHandler}  helperText = "Please key in the number of pledges that you think you need to attain before converting it to an actual listing " sx = {{width:  '80%', marginTop: "5%" }} label = "Pledge Target" multiline = {false}> </TextField>
-
+                <TextField  
+                name = "target"
+                value={formik.values.target}
+                required
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.target && formik.errors.target}
+                helperText={formik.touched.target && formik.errors.target} sx = {{width:  '80%', marginTop: "5%" }} label = "Pledge Target" multiline = {false}> </TextField>
                 </div>
-
-
                 </div>
+                
 
-                <div  style = {{alignItems: "center", justifyContent: 'center', display: 'flex', marginTop: "2%"}}> 
-                <Button onClick = {uploadOrder} variant = "outlined" sx = {{borderColor: "black", color: "black"}}> Enter </Button>
+                <div  style = {{alignItems: "flex-start", justifyContent: 'center', display: 'flex', marginTop: "2%"}}> 
+                <Button type = "submit" variant = "outlined" sx = {{borderColor: "black", color: "black"}}> Enter </Button>
                 </div>
+                </form>
 
              
             </div>

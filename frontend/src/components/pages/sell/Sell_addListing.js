@@ -98,7 +98,13 @@ export default function Sell_addListing() {
 
     const validationSchema = Yup.object({
         listingTitle: Yup.string().required("Listing Title is required"),
-        listingPrice: Yup.number().required("Listing Price is required"),
+        listingPrice: Yup.number().required("Listing Price is required")
+        .positive("Price must be a positive number")
+        .min(0.01, "Your item must cost at least $0.01")
+        .test("decimal-places", "Price must have up to 2 decimal places", (value) => {
+            return value.toString().split(".")[1]?.length <= 2;
+          })
+       ,
         productDescription: Yup.string().required("Product Description is required"), 
         sizesAvailable: Yup.array().min(1, "You have to select at least 1 Size!"),
         cSizingGuide: Yup.array().of(
@@ -138,7 +144,7 @@ export default function Sell_addListing() {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             navigationHandler(values)
-        }
+        },
     })
 
         const newListing = {
