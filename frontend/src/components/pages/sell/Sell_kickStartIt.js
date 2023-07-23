@@ -1,6 +1,6 @@
 import Navbar from "../../compiledData/Navbar";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import db from "../../../config/firebase.js"
 import {auth} from "../../../config/firebase.js"
 import { Divider, TextField, InputLabel, Button, InputAdornment, OutlinedInput, FormControl} from "@mui/material";
@@ -9,6 +9,7 @@ import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
+import { onAuthStateChanged } from "firebase/auth";
 
 
 // NOTE THAT THE NAME OF THE FUNCTION IS NOT THE SAME AS THAT OF THE FILE NAME
@@ -18,11 +19,21 @@ import * as Yup from 'yup';
 // hence buy would split into listing marketplace, pre-order marketplace, orders placed
 export default function Sell_KickStartIt() {
 
+    const [uid, setUid] = useState(null);
     const location = useLocation()
     const navigate = useNavigate()
 
     const url = location.state?.url    
     const storage = getStorage(); 
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+          if(user) {
+            setUid(user.uid)
+          }
+        });
+        console.log("first use effect")
+      }, []);
 
     const uploadOrder = async () => {
         const preOrder = {
@@ -32,7 +43,8 @@ export default function Sell_KickStartIt() {
             pledgeTarget: formik.values.target, 
             pledgeCounter: 0,
             listedBy: auth.currentUser.displayName,
-            json64: url
+            json64: url,
+            pledgesArr: [uid]
         }
 
 
@@ -64,8 +76,8 @@ export default function Sell_KickStartIt() {
         price: Yup.number().required("Listing Price is required!")
         .min(0.01, "Your item must cost at least $0.01")
         .positive("Price Must be a Positive Number")
-        .test("decimal-places", "Price must have up to 2 decimal places", (value) => {
-            return value.toString().split(".")[1]?.length <= 2 })
+        // .test("decimal-places", "Price must have up to 2 decimal places", (value) => {
+        //     return value.toString().split(".")[1]?.length <= 2 })
         ,
         description: Yup.string().required("Listing Description is required!"),
         target: Yup.number().required("Pledge Target is required!")

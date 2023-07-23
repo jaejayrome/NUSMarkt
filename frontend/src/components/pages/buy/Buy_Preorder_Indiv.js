@@ -1,17 +1,21 @@
-import { collection, doc, documentId, updateDoc } from "@firebase/firestore";
+import { arrayUnion, collection, doc, documentId, updateDoc } from "@firebase/firestore";
 import Navbar from "../../compiledData/Navbar";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useRevalidator } from "react-router-dom";
 import db from "../../../config/firebase.js"
 import { getDoc } from "@firebase/firestore";
 import { useState } from "react";
 import { Button, LinearProgress } from "@mui/material";
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import { toast } from "react-toastify";
+import { auth } from "../../../config/firebase.js";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function Buy_Preorder_Indiv() {
 
     const {listingID} = useParams()
+
+    const [uid, setUid] = useState(null);
 
     const [pledged, setPledge] = useState(false)
 
@@ -22,6 +26,16 @@ export default function Buy_Preorder_Indiv() {
     const [pledgeTarget, setPledgeTarget] = useState(0)
 
     useEffect(() => {
+      onAuthStateChanged(auth, (user) => {
+        if(user) {
+          setUid(user.uid)
+        }
+      });
+      console.log("first use effect")
+    }, []);
+
+    useEffect(() => {
+      if (uid){
         const getListing = async () => {
 
           const documentRef = doc(collection(db, "preOrders"), listingID)
@@ -30,18 +44,22 @@ export default function Buy_Preorder_Indiv() {
             setListing({...response.data()})
             setProgress(response.data().pledgeCounter)
             setPledgeTarget(response.data().pledgeTarget)
+            setPledge(response.data().pledgesArr.includes(uid))
           }
         }
         getListing()
-    }, []);
+      }
+     
+    }, [uid]);
 
-    // using local storage would prevent the user to refrehs the pledge button after he has done it 
-    useEffect(() => {
-        const storedPledge = localStorage.getItem("pledged");
-        if (storedPledge) {
-          setPledge(JSON.parse(storedPledge));
-        }
-      }, []);
+    // //using local storage would prevent the user to refrehs the pledge button after he has done it 
+    // useEffect(() => {
+    //     const storedPledge = localStorage.getItem("pledged");
+    //     if (storedPledge) {
+    //       setPledge(JSON.parse(storedPledge));
+    //     }
+    //   }, []);
+    
 
     const addPledge = async () => {
         try {
@@ -51,7 +69,7 @@ export default function Buy_Preorder_Indiv() {
         // set the pledge to 1 
         const documentRef = doc(db, `/preOrders/${listingID}`)
         const actualDoc = await getDoc(documentRef)
-        await updateDoc(documentRef, {pledgeCounter: actualDoc.data().pledgeCounter + 1})
+        await updateDoc(documentRef, {pledgeCounter: actualDoc.data().pledgeCounter + 1, pledgesArr: arrayUnion(uid)})
         toast.success("You have successfully pledged for this current listing!")
 
         } catch (error) {

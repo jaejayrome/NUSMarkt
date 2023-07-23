@@ -61,8 +61,8 @@ export default function Sell_addListing() {
             bankAccountNumber: bankAccountNumber, 
             bank: bank
         }});
-    })
-    }
+        })
+        }
 
 
 
@@ -100,11 +100,7 @@ export default function Sell_addListing() {
         listingTitle: Yup.string().required("Listing Title is required"),
         listingPrice: Yup.number().required("Listing Price is required")
         .positive("Price must be a positive number")
-        .min(0.01, "Your item must cost at least $0.01")
-        .test("decimal-places", "Price must have up to 2 decimal places", (value) => {
-            return value.toString().split(".")[1]?.length <= 2;
-          })
-       ,
+        .min(0.01, "Your item must cost at least $0.01"),
         productDescription: Yup.string().required("Product Description is required"), 
         sizesAvailable: Yup.array().min(1, "You have to select at least 1 Size!"),
         cSizingGuide: Yup.array().of(
@@ -165,8 +161,23 @@ export default function Sell_addListing() {
         const checkPreOrder = location.state?.json64;
 
         if (checkPreOrder != null) {
-            uploadImageToStorage(checkPreOrder, newListing.listingTitle);
-            navigate('STEP3', { state: { ...newListing, json64: checkPreOrder } });
+            validationSchema.validate({ listingTitle: formik.values.listingTitle, listingPrice: formik.values.listingPrice, productDescription: formik.values.productDescription, sizesAvailable: selectedSizes,
+                cSizingGuide: cSizingGuide, bankDetailsUploaded: formik.values.bankDetailsUploaded,
+                bankAccountNumber: bankAccountNumber, bank: bank}).then(validateData => {
+                    uploadImageToStorage(checkPreOrder, newListing.listingTitle);
+                    navigate('STEP3', { state: { ...newListing, json64: checkPreOrder } });
+                    updateDB()
+                }).catch(error => {
+                    setIsSizeGuideConfirmed(false)
+                    console.log(error)
+                    toast.error("Validation Error: " + error.message); 
+                    if (error.inner) {
+                        error.inner.forEach((err) => {
+                        toast.error("Inner Error: " + err.message);
+                        });
+                    }
+            })
+            
         } else {
             validationSchema.validate({ listingTitle: formik.values.listingTitle, listingPrice: formik.values.listingPrice, productDescription: formik.values.productDescription, sizesAvailable: selectedSizes,
             cSizingGuide: cSizingGuide, bankDetailsUploaded: formik.values.bankDetailsUploaded,
@@ -211,12 +222,6 @@ export default function Sell_addListing() {
             <form onSubmit={formik.handleSubmit}>
             <div style = {{display: "flex", flexDirection: 'row', alignItems: "center"}}> 
                 <div style = {{flex: 1, marginLeft: "10%", display: "flex", flexDirection: 'column'}}>
-
-                    {/* /value={formik.values.firstName}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.firstName && formik.errors.firstName}
-                  helperText={formik.touched.firstName && formik.errors.firstName} */}
                    
                     <div style = {{fontFamily: 'serif', fontWeight: 'bolder', fontSize: "30px", marginBottom: "5%"}}> 
                     Step 1: Fill in the Listing Details
