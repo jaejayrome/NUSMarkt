@@ -106,7 +106,7 @@ export default function Trade_Inbox() {
       {reqPerListing.length > 0 ? (
         reqPerListing.map((listing) => (
           <div key={listing.tradeListingTitle} style={{ width: "50%", margin: "2%" }}>
-            <Card style={{pt: 1 }} elevation="5">
+            <Card style={{pt: 1, border: "2px solid black"}} >
               <CardHeader>
               </CardHeader>
               <CardContent>
@@ -119,7 +119,7 @@ export default function Trade_Inbox() {
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                   {listing.tradeRequests && listing.tradeRequests.length > 0 ? (
                     listing.tradeRequests.map((tradeRequest) => (
-                      <Card elevation="10" sx={{ width: "80%", margin: "2%" }}>
+                      <Card  sx={{ border: "1px dashed black", width: "80%", margin: "2%" }}>
                         <CardContent sx={{ pt: 1, fontSize: "15px", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
                           <div style={{alignItems: "center", marginBottom: "2%"}}>Request #{listing.tradeRequests.indexOf(tradeRequest) + 1} - {tradeRequest && tradeRequest.requestTitle}</div>
                           <div style={{ display: "flex", alignItems: "center" }}>
