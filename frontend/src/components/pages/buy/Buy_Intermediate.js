@@ -4,13 +4,34 @@ import MarkunreadIcon from '@mui/icons-material/Markunread';
 import StorefrontRoundedIcon from '@mui/icons-material/StorefrontRounded';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Link } from "react-router-dom";
+import { auth } from "../../../config/firebase";
+import { onAuthStateChanged } from 'firebase/auth';
+import { useState, useEffect } from "react";
 
 import Navbar from "../../compiledData/Navbar";
+import No_Signin from "../miscellaeneous/No_Signin";
+
+import Filter1Icon from '@mui/icons-material/Filter1';
+import Filter2Icon from '@mui/icons-material/Filter2';
+
 
 export default function Buy_Intermediate() {
+
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+          setIsLoggedIn(user !== null);
+        });
+  
+      return () => unsubscribe();
+      }, []);
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      <Navbar />
+
+    <div> 
+    {isLoggedIn ? <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+    <Navbar />
       <div style={{ flex: 1, display: "flex" }}>
         <Box
           sx={{
@@ -25,7 +46,8 @@ export default function Buy_Intermediate() {
             alignItems: "center",
           }}
         >
-          <div> <StorefrontRoundedIcon size="large" /></div>
+
+          <Filter1Icon size = "large" />
           <div> Actual Listings </div>
           <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}>
             Actual Listings are listings that users on NUSMarkt is able to browse and purchase them
@@ -49,7 +71,7 @@ export default function Buy_Intermediate() {
             alignItems: "center",
           }}
         >
-          <div> <MarkunreadIcon></MarkunreadIcon></div>
+          <Filter2Icon size = "large"/>
           <div> Pre-Order Listings</div>
           <div style={{ marginTop: "5%", fontWeight: "normal", fontSize: "15px" }}>
             Pre-Order Listings are listings that are tentative and allows sellers to gain better sense of the demand of a given item</div>
@@ -59,6 +81,8 @@ export default function Buy_Intermediate() {
         </Box>
       </div>
 
+    </div> : <div> <Navbar> </Navbar> <No_Signin /> </div>}
+    
     </div>
   );
 }

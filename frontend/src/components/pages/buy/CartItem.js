@@ -5,7 +5,7 @@ import {auth} from "../../../config/firebase.js"
 import { useState, useEffect } from 'react';
 import CartItemRow from "./Cart/CartItemRow.js"
 import { query, collection, where, getDocs,getDoc} from 'firebase/firestore';
-import { Table, TableBody, TableRow, TableCell, TableHead, Button } from '@mui/material';
+import { Table, TableBody, TableRow, TableCell, TableHead, Button, CircularProgress } from '@mui/material';
 import { onAuthStateChanged } from 'firebase/auth';
 import PaymentIcon from '@mui/icons-material/Payment';
 import StripeCheckout from 'react-stripe-checkout';
@@ -20,6 +20,7 @@ export default function CartItem(props) {
     const [cart, setCart] = useState(null)
     const [uid, setUid] = useState(null);
     const [payNow, setPaynow] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
 
     useEffect(() => {
@@ -72,6 +73,18 @@ export default function CartItem(props) {
     const paymentHandler = () => {
       setPaynow(true)
     }
+
+    const resetPaymentState = () => {
+      setPaynow(false);
+      setIsLoading(false);
+    };
+
+    const loadingHandler = () => {
+      setIsLoading(true)
+      setTimeout(() => {
+        resetPaymentState();
+      }, 90000);
+    }
     
 
     const paymentToken = async (token) => {
@@ -79,7 +92,7 @@ export default function CartItem(props) {
 
     console.log("before")
     console.log(cart)
-    const response = await axios.post("http://localhost:8000/pay", {
+    const response = await axios.post("https://us-central1-nusmarkt-41131.cloudfunctions.net/api/pay", {
       amount: totalCost * 100, 
       token: token,
     })
@@ -87,15 +100,17 @@ export default function CartItem(props) {
     if (response.data.success) {
 
     console.log("after")
+    setIsLoading(false)
     console.log(cart)
-      // sending the cart instance wherein it contains many "orders" in arrays
-      navigate("/payment/success")
+    navigate("/payment/success")
     } else {
+      setIsLoading(false)
       navigate("/payment/failed")
     }
 
     } catch (error) {
       console.log(error)
+      setIsLoading(false)
     }
     }
     
@@ -123,25 +138,30 @@ export default function CartItem(props) {
             </Table>
 
             <div style = {{justifyContent: 'center', alignItems: 'center', display: 'flex', marginTop: "5%"}}> 
-            <Button onClick = {paymentHandler} startIcon = {<PaymentIcon />} variant = "outlined" sx= {{borderColor: "black", align:"center", position: "relative", color: "black"}}> Checkout </Button>
+            <Button disabled = {payNow} onClick = {paymentHandler} startIcon = {<PaymentIcon />} variant = "outlined" sx= {{borderColor: "black", align:"center", position: "relative", color: "black"}}> Checkout </Button>
             </div>
 
-            {payNow && (
+            {payNow && isLoading &&
+            <div style={{display: "flex", flexDirection: 'column', justifyContent: 'center', alignItems: 'center', fontFamily: 'sans-serif', marginTop: "3%"}}> 
+              <CircularProgress sx = {{color: 'black', marginBottom: "3%"}} />
+              Payment Processing...
+            </div> }
+            
+            {payNow && !isLoading && (
               <div style={{marginTop: "3%" ,display: "flex", justifyContent: "center", alignItems: "center"}}> 
                 <StripeCheckout 
                 stripeKey='pk_test_51NIWCvJV7xrxUeZRngBA3tGIxShEI28dquXmgUGT01sjWOpnx7LQQZMCJNP4HvtfhHgzQe42H5tHnlULb9gDXXvU00zt7XeG7c'
                 name = "Payment" 
-                // label= "Click to Proceed"
                 description= {`Your total amount is ${totalCost} SGD`}
                 email = {auth.currentUser.email}
                 amount = {totalCost * 100}
-                token = {paymentToken}>
+                token = {paymentToken}
+                onClose={() => setIsLoading(false)}
+                >
+                
 
-                <Button variant = "outlined"  style = {{color: "black", borderColor: "black"}}> Click to Proceed </Button>
-
+                <Button onClick = {loadingHandler} variant = "outlined"  style = {{color: "black", borderColor: "black"}}> Click to Proceed </Button>
                 </StripeCheckout>
-
-                {/* <Button> Click To Proceed </Button> */}
               </div>
             )}
             

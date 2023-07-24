@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import db from "../../../config/firebase.js"
 import {auth} from "../../../config/firebase.js"
 import OrderDetails from "./OrderDetails"
-import { query, collection, where, getDocs, updateDoc, deleteField} from 'firebase/firestore';
+import { query, collection, where, getDocs, updateDoc, deleteField, addDoc, arrayUnion} from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Button, Box, ImageList } from "@mui/material"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -15,7 +15,9 @@ export default function SucessPage() {
     const [cart, setCart] = useState(null)
     const [uid, setUid] = useState(null);
     const navigate = useNavigate()
+    // const [orderArr, setOrderArr] = useState([])
 
+ // success page once it navigates i want to add to the order collection
 // after the success page i want to delete the cart
 // the issue is once i refresh the page it wouldn't show this at all already
     useEffect(() => {
@@ -37,7 +39,10 @@ export default function SucessPage() {
                 if (querySnapshot){
                 querySnapshot.forEach((document) => {
                     setCart(document.data().cart)
-                    console.log("done")
+                    addDoc((collection(db, "orders")),  {...document.data().cart}).then((orderDoc) => {
+                        updateDoc(document.ref, {"order_arr": arrayUnion(orderDoc)})
+                    })
+                 
                 })
                 }
                 }
@@ -50,9 +55,28 @@ export default function SucessPage() {
     
     }, [uid])
 
+    // const uploadOrder = (orderInstance) => {
+    //     console.log("called")
+    //     console.log(orderInstance)
+    //     setOrderArr(prevArr => [...prevArr, orderInstance])
+    //     console.log(orderArr)
+    // }
+
     const clearCartHandler = async () => {
         try {
             if (uid){
+            // await addDoc(collection(db, "orders"), orderArr).then(async (orderDoc) => {
+
+            //     const q = query(collection(db, "users"), where("uid", "==", auth.currentUser.uid))
+            //     const snapshot = await getDocs(q)
+            //     if (snapshot) {
+            //         snapshot.forEach((user) => {
+            //             updateDoc(user.ref, {"order_arr" : arrayUnion(orderDoc)})
+            //         })
+            //     }
+            // }).catch((error) => {
+            //     console.log(error)
+            // })
             const q = query(collection(db, "users"), where("uid", "==", uid));
             const querySnapshot = await getDocs(q);
             if (querySnapshot){
@@ -60,6 +84,8 @@ export default function SucessPage() {
                 updateDoc(document.ref, {cart: deleteField()})
             })
             }
+
+
             toast("Back to Home!")
             navigate("/BUY")
             }
@@ -104,7 +130,7 @@ export default function SucessPage() {
                 <ImageList sx ={{ overflowX: "hidden", overflowY: "auto", maxHeight: "400px", marginLeft: "2%", marginRight: '2%' }}>
                 {cart && cart.map((item) => {
                     return (
-                        <OrderDetails cartItem = {item} /> 
+                        <OrderDetails  cartItem = {item} /> 
                     )
                 })}
                 </ImageList>

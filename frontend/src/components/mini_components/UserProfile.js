@@ -5,6 +5,8 @@ import { auth } from '../../config/firebase';
 import db from '../../config/firebase';
 import { useEffect, useState } from 'react';
 import { query,getDocs, where, collection } from '@firebase/firestore';
+import SyncAltIcon from '@mui/icons-material/SyncAlt';
+import UpdateProfileDrawer from './UpdateProfileDrawer';
 
 export default function UserProfile() {
     const uid = auth.currentUser.uid;
@@ -18,7 +20,7 @@ export default function UserProfile() {
                 "users"), where("uid", "==", uid));
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach(element => {
-                setUser({...element.data()})
+                setUser({...element.data(), id: element.id})
             });
            
         }
@@ -69,6 +71,10 @@ export default function UserProfile() {
 
 
             </div>
+            </div>
+
+            <div style = {{marginTop: "5%", display: "flex", alignItems: 'center', justifyContent: "center"}}>
+                <UpdateProfileDrawer user = {user} id = {user.id} />
             </div>
         </div>
     )

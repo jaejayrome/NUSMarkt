@@ -8,11 +8,12 @@ import { auth } from "../../config/firebase.js";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
 import AddCommentIcon from '@mui/icons-material/AddComment';
+import { useFormik } from "formik";
+import * as Yup from 'yup'
 
 export default function AddReviewDrawer(props) {
     const [isOpen, setIsOpen] = useState(false);
     const [reviewStatus, setReviewStatus] = useState("")
-    const [messageContent, setContent] = useState("");
     const [loading, setLoading] = useState(true)
     const [click, setClick] = useState(false)
     const navigate = useNavigate()
@@ -36,21 +37,24 @@ export default function AddReviewDrawer(props) {
         try {          
             const checkModelLoading = async () => {
                 setClick(true)
-                const response = await query({ "inputs": messageContent });
+                const response = await query({ "inputs": formik.values.messageContent });
                 if (response.error === "Model siebert/sentiment-roberta-large-english is currently loading") {
                     setTimeout(checkModelLoading, 10000); 
                   } else {
                     setLoading(false);
                     console.log(JSON.stringify(response));
-                  
+                
+
                     const updateReviewStatus = response[0][0].label;
                     setReviewStatus(updateReviewStatus);
-                  
                     const messageCollectionRef = collection(db, "message");
+                    console.log(response[0][0].score)
                     const addedMessage = await addDoc(messageCollectionRef, {
-                      content: messageContent,
+                      content: formik.values.messageContent,
                       listedBy: auth.currentUser.displayName,
-                      reviewStatus: updateReviewStatus,
+                      reviewStatus: response[0][0].score != 0 ? response[0][0].label : "NEUTRAL",
+                      messageOwnerUID: auth.currentUser.uid,
+                      replies_arr: []
                     });
                   
                     const listingRef = doc(db, "listing", props.listingRef);
@@ -62,7 +66,7 @@ export default function AddReviewDrawer(props) {
                     }
                   
                     toast("Successfully submitted the review!");
-                    navigate("/BUY");
+                    navigate(`/BUY`);
                   }
                   
                 }
@@ -73,18 +77,25 @@ export default function AddReviewDrawer(props) {
         }
     }
 
-    const messageContentHandler = (event) => {
-        setContent(event.target.value)
-    }
-  
-
     const toggleDrawer = () => {
         setIsOpen(!isOpen);
     };
 
+    const schema = Yup.object({
+        messageContent: Yup.string().required("Reply must not be empty!")
+    })
+
+    const formik = useFormik({
+        initialValues: {
+            messageContent:''
+        }, 
+        validationSchema: schema, 
+        onSubmit: values => uploadReview(values)
+    })
+
     return (
         <div>
-            <Button variant = "outlined" startIcon = {<AddCommentIcon />} sx = {{borderColor: "black", right: "-85%",color: "black"}} onClick = {toggleDrawer}> Add A Review </Button>
+            <Button disabled = {props.myListing} variant = "outlined" startIcon = {<AddCommentIcon />} sx = {{borderColor: "black", right: "-85%",color: "black"}} onClick = {toggleDrawer}> Add A Review </Button>
             <Drawer PaperProps={{
             sx: { width: "45%", borderRadius: "25px"},
             }}
@@ -96,18 +107,29 @@ export default function AddReviewDrawer(props) {
             <div style = {{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",marginBottom: "3%", fontSize: "20px"}}> 
             How did you find the item? 
             </div>
-            <div style = {{flexDirection: "column",display: "flex", justifyContent: "center", alignItems: "center"}}> 
-               <TextField onChange = {messageContentHandler} label = "Leave Your Review " sx  = {{width: "50%"}} multiline = {true}> Add a comment </TextField>
-    
-                <Button variant = "contained" disabled = {click} onClick = {uploadReview} sx = {{backgroundColor: "black", marginTop: "5%", color: "white", font: "black", textTransform: "none"}}> Leave Review </Button>
 
+            <form onSubmit={formik.handleSubmit}> 
+            <div style = {{flexDirection: "column",display: "flex", justifyContent: "center", alignItems: "center"}}> 
+               <TextField name = "messageContent"
+               onBlur = {formik.handleBlur} required
+               error = {formik.touched.messageContent && formik.errors.messageContent} 
+               helperText={formik.touched.messageContent && formik.errors.messageContent}
+               onChange = {formik.handleChange} 
+               label = "Leave Your Review " 
+               sx  = {{width: "50%"}} multiline = {true} > Add a comment </TextField>
+    
+                <Button type = "submit" variant = "contained" sx = {{backgroundColor: "black", marginTop: "5%", color: "white", font: "black", textTransform: "none"}}> Leave Review </Button>
+          
                 {click && loading && (
-                    <div style = {{fontSize: "20px"}}>
-                        Uploading Comment...
+                    <div style = {{fontSize: "20px", display: 'flex', flexDirection: 'column', marginTop: "5%", justifyContent: 'center', alignItems: 'center'}}>
                         <CircularProgress color="inherit" />
+                        <div style={{marginTop: "10%"}}> 
+                        Uploading Comment...
+                        </div>
                     </div>
                 )}
             </div>
+            </form>
 
    
 

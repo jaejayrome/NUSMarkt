@@ -50,8 +50,8 @@ export default function TransitionModal(props) {
             Ensure that the fields are finalised as no changes can be made. 
             </Typography>
 
-            <Button onClick = {handleClose}> Go Back </Button>
-            <Button onClick = {props.navigation}> Continue </Button>
+            <Button sx = {{color: 'black'}}onClick = {handleClose}> Go Back </Button>
+            <Button sx = {{color: 'black'}}onClick = {props.navigation}> Continue </Button>
           </Box>
         </Fade>
       </Modal>

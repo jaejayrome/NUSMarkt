@@ -5,13 +5,22 @@ import Button from '@mui/material/Button';
 import {Link, useNavigate} from 'react-router-dom';
 import {useState} from 'react'; 
 import {auth} from '../../../config/firebase.js';
+import { provider, fbProvider } from '../../../config/firebase.js';
 import Navbar from '../../compiledData/Navbar.js'
 import Register from './Register.js';
 import {signInWithEmailAndPassword} from 'firebase/auth'
 import './Signup.css';
 import InputLabel from '@mui/material/InputLabel';
 import {toast} from 'react-toastify';
+import { signInWithPopup } from 'firebase/auth';
 import 'react-toastify/dist/ReactToastify.css';
+import { query, where, getDocs, addDoc, collection } from '@firebase/firestore';
+import db from "../../../config/firebase.js"
+import google from "../../../images/real_google.png"
+import facebook from "../../../images/facebook2.png"
+import { IconButton, Typography } from '@mui/material';
+import Metadata from './Metadata.js';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 // missing the current features: signout 
 // auth.currentUser gives us the currentUser
@@ -28,22 +37,139 @@ function Signup() {
     // const history = useHistory();
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
+    const [phoneNumbera, setPhoneNumber] = useState(null)
     const navigate = useNavigate();
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
+    const [telegramHandle, setTelegramHandle] = useState("")
+    const [showPassword, setShow] = useState(false)
+
 
     // const onLogin = () => {
     //     toast("You have successfully signed in")
     // }
 
+    const handleMetaData = (firstName, lastName, telegramHandle) => {
+        setFirstName(firstName)
+        setLastName(lastName)
+        setTelegramHandle(telegramHandle)
+    }
+
     const login = async () => {
         try {
             const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-            await navigate(`/TUTORIAL`)
-            toast("You have successfully signed in")
-            
+            const collectionRef = collection(db, "users")
+            const q = query(collectionRef, where("uid", "==", user.user.uid))
+            const snapshot = await getDocs(q)
+
+            if (snapshot) {
+                snapshot.forEach(async (user) => {
+                    const noTutorial = user.data().noTutorial
+                    if (noTutorial) {
+                        await navigate('/BUY')
+                        toast.success("You have successfully signed in")
+                    } else {
+                        await navigate('/TUTORIAL')
+                        toast.success("You have successfully signed in")
+                    }
+                })
+            }
         } catch (error) {
             console.log(error)
-            toast("You have keyed in wrong details")
+            toast.error("You have keyed in wrong details")
         }
+    }
+
+    const googleSignIn = async () => {
+        signInWithPopup(auth, provider).then(async (result) => {
+
+            // check whether user has an exisitng account before 
+            const collectionRef = collection(db, "users")
+            const q = query(collectionRef, where("uid", "==", result.user.uid))
+            const snapshot = await getDocs(q)
+
+            if (snapshot.empty) {
+                // means the user doesn't exist
+                // create a user
+
+                const userName = result.user.displayName
+                const email = result.user.email
+                const phoneNumber = result.user.phoneNumber
+
+                const newUser = {
+                    userName: userName, 
+                    registerEmail: email, 
+                    phoneNumber: phoneNumber, 
+                    uid: result.user.uid,
+                    noTutorial: false,
+                    withdrawAmount: 0.00
+                }
+
+                navigate('/METADATA', { state: { newUser: newUser } });
+            } else {
+                snapshot.forEach(async (user) => {
+                    const noTutorial = user.data().noTutorial
+                    if (noTutorial) {
+                        await navigate('/BUY')
+                        toast.success("You have successfully signed in")
+                    } else {
+                        await navigate('/TUTORIAL')
+                        toast.success("You have successfully signed in")
+                    }
+                })
+            }
+            
+            
+
+
+
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
+    const facebookSignIn = async () => {
+        signInWithPopup(auth, fbProvider)
+        .then(async (result) => {
+            // check whether user has an exisitng account before 
+            const collectionRef = collection(db, "users")
+            const q = query(collectionRef, where("uid", "==", result.user.uid))
+            const snapshot = await getDocs(q)
+
+            if (snapshot.empty) {
+                const userName = result.user.displayName
+                const email = result.user.email
+                const phoneNumber = result.user.phoneNumber
+
+                const newUser = {
+                    userName: userName, 
+                    registerEmail: email, 
+                    phoneNumber: phoneNumber, 
+                    uid: result.user.uid,
+                    noTutorial: false,
+                    withdrawAmount: 0.00
+                }
+
+                navigate('/METADATA', { state: { newUser: newUser } });
+            } else {
+                snapshot.forEach(async (user) => {
+                    const noTutorial = user.data().noTutorial
+                    if (noTutorial) {
+                        await navigate('/BUY')
+                        toast.success("You have successfully signed in")
+                    } else {
+                        await navigate('/TUTORIAL')
+                        toast.success("You have successfully signed in")
+                    }
+                })
+            }
+            
+        })
+        .catch((error) => console.log(error))
+    }
+
+    const showPasswordHandler = () => {
+        setShow(prevState => !prevState)
     }
 
     return (
@@ -73,7 +199,13 @@ function Signup() {
             InputProps = {{
                 endAdornment: (
                 <InputAdornment position = "end">
+                    {showPassword ? <IconButton onClick = {showPasswordHandler}>
                     <VisibilityIcon> </VisibilityIcon>
+                    </IconButton> :
+                    <IconButton onClick = {showPasswordHandler}>
+                    <VisibilityOffIcon> </VisibilityOffIcon>
+                    </IconButton>}
+
                 </InputAdornment>
                 )
             }}
@@ -81,7 +213,7 @@ function Signup() {
             variant = "outlined"
             required 
             size = "medium"
-            type = "password"
+            type = {showPassword ? "text" : "password"}
             onChange = {event => setLoginPassword(event.target.value)}
             className = "email"
             sx = {{width: 300}}
@@ -91,11 +223,22 @@ function Signup() {
             }}  onClick = {login}>
             Login
             </Button>
-        
+
+            <div sx={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "5%" }}>
+            <Button variant = "outlined" sx = {{borderColor: "black", color: "black", mt : "10%", textTransform: 'none', fontSize: '15px'}} startIcon={<img width="80%" style={{marginRight: '-100px'}} height="30%" src={google} alt="GOOGLE" />} onClick={googleSignIn}>
+                Continue With Google
+            </Button>
+            </div>
+
+            <div style={{marginTop: "1%"}}> 
+                <Button startIcon = {<img width="60%" style={{marginRight: '-663px'}} height="30%" src={facebook} alt="FACEBOOK" />} variant = "contained" sx = {{backgroundColor: '#3b5998',textTransform: 'none'}} onClick = {facebookSignIn}> 
+                 Continue With Facebook
+                </Button>
+            </div>
 
             <h4 className = "email" style = {{marginTop: "3%"}}> Don't have an account? </h4>
             <Link to = "/REGISTER" element = {<Register />}> 
-                <Button variant = "outlined" sx = {{marginTop: "5px", color:"black", borderColor: "black"}}
+                <Button  variant = "outlined" sx = {{marginTop: "5px", color:"black", borderColor: "black"}}
                 size = "large"
                 className = "email"> Create Account </Button>
             </Link>

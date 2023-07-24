@@ -1,11 +1,15 @@
 import Navbar from "../../compiledData/Navbar";
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import db from "../../../config/firebase.js"
 import {auth} from "../../../config/firebase.js"
 import { Divider, TextField, InputLabel, Button, InputAdornment, OutlinedInput, FormControl} from "@mui/material";
-import { addDoc, collection } from "@firebase/firestore";
+import { addDoc, arrayUnion, collection, getDocs, updateDoc, where, query } from "@firebase/firestore";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { toast } from "react-toastify";
+import { useFormik } from "formik";
+import * as Yup from 'yup';
+import { onAuthStateChanged } from "firebase/auth";
 
 
 // NOTE THAT THE NAME OF THE FUNCTION IS NOT THE SAME AS THAT OF THE FILE NAME
@@ -15,78 +19,81 @@ import { getStorage, ref, uploadBytes } from "firebase/storage";
 // hence buy would split into listing marketplace, pre-order marketplace, orders placed
 export default function Sell_KickStartIt() {
 
+    const [uid, setUid] = useState(null);
     const location = useLocation()
+    const navigate = useNavigate()
 
-    const url = location.state?.url
-    const [title, setTitle] = useState("")
-    const [price, setPrice] = useState("")
-    const [description, setDescription] = useState("")
-    const [target, setTarget] = useState(0)
+    const url = location.state?.url    
+    const storage = getStorage(); 
 
-    // Function to upload image to storage 
-    
-    const storage = getStorage(); // Initialize Firebase storage
-
-    const uploadImageToStorage = async (base64Data, fileName) => {
-        try {
-          const decodedData = atob(base64Data);
-          const arrayBuffer = new ArrayBuffer(decodedData.length);
-          const uint8Array = new Uint8Array(arrayBuffer);
-      
-          for (let i = 0; i < decodedData.length; i++) {
-            uint8Array[i] = decodedData.charCodeAt(i);
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+          if(user) {
+            setUid(user.uid)
           }
-      
-          const blob = new Blob([uint8Array], { type: 'image/jpeg' });
-      
-          const storagePath = `preOrder/${fileName}.jpg`;
-          const fileRef = ref(storage, storagePath);
-          await uploadBytes(fileRef, blob);
-        } catch (error) {
-          console.log(error);
-        }
-      };
+        });
+        console.log("first use effect")
+      }, []);
 
-
-
-    const titleHandler = (event) => {
-        setTitle(event.target.value)
-    } 
-
-    const priceHandler = (event) => {
-        setPrice(event.target.value)
-    } 
-
-    const descriptionHandler = (event) => {
-        setDescription(event.target.value)
-    } 
-
-    const targetHandler = (event) => {
-        setTarget(event.target.value)
-    } 
     const uploadOrder = async () => {
         const preOrder = {
-            listingTitle: title, 
-            listingPrice: price, 
-            listingDescription: description,
-            pledgeTarget: target, 
+            listingTitle: formik.values.title, 
+            listingPrice: formik.values.price, 
+            listingDescription: formik.values.description,
+            pledgeTarget: formik.values.target, 
             pledgeCounter: 0,
             listedBy: auth.currentUser.displayName,
-            json64: url
+            json64: url,
+            pledgesArr: [uid]
         }
 
 
         const collectionRef = collection(db, "preOrders")
         addDoc(collectionRef, preOrder)
-        // .then((docRef) => {
-        // const uid = docRef.id;
-        // return uploadImageToStorage(url, uid);
-        // })
-        // .catch((error) => {
-        // console.log(error);
-        // });
+        .then(async (docRef) => {
+
+            const collection2Ref = collection(db, "users")
+            const q = query(collection2Ref, where("uid", "==", auth.currentUser.uid))
+            const querySnapshot = await getDocs(q)
+            querySnapshot.forEach((user) => {
+                updateDoc(user.ref, {preorder_arr: arrayUnion(docRef)})
+            })
+       
+        })
+        .catch((error) => {
+        console.log(error);
+        });
+        
+        toast("You have successfully uploaded your pre-order listing!")
+        navigate("/BUY/PREORDER/")
+        
        
     }
+
+
+    const validationSchema = Yup.object({
+        title: Yup.string().required("Listing Title is required!"),
+        price: Yup.number().required("Listing Price is required!")
+        .min(0.01, "Your item must cost at least $0.01")
+        .positive("Price Must be a Positive Number")
+        // .test("decimal-places", "Price must have up to 2 decimal places", (value) => {
+        //     return value.toString().split(".")[1]?.length <= 2 })
+        ,
+        description: Yup.string().required("Listing Description is required!"),
+        target: Yup.number().required("Pledge Target is required!")
+        .min(1, "Pledge Target Must be Minimally 1")
+    })
+
+    const formik = useFormik({
+        initialValues: {
+            title: '', 
+            price: '',
+            description: '',
+            target: ''
+        }, 
+        validationSchema: validationSchema, 
+        onSubmit: (values) => uploadOrder(values)
+    })
 
     return (
         <div> 
@@ -110,6 +117,7 @@ export default function Sell_KickStartIt() {
 
                 </div> 
 
+                <form onSubmit={formik.handleSubmit}>
                 <Divider sx = {{border: "1px solid black", mb: "5%"}}/>
                 <div style={{display: "flex", flexDirection: 'row'}}> 
 
@@ -117,28 +125,65 @@ export default function Sell_KickStartIt() {
                 {url && <img height = "400px" width = "400px" src={`data:image/jpeg;base64, ${url}`}  alt = "image not found"/>}
                 </div>
 
+
+
                 <div style={{flex: 1, display: 'flex', flexDirection: 'column'}}> 
+                <TextField  sx = {{width:  '80%', marginBottom: "5%" }}
+                 multiline = {false}
+                 label = "Listing Title" 
+                 name = "title"
+                 value={formik.values.title}
+                 onChange={formik.handleChange}
+                 onBlur={formik.handleBlur}
+                 error={formik.touched.title && formik.errors.title}
+                 helperText={formik.touched.title && formik.errors.title}
+                 required
+                > </TextField>
+{/* 
+                <InputLabel htmlFor = "pricing" sx = {{marginTop:"5%"}}> Proposed Pricing</InputLabel> */}
+                <TextField
 
-                <TextField onChange = {titleHandler} sx = {{width:  '80%' }} label = "Listing Title" multiline = {false}> </TextField>
+                value={formik.values.price}
+                name = "price"
+                label = "Listing Price"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.price && formik.errors.price}
+                required
+                helperText={formik.touched.price && formik.errors.price} startAdornment = {<InputAdornment position="start"> $</InputAdornment>} sx = {{width:  '80%' }} id = "pricing" multiline = {false}
+                InputProps={{
+                    startAdornment: <InputAdornment position='start'>$</InputAdornment>
+                }} 
+                >
+                </TextField>
 
-                <InputLabel htmlFor = "pricing" sx = {{marginTop:"5%"}}> Proposed Pricing</InputLabel>
-                <OutlinedInput onChange = {priceHandler} startAdornment = {<InputAdornment position="start"> $</InputAdornment>} sx = {{width:  '80%' }} id = "pricing" multiline = {false}> 
-    
-                </OutlinedInput>
+                <TextField 
+                name = "description"
+                value={formik.values.description}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.description && formik.errors.description}
+                helperText={formik.touched.description && formik.errors.description}
+              
+                required
+                sx = {{width:  '80%', marginTop: "5%" }} label = "Listing Description" multiline = {true}> </TextField>
 
-                <TextField onChange = {descriptionHandler}  sx = {{width:  '80%', marginTop: "5%" }} label = "Listing Description" multiline = {true}> </TextField>
-
-                <TextField onChange = {targetHandler}  helperText = "Please key in the number of pledges that you think you need to attain before converting it to an actual listing " sx = {{width:  '80%', marginTop: "5%" }} label = "Pledge Target" multiline = {false}> </TextField>
-
-
+                <TextField  
+                name = "target"
+                value={formik.values.target}
+                required
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.target && formik.errors.target}
+                helperText={formik.touched.target && formik.errors.target} sx = {{width:  '80%', marginTop: "5%" }} label = "Pledge Target" multiline = {false}> </TextField>
                 </div>
-
-
                 </div>
+                
 
-                <div  style = {{alignItems: "center", justifyContent: 'center', display: 'flex', marginTop: "3%"}}> 
-                <Button onClick = {uploadOrder} variant = "outlined" sx = {{borderColor: "black", color: "black"}}> Enter </Button>
+                <div  style = {{alignItems: "flex-start", justifyContent: 'center', display: 'flex', marginTop: "2%"}}> 
+                <Button type = "submit" variant = "outlined" sx = {{borderColor: "black", color: "black"}}> Enter </Button>
                 </div>
+                </form>
 
              
             </div>

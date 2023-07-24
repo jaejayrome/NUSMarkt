@@ -23,7 +23,9 @@ export default function Sell_addListing3() {
     font-size: 30px;`;
 
     const navigate = useNavigate()
+    const json64 = location.state?.json64
 
+    // there's an issue with the bank account not moving over 
 
     const newListing = {
         listingTitle: location.state.listingTitle, 
@@ -32,7 +34,7 @@ export default function Sell_addListing3() {
         sizesAvailable: location.state.sizesAvailable, 
         filePath: location.state.listingTitle,
         listedBy: location.state.listedBy,
-        sizingGuide: location.state.sizingGuide
+        sizingGuide: location.state.sizingGuide,
     }
 
     // onClickHandler when user adds listing 
@@ -40,8 +42,8 @@ export default function Sell_addListing3() {
         // need to add in the portion where it would upload the image
         
         try {
+  
         const listingDocumentRef = await addDoc(collection(db, "listing"), newListing);
-
 
         const q = query(collection(db, "users"), where("uid", "==", auth.currentUser.uid));
         const querySnapshot = await getDocs(q);
@@ -50,9 +52,10 @@ export default function Sell_addListing3() {
         updateDoc(documentRef, {
             Sell_ListingArr: arrayUnion(listingDocumentRef)
         })
-        navigate('/SELL/LISTINGS')
+        navigate('/SELL')
         toast("Your Listing has been successfully updated!")
       });
+        
         } catch(error) {
             console.log(error)
             console.log(newListing)
@@ -77,7 +80,8 @@ export default function Sell_addListing3() {
                     alignItems: 'flex-start'}}>
 
                 <div style = {{flex: 1, marginLeft: '2%'}}> 
-                    <ImageHandler height = "400px" width = "400px" alt = {newListing.listingTitle} filePath= {newListing.filePath}/>
+                {!!json64 ?  <img height = "400px" width = "400px" alt = {newListing.listingTitle} src={`data:image/jpeg;base64, ${json64}`} />
+                    : <ImageHandler height = "400px" width = "400px" alt = {newListing.listingTitle} filePath= {newListing.filePath}/>}
                 </div>
 
                 <div style = {{flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>

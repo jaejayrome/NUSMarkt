@@ -140,10 +140,10 @@ export default function CartTransitionModal(props) {
 
 
             <div style={{display: "flex", alignItems: "center", justifyContent:"center", marginTop: "5%"}}>
-            <Button sx = {{mr: "2%"}}variant = "outlined" onClick = {handleClose}> Cancel </Button>
+            <Button sx = {{color: "black", borderColor: "black", mr: "2%"}}variant = "outlined" onClick = {handleClose}> Cancel </Button>
 
             <Link to = "/BUY/CART" onClick = {() => addToCartHandler(props.uid, props.listingRef)}>
-                <Button variant = "outlined"sx = {{font: "black"}} startIcon = {<AddShoppingCartSharpIcon/>} > Add To Cart </Button>
+                <Button variant = "outlined"sx = {{color: "black", borderColor: "black"}} startIcon = {<AddShoppingCartSharpIcon/>} > Add To Cart </Button>
             </Link>
             </div>
           </Box>
