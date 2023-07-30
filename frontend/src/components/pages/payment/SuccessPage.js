@@ -29,6 +29,31 @@ export default function SucessPage() {
         console.log("first use effect")
       }, []);
 
+
+      const clearCartHandler = async () => {
+        try {
+            if (uid){
+            const q = query(collection(db, "users"), where("uid", "==", uid));
+            const querySnapshot = await getDocs(q);
+            if (querySnapshot){
+            querySnapshot.forEach((document) => {
+                updateDoc(document.ref, {cart: deleteField()})
+            })
+            }
+
+
+         
+            }
+        } catch (error){ 
+            console.log(error)
+        }
+    }
+
+    const backToHome = () => {
+        toast("Back to Home!")
+        navigate("/BUY")
+    }
+
     useEffect(() => {
         const retrieveCart = async () => {
             try {
@@ -52,6 +77,7 @@ export default function SucessPage() {
         }
         
         retrieveCart()
+        clearCartHandler()
     
     }, [uid])
 
@@ -62,37 +88,7 @@ export default function SucessPage() {
     //     console.log(orderArr)
     // }
 
-    const clearCartHandler = async () => {
-        try {
-            if (uid){
-            // await addDoc(collection(db, "orders"), orderArr).then(async (orderDoc) => {
-
-            //     const q = query(collection(db, "users"), where("uid", "==", auth.currentUser.uid))
-            //     const snapshot = await getDocs(q)
-            //     if (snapshot) {
-            //         snapshot.forEach((user) => {
-            //             updateDoc(user.ref, {"order_arr" : arrayUnion(orderDoc)})
-            //         })
-            //     }
-            // }).catch((error) => {
-            //     console.log(error)
-            // })
-            const q = query(collection(db, "users"), where("uid", "==", uid));
-            const querySnapshot = await getDocs(q);
-            if (querySnapshot){
-            querySnapshot.forEach((document) => {
-                updateDoc(document.ref, {cart: deleteField()})
-            })
-            }
-
-
-            toast("Back to Home!")
-            navigate("/BUY")
-            }
-        } catch (error){ 
-            console.log(error)
-        }
-    }
+    
 
     return (
         <div> 
@@ -138,7 +134,7 @@ export default function SucessPage() {
 
 
                 {cart ? <div> 
-                    <Button onClick = {clearCartHandler} startIcon = {<ArrowBackIcon/>} variant = "outlined" sx = {{color: "black", borderColor: "black", textTransform: 'none'}}> 
+                    <Button onClick = {backToHome} startIcon = {<ArrowBackIcon/>} variant = "outlined" sx = {{color: "black", borderColor: "black", textTransform: 'none'}}> 
                     Back to Home 
                     </Button>
                 </div>: <div> </div> }
