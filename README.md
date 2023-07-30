@@ -96,5 +96,3 @@ CVC: any random 3 numbers of your choice
 ## Motivation & Aim
 
 Our project scope can be summarized as follows: "Creating a unified platform for NUS students to buy, sell, and trade NUS merchandise conveniently." In a more detailed description, NUSMarkt aims to address the problem of fragmented and inefficient methods of acquiring NUS merchandise. As we walk along the NUS campus, we often see students with attractive NUS merchandise, but there is no specific platform that features all designs of shirts and other items designed by different communities in NUS. This leads to students resorting to platforms like Reddit to inquire about where they could purchase these items (Figure 1). Moreover, there is no platform that allows students to trade merchandise, leading to inefficiencies and missed opportunities.
-
-...
