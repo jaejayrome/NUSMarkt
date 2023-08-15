@@ -3,7 +3,7 @@ import {FacebookAuthProvider, GoogleAuthProvider, getAuth} from "firebase/auth";
 import {getFirestore} from "@firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBXrNsphWEoodnzDeSvg7HLsPTEgg4rT3s",
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "nusmarkt-41131.firebaseapp.com",
   projectId: "nusmarkt-41131",
   storageBucket: "nusmarkt-41131.appspot.com",

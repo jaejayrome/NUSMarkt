@@ -92,7 +92,7 @@ export default function CartItem(props) {
 
     console.log("before")
     console.log(cart)
-    const response = await axios.post("https://us-central1-nusmarkt-41131.cloudfunctions.net/api/pay", {
+    const response = await axios.post(`${process.env.BACKEND_FIREBASE_FUNCTION_BASE_URL}/pay`, {
       amount: totalCost * 100, 
       token: token,
     })

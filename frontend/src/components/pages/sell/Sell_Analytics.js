@@ -12,6 +12,8 @@ export default function Sell_Analytics() {
 
   const navigate = useNavigate()
 
+  const OPENAI_API_KEY = process.env.OPENAI_API_KEY
+
   const [thumbnailUrl, setThumbnailUrl] = useState([]);
   const [logo, setLogo] = useState("")
   const [color, setColor] = useState("")
@@ -67,7 +69,7 @@ export default function Sell_Analytics() {
       const res = await fetch("https://api.openai.com/v1/images/generations", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer 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",
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
           prompt: madePrompt, 
